@@ -1,0 +1,35 @@
+@import "./variable";
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+.wrapper {
+  margin: 0 auto;
+  background-color: $white-color;
+}
+.main-content {
+  width: calc(100% - ($sidebar-left-width + $sidebar-right-width));
+  margin-left: $sidebar-left-width;
+}
+.btn {
+  display: inline-block;
+  font-size: 1.2rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 12px 45px;
+  cursor: pointer;
+  transition: all 0.3s linear;
+  &--primary {
+    color: $txt-white;
+    background-color: $main-color;
+    border: 1px solid $main-color;
+  }
+  &--rounded {
+    border-radius: 30px;
+  }
+  &--radius-5px {
+    border-radius: 5px;
+  }
+}

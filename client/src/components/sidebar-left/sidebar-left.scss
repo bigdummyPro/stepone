@@ -1,0 +1,137 @@
+@import "./../../stylesheets/variable";
+
+.sidebar-left-container {
+  // width: 18%;
+  max-width: $sidebar-left-width;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $main-color;
+  .sidebar-left {
+    width: 100%;
+    height: 100%;
+    padding: 20px 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+.sidebar-left__logo {
+  margin-bottom: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
+    width: 140px;
+    height: 55px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+.sidebar-left__menu {
+  margin-bottom: 20px;
+  .menu-title {
+    font-size: 1.6rem;
+    color: $txt-white;
+    font-weight: 600;
+    margin-bottom: 25px;
+  }
+  .menu-list {
+    // margin-left: 10px;
+    .menu-item {
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+      color: $txt-white;
+      padding: 16px 0 16px 16px;
+      cursor: pointer;
+      transition: all 0.3s linear;
+      &.--active {
+        background-color: $white-color;
+        border-radius: 20px 0 0 20px;
+        color: $main-color;
+        position: relative;
+        &::before,
+        &::after {
+          position: absolute;
+          content: "";
+          width: 40px;
+          height: 40px;
+          right: 0;
+          background-color: $main-color;
+          border-radius: 50%;
+        }
+        &::before {
+          top: 0;
+          transform: translateY(-100%);
+          box-shadow: 20px 20px 0 0 $white-color;
+        }
+        &::after {
+          bottom: 0;
+          transform: translateY(100%);
+          box-shadow: 20px -20px 0 0 $white-color;
+        }
+        &:hover {
+          color: $main-color;
+        }
+      }
+      &:hover {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      i {
+        font-size: 1.8rem;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+.sidebar-left__account {
+  padding-right: 20px;
+  .account-title {
+    font-size: 1.6rem;
+    color: $txt-white;
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+  .account-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .account-content__avatar {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 15px;
+      padding: 8px;
+      border: 1px solid $txt-light-color;
+      border-radius: 100%;
+      background-color: $white-color;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .account-content__info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      span {
+        &:first-child {
+          font-size: 1.4rem;
+          color: $txt-white;
+          text-align: center;
+          margin-bottom: 2px;
+        }
+        &:last-child {
+          font-size: 1.2rem;
+          color: $txt-light-color;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

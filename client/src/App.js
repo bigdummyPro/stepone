@@ -1,9 +1,12 @@
-import './App.css';
+import './stylesheets/app.scss';
+// import LoginRegiter from "./pages/login-register/login-register";
+import Home from './pages/home/home';
 
 function App() {
   return (
     <div className="App">
-      <h1>hello</h1>
+      {/* <LoginRegiter /> */}
+      <Home />
     </div>
   );
 }

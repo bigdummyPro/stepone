@@ -1,0 +1,18 @@
+@import "./../../../stylesheets/variable";
+
+.home-container {
+  width: 100%;
+  display: flex;
+  .home-body {
+    margin-top: 85px;
+    width: 100%;
+    padding: 20px 20px 20px;
+    position: relative;
+    z-index: 9;
+  }
+}
+.home-body__post {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 20px;
+}

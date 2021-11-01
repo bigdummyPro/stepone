@@ -1,0 +1,224 @@
+@import "./../../../stylesheets/variable";
+
+.login-register-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-register-container {
+  width: 768px;
+  max-width: 100%;
+  min-height: 530px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+.form-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  transition: all 0.5s ease-in-out;
+}
+.form-container {
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: $white-color;
+    height: 100%;
+    padding: 0 50px;
+    .form-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      h1 {
+        font-size: 3em;
+        line-height: 3rem;
+        color: $txt-color;
+        margin: 0;
+      }
+      ul {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin: 30px 0 25px;
+        li {
+          width: 35px;
+          height: 35px;
+          cursor: pointer;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+      span {
+        font-size: 1.4rem;
+        color: initial;
+      }
+    }
+    .form-center {
+      width: 100%;
+      margin-top: 20px;
+      .form-center__group {
+        position: relative;
+        width: inherit;
+        //margin-bottom: 15px;
+        input {
+          width: 100%;
+          outline: none;
+          border: 1px solid $light-gray-color;
+          background-color: transparent;
+          padding: 12px 15px;
+          font-size: 1.4rem;
+          line-height: 1;
+          border-radius: 3px;
+          position: relative;
+          z-index: 2;
+          transition: all 0.2s ease-in-out;
+          &:not(:placeholder-shown),
+          &:focus {
+            border-color: $main-color;
+          }
+
+          &:not(:placeholder-shown) + .form-group-label,
+          &:focus + .form-group-label {
+            top: -10px;
+            background-color: $white-color;
+            color: $main-color;
+            z-index: 3;
+          }
+        }
+        .form-group-label {
+          position: absolute;
+          z-index: 1;
+          left: 7px;
+          top: 14px;
+          padding: 0 8px;
+          font-size: 1.2rem;
+          transition: all 0.2s ease-in-out;
+        }
+        .form-group-message {
+          display: inline-block;
+          font-size: 1.1rem;
+          color: $red-color;
+          margin: 2px 0 0 5px;
+          &:not(:empty) {
+            margin-bottom: 18px;
+          }
+        }
+      }
+    }
+    .form-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      span {
+        font-size: 1.2rem;
+        margin-bottom: 28px;
+        cursor: pointer;
+      }
+      button:hover {
+        filter: brightness(1.1);
+      }
+    }
+  }
+}
+.login-container {
+  opacity: 1;
+  z-index: 2;
+}
+.register-container {
+  z-index: 1;
+  opacity: 0;
+}
+.login-register-container.--active {
+  .form-container {
+    transform: translateX(100%);
+  }
+  .login-container {
+    z-index: 1;
+    opacity: 0;
+  }
+  .register-container {
+    z-index: 2;
+    opacity: 1;
+  }
+}
+.overlay-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.5s ease-in-out;
+  z-index: 3;
+  .overlay {
+    position: relative;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    display: flex;
+    background-color: $main-color;
+    transition: transform 0.5s ease-in-out;
+  }
+}
+.overlay-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 50px;
+  transition: transform 0.5s ease-in-out;
+  h1 {
+    font-size: 3rem;
+    color: $txt-white;
+  }
+  p {
+    font-size: 1.4rem;
+    line-height: 2rem;
+    color: $txt-white;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  button {
+    border-color: $white-color;
+    border-width: 2px;
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+  &.overlay-left {
+    transform: translateX(-20%);
+  }
+  &.overlay-right {
+    transform: translateX(0);
+  }
+}
+.login-register-container.--active {
+  .overlay-container {
+    transform: translateX(-100%);
+  }
+  .overlay {
+    transform: translateX(50%);
+  }
+  .overlay-wrapper {
+    &.overlay-left {
+      transform: translateX(0);
+    }
+    &.overlay-right {
+      transform: translateX(20%);
+    }
+  }
+}
