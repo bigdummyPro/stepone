@@ -1,0 +1,79 @@
+Arguments: 
+  C:\Users\User\Downloads\nodejsss\node.exe C:\Users\User\Downloads\nodejsss\node_modules\yarn\bin\yarn.js add --dev electron concurrently wait-on
+
+PATH: 
+  C:\Program Files\AdoptOpenJDK\jre-8.0.282.8-hotspot\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\RepairTech\Syncro\kabuto_app_manager\bin;C:\ProgramData\chocolatey\bin;;C:\ProgramData\chocolatey\bin;C:\Program Files\AdoptOpenJDK\jre-8.0.282.8-hotspot\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Users\User\AppData\Local\Programs\Python\Python38\Scripts\;C:\Users\User\AppData\Local\Programs\Python\Python38\;C:\Users\User\AppData\Local\Programs\Python\Launcher\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Local\Programs\Git\cmd;C:\Users\User\Downloads\nodj;C:\Users\User\AppData\Local\atom\bin;C:\Users\User\AppData\Local\JetBrains\WebStorm 2021.2\bin;;C:\Users\user\downloads\nodejsss;C:\Program Files\AdoptOpenJDK\jre-8.0.282.8-hotspot\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  14.17.5
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'C:\Users\User\stepone-social\node_modules\bcrypt\lib\binding\napi-v3\bcrypt_lib.node'
+
+npm manifest: 
+  {
+    "name": "v-network",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "server": "nodemon server.js",
+      "client": "cd client && npm run start",
+      "server-install": "npm install",
+      "client-install": "cd client && npm install",
+      "install-all": "concurrently \"npm run server-install\" \"npm run client-install\" ",
+      "dev": "concurrently \"npm run server\" \"npm run client\" ",
+      "heroku-postbuild": "cd client && npm install && npm run build"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@capacitor/android": "3.2.5",
+      "@capacitor/app": "1.0.5",
+      "@capacitor/core": "3.2.5",
+      "@capacitor/haptics": "1.1.2",
+      "@capacitor/keyboard": "1.1.2",
+      "@capacitor/status-bar": "1.0.5",
+      "bcrypt": "^5.0.0",
+      "concurrently": "^6.0.0",
+      "cookie-parser": "^1.4.5",
+      "cors": "^2.8.5",
+      "dotenv": "^8.2.0",
+      "express": "^4.17.1",
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^5.11.13",
+      "peer": "^0.6.1",
+      "socket.io": "^3.1.2"
+    },
+    "devDependencies": {
+      "@capacitor/cli": "3.2.5",
+      "nodemon": "^2.0.7",
+      "react-scripts": "4.0.3"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
