@@ -46,6 +46,8 @@ mongoose.connect(URI, {
     console.log('Connected to mongodb')
 })
 
+// Okay test
+
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'))
     app.get('*', (req, res) => {

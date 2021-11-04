@@ -9,5 +9,5 @@ router.post('/logout', authCtrl.logout)
 
 router.post('/refresh_token', authCtrl.generateAccessToken)
 
-
+// Okay test
 module.exports = router
