@@ -4,8 +4,8 @@ function PostFooter(props) {
     return (
         <div className="post-item__footer">
             <div className="post-footer-like">
-                <span><i className="fas fa-thumbs-up"></i></span>
                 <span>5,8k</span>
+                <span>likes</span>
             </div>
             <div className="post-footer-comment">
                 <span>100</span>

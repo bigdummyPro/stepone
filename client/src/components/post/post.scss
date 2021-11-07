@@ -2,17 +2,19 @@
 
 .post-item-wrapper {
   .post-item {
-    padding: 15px 15px;
+    padding: 20px 20px 12px 20px;
     display: flex;
     flex-direction: column;
-    background-color: $light-gray-color;
+    background-color: $medium-white-color;
     border-radius: 10px;
+    border: 1px solid $line-color;
   }
 }
 .post-item__header {
   display: flex;
   align-items: center;
   .post-header-avatar {
+    display: inline-block;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -26,27 +28,89 @@
     display: flex;
     flex-direction: column;
     margin-left: 10px;
+    a {
+      font-size: 1.4rem;
+      color: $txt-color;
+      transition: color 0.2s linear;
+      &:hover {
+        color: $main-color;
+      }
+    }
     span {
-      &:first-child {
-        font-size: 1.4rem;
-        color: $txt-color;
-      }
-      &:last-child {
-        font-size: 1.1rem;
-        color: $txt-light-color;
-      }
+      font-size: 1.1rem;
+      color: $txt-light-color;
     }
   }
   .post-header-tool {
     margin-left: auto;
     display: flex;
+    position: relative;
     .post-header-tool__icon {
+      position: relative;
+      z-index: 13;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
       font-size: 1.8rem;
       color: $txt-light-color;
       cursor: pointer;
       transition: color 0.2s linear;
       &:hover {
         color: $main-color;
+      }
+    }
+    .post-header-tool__list {
+      width: max-content;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 10px;
+      position: absolute;
+      top: calc(100% + 3px);
+      right: -5px;
+      z-index: 8;
+      background-color: $medium-white-color;
+      border-radius: 10px;
+      box-shadow: $light-box-shadow;
+      transform: scale(0);
+      transform-origin: calc(100% - 22px) -4px;
+      transition: transform 0.3s ease;
+      &.--active {
+        transform: scale(1);
+        transition: transform 0.3s $cubic-bezier;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        top: -18px;
+        right: 10px;
+        border-style: solid;
+        border-width: 10px;
+        border-color: transparent transparent $medium-white-color transparent;
+      }
+      .post-tool-item {
+        padding: 10px 10px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s linear;
+        &:hover {
+          background-color: $main-light-color;
+        }
+        span {
+          color: $txt-color;
+          font-size: 1.3rem;
+          &:first-child {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            font-size: 1.6rem;
+            margin-right: 2px;
+          }
+        }
       }
     }
   }
@@ -63,6 +127,7 @@
     img {
       width: 100%;
       height: auto;
+      border-radius: 3px;
     }
   }
 }
@@ -73,21 +138,22 @@
   margin-top: 8px;
   padding-bottom: 10px;
   border-bottom: 1px solid $line-color;
+  // .post-footer-like {
+  //   cursor: pointer;
+  //   span {
+  //     &:first-child {
+  //       font-size: 1.3rem;
+  //       color: $main-color;
+  //       margin-right: 5px;
+  //     }
+  //     &:last-child {
+  //       font-size: 1.3rem;
+  //       color: $txt-color;
+  //     }
+  //   }
+  // }
+  .post-footer-comment,
   .post-footer-like {
-    cursor: pointer;
-    span {
-      &:first-child {
-        font-size: 1.3rem;
-        color: $main-color;
-        margin-right: 5px;
-      }
-      &:last-child {
-        font-size: 1.3rem;
-        color: $txt-color;
-      }
-    }
-  }
-  .post-footer-comment {
     font-size: 1.3rem;
     color: $txt-color;
     cursor: pointer;
@@ -105,7 +171,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 30px 0;
+  padding: 12px 30px 0;
   .post-taskbar-icon {
     display: flex;
     align-items: center;
@@ -121,10 +187,10 @@
       margin-right: 5px;
     }
   }
-  .post-taskbar-like {
-  }
-  .post-taskbar-comment {
-  }
-  .post-taskbar-save {
-  }
+  //   .post-taskbar-like {
+  //   }
+  //   .post-taskbar-comment {
+  //   }
+  //   .post-taskbar-save {
+  //   }
 }

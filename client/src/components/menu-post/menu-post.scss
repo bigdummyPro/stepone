@@ -7,7 +7,7 @@
   top: 0;
   left: $sidebar-left-width;
   right: $sidebar-right-width;
-  background-color: $white-color;
+  background-color: $main-light-color;
   .menu-post {
     display: flex;
     align-items: center;
@@ -36,16 +36,21 @@
   .menu-post-left-action {
     flex: 1;
     border-radius: 30px;
-    padding: 8px 6px 8px 15px;
-    border: 2px solid $txt-light-color;
+    border: 1px solid $line-color;
+    background-color: $medium-white-color;
     cursor: pointer;
-    transition: all 0.2s linear;
     .action-btn {
+      padding: 10px 6px 10px 16px;
       font-size: 1.3rem;
       color: $txt-light-color;
+      transition: all 0.2s linear;
+      i {
+        font-size: 1.4rem;
+        margin-right: 6px;
+      }
     }
-    &:hover {
-      background-color: $light-gray-color;
+    &:hover .action-btn {
+      color: $main-color;
     }
   }
 }
@@ -57,11 +62,11 @@
       display: flex;
       align-items: flex-end;
       cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 10px;
+      padding: 9px 15px;
+      border-radius: 20px;
       transition: all 0.2s linear;
       &:hover {
-        background-color: $light-gray-color;
+        background-color: $medium-white-color;
       }
       span {
         &:first-child {

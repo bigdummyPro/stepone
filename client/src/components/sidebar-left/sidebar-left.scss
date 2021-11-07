@@ -46,11 +46,12 @@
       align-items: center;
       font-size: 1.4rem;
       color: $txt-white;
+      background-color: $main-color;
       padding: 16px 0 16px 16px;
       cursor: pointer;
-      transition: all 0.3s linear;
+      transition: color 0.3s linear;
       &.--active {
-        background-color: $white-color;
+        background-color: $main-light-color;
         border-radius: 20px 0 0 20px;
         color: $main-color;
         position: relative;
@@ -67,12 +68,12 @@
         &::before {
           top: 0;
           transform: translateY(-100%);
-          box-shadow: 20px 20px 0 0 $white-color;
+          box-shadow: 20px 20px 0 0 $main-light-color;
         }
         &::after {
           bottom: 0;
           transform: translateY(100%);
-          box-shadow: 20px -20px 0 0 $white-color;
+          box-shadow: 20px -20px 0 0 $main-light-color;
         }
         &:hover {
           color: $main-color;
@@ -101,8 +102,8 @@
     flex-direction: column;
     align-items: center;
     .account-content__avatar {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       margin-bottom: 15px;
       padding: 8px;
       border: 1px solid $txt-light-color;

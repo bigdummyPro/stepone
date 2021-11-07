@@ -6,25 +6,40 @@ $main-font: "Poppins", sans-serif;
 //colors
 // $main-color: #8e4cdf;
 $main-color: #6e45c7;
-$main-light-color: rgba(110, 69, 199, 0.1);
+// $main-light-color: #f0ecf9;
+$main-light-color: #f3f0fa;
 $second-color: #af86f7;
+$overlay-color: rgba(240, 240, 242, 0.8);
 
 // $txt-color: #455560;
 $txt-color: #405281;
+$txt-medium-color: rgba(64, 82, 129, 0.6);
 $txt-light-color: #a5b6e1;
 $txt-white: #fff;
 
 $white-color: #fff;
+$medium-white-color: #fafafa;
 $light-gray-color: #f7f7f7;
 $dark-gray-color: #a6a6a6;
 $red-color: #ea4335;
 $green-color: #2fa24c;
 $orange-color: #f7ba27;
 
-$line-color: #e2eaf6;
+// $line-color: #e2eaf6;
+$line-color: #e7e0f5;
 //backgrounds
 $main-bg: #f8fbff;
 
 //size
-$sidebar-left-width: 250px;
+$sidebar-left-width: 240px;
 $sidebar-right-width: 330px;
+
+//transform
+$cubic-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+//box-shadow
+$light-box-shadow: 0 3px 15px 2px
+  rgba(
+    $color: #000000,
+    $alpha: 0.08,
+  );

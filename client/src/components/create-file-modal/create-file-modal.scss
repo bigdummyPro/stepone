@@ -1,0 +1,104 @@
+@import "../../stylesheets/variable";
+
+.create-file-modal {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.create-file-modal__upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 50px;
+  border-radius: 20px;
+  background-color: $main-light-color;
+  position: relative;
+  .upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      width: 60px;
+      height: 60px;
+    }
+    p {
+      margin-top: 20px;
+      font-size: 1.3rem;
+      color: $txt-light-color;
+      text-align: center;
+    }
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 220px;
+    padding: 220px 0 0 0;
+    overflow: hidden;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+}
+.create-file-modal__preview {
+  margin-top: 20px;
+  .preview-title {
+    font-size: 1.4rem;
+    color: $txt-color;
+    margin-bottom: 15px;
+  }
+  .preview-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px 10px;
+    // padding: 20px;
+    // border: 1px solid $line-color;
+    // border-radius: 10px;
+    .preview-item {
+      position: relative;
+      border: 1px solid $line-color;
+      border-radius: 5px;
+      overflow: hidden;
+      img {
+        width: 100%;
+        max-height: 180px;
+        height: 100%;
+        object-fit: cover;
+      }
+      span {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        background-color: $white-color;
+        border-radius: 50%;
+        border: 1px solid $line-color;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 1.6rem;
+        color: $main-color;
+        cursor: pointer;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s linear;
+        i {
+          margin-top: 2px;
+        }
+        &:hover {
+          background-color: $light-gray-color;
+        }
+      }
+      &:hover span {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}

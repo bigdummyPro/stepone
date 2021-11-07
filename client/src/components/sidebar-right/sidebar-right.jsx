@@ -2,7 +2,7 @@ import React from 'react';
 import './sidebar-right.scss';
 import TopMenu from './top-menu';
 import ActiveUser from './active-user';
-import LatestPost from './lastest-post';
+import SavedPost from './saved-post';
 
 function SidebarRight(props) {
     return (
@@ -10,7 +10,7 @@ function SidebarRight(props) {
             <div className="sidebar-right">
                 <TopMenu />
                 <ActiveUser />
-                <LatestPost />
+                <SavedPost />
             </div>
         </div>
     );

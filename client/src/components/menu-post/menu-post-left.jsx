@@ -1,14 +1,21 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import GirlImg from './../../assets/images/girl.png';
+import {GLOBALTYPES} from './../../redux/constants/globalTypes';
 
-function MenuPostLeft() {
+function MenuPostLeft({}) {
+    const dispatch = useDispatch();
+    const openModal = () => {
+        dispatch({type: GLOBALTYPES.MODAL, payload: true})
+    }
     return (
         <div className="menu-post__left">
             <a href="#vv" className="menu-post-left-avatar">
                 <img src={GirlImg} alt="" />
             </a>
             <div className="menu-post-left-action">
-                <div className="action-btn">
+                <div className="action-btn" onClick={openModal}>
+                    <i className="fas fa-pencil-alt"></i>
                     What do you think?
                 </div>
             </div>

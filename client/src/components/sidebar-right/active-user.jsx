@@ -40,7 +40,7 @@ function ActiveUser(props) {
                 </li>
             </ul>
             <div className="active-user-see-all">
-                <span>See All</span>
+                <a href="#vv">See All</a>
             </div>
         </div>
     );
