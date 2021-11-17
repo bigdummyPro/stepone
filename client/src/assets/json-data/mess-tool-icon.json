@@ -1,0 +1,17 @@
+[
+    {
+        "classColor": "",
+        "icon": "fas fa-trash",
+        "tooltipContent": "Delete"
+    },
+    {
+        "classColor": "",
+        "icon": "fas fa-reply",
+        "tooltipContent": "Reply"
+    },
+    {
+        "classColor": "",
+        "icon": "fas fa-check-square",
+        "tooltipContent": "Select"
+    }
+]

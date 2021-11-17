@@ -1,18 +1,6 @@
 @import "./../../../stylesheets/variable";
 
-.home-container {
-  width: 100%;
-  display: flex;
-  .home-body {
-    margin-top: 80px;
-    width: 100%;
-    padding: 25px 20px 20px;
-    position: relative;
-    z-index: 9;
-    background-color: $main-light-color;
-  }
-}
-.home-body__post {
+.home-post {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px 20px;

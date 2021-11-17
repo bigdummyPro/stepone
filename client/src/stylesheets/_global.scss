@@ -35,6 +35,18 @@ body {
   width: calc(100% - ($sidebar-left-width + $sidebar-right-width));
   margin-left: $sidebar-left-width;
 }
+.main-container {
+  width: 100%;
+  display: flex;
+  .main-body {
+    margin-top: 70px;
+    width: 100%;
+    padding: 20px 20px 20px;
+    position: relative;
+    z-index: 9;
+    background-color: $main-light-color;
+  }
+}
 .btn {
   display: inline-block;
   font-size: 1.2rem;

@@ -1,0 +1,51 @@
+@import "../../stylesheets/variable";
+
+.tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  font-size: 1rem;
+  padding: 2px 6px;
+  white-space: nowrap;
+  border-radius: 5px;
+  border: 1px solid $line-color;
+  // box-shadow: 0px -2px 4px 1px rgba(0, 0, 0, 0.02);
+  transform: translate(-50%, calc(-100% - 7px));
+  transition: visibility, opacity 0.2s linear;
+  &.--first-color {
+    background-color: $main-light-color;
+    color: $txt-color;
+    &::before {
+      border-color: $main-light-color transparent transparent transparent;
+    }
+  }
+  &.--second-color {
+    background-color: $medium-white-color;
+    color: $txt-color;
+    &::before {
+      border-color: $medium-white-color transparent transparent transparent;
+    }
+  }
+  &.--third-color {
+    background-color: $main-color;
+    color: $txt-white;
+    &::before {
+      border-color: $main-color transparent transparent transparent;
+    }
+  }
+  &::before {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    content: "";
+    border-style: solid;
+    border-width: 8px;
+    transform: translate(-50%, calc(100% - 2px));
+  }
+  &.--active {
+    visibility: visible;
+    opacity: 1;
+  }
+}

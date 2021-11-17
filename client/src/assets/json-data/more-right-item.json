@@ -1,0 +1,17 @@
+[
+    {
+        "classColor": "--green-color",
+        "icon": "fas fa-images",
+        "tooltipContent": "Images/Video"
+    },
+    {
+        "classColor": "--orange-color",
+        "icon": "fas fa-compact-disc",
+        "tooltipContent": "Audio"
+    },
+    {
+        "classColor": "--red-color",
+        "icon": "fas fa-map-marker-alt",
+        "tooltipContent": "Check In"
+    }
+]

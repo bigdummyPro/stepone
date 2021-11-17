@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ToolTip from '../tooltip/tooltip';
 import GirlImage from './../../assets/images/girl.png'
 import PostImage from './../../assets/images/post-image.jpg';
 
-function SavedPost(props) {
+function SavedPost() {
+    const [tooltipStatus, setTooltipStatus] = useState(false);
     return (
         <div className="sidebar-right__saved-post">
             <div className="saved-post-title">
@@ -10,11 +12,17 @@ function SavedPost(props) {
                 <a href="#vv">See All</a>
             </div>
             <a href="#vv" className="saved-post-content">
-                <div className="post-content-avatar">
+                <div 
+                    className="post-content-avatar"
+                    onMouseOver={()=>setTooltipStatus(true)}
+                    onMouseOut={()=>setTooltipStatus(false)}
+                >
                     <img src={GirlImage} alt="" />
-                    <span className="post-content-avatar__name">
-                        Lê Hoàng Ánh Tuyết
-                    </span>
+                    <ToolTip 
+                        content='Lê Hoàng Ánh Tuyết'
+                        status={tooltipStatus} 
+                        colorClass='--second-color'
+                    />
                 </div>
                 <div className="post-content-text">
                     TV Neo QLED x Loa thanh Q-Series - Combo chiến game bất bại! Là tín đồ mê game, sao có thể bỏ qua tuyệt tác chiến game TV Neo

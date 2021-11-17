@@ -1,8 +1,8 @@
 @import "./../../stylesheets/variable";
 
 .emotion-modal {
-  position: relative;
-  display: inline-flex;
+  // position: relative;
+  margin-bottom: 5px;
   .emotion-modal__icon {
     font-size: 2.5rem;
     color: $main-color;
@@ -14,11 +14,12 @@
   .emotion-modal__content {
     position: absolute;
     // bottom: calc(100% + 12px);
-    bottom: calc(100% + 8px);
+    // bottom: calc(100% + 8px);
     // right: 50%;
+    top: 0;
     right: 0;
     // transform: translateX(50%);
-    transform: translateX(0);
+    transform: translate(-50%, -100%);
     z-index: 20;
     background-color: $white-color;
     box-shadow: $light-box-shadow;
@@ -34,16 +35,16 @@
       visibility: visible;
       opacity: 1;
     }
-    // &::before {
-    //   content: "";
-    //   position: absolute;
-    //   // left: calc(50% - 8px);
-    //   right: 0px;
-    //   bottom: -20px;
-    //   border-style: solid;
-    //   border-width: 10px;
-    //   border-color: $white-color transparent transparent transparent;
-    // }
+    &::before {
+      content: "";
+      position: absolute;
+      // left: calc(50% - 10px);
+      left: 50%;
+      bottom: -20px;
+      border-style: solid;
+      border-width: 10px;
+      border-color: $white-color transparent transparent transparent;
+    }
     .emotion-modal-list {
       width: 100%;
       display: grid;
@@ -58,6 +59,7 @@
         font-size: 2.2rem;
         cursor: pointer;
         transition: all 0.2s linear;
+        user-select: none;
         &:hover {
           background-color: $main-light-color;
         }

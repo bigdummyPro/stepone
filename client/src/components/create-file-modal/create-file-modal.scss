@@ -14,7 +14,14 @@
   padding: 60px 50px;
   border-radius: 20px;
   background-color: $main-light-color;
+  border: 2px dotted $main-light-color;
   position: relative;
+  box-sizing: content-box;
+  transition: border 0.2s linear;
+  position: relative;
+  &.--active {
+    border: 2px dotted $main-color;
+  }
   .upload-label {
     display: flex;
     flex-direction: column;
@@ -44,6 +51,31 @@
     outline: none;
     cursor: pointer;
   }
+  span.upload-close {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: $white-color;
+    border-radius: 50%;
+    border: 1px solid $line-color;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.6rem;
+    color: $main-color;
+    cursor: pointer;
+    // visibility: hidden;
+    // opacity: 0;
+    transition: all 0.2s linear;
+    i {
+      margin-top: 2px;
+    }
+    &:hover {
+      background-color: $light-gray-color;
+    }
+  }
 }
 .create-file-modal__preview {
   margin-top: 20px;
@@ -54,23 +86,53 @@
   }
   .preview-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px 10px;
-    // padding: 20px;
-    // border: 1px solid $line-color;
-    // border-radius: 10px;
+    &.--audio {
+      grid-template-columns: 1fr;
+    }
     .preview-item {
+      display: flex;
+      height: 145px;
       position: relative;
       border: 1px solid $line-color;
       border-radius: 5px;
       overflow: hidden;
-      img {
+      &.--audio {
+        height: unset;
         width: 100%;
-        max-height: 180px;
+        padding: 12px 12px 12px 5px;
+        img {
+          width: 55px;
+          height: 55px;
+        }
+        .audio-description {
+          display: flex;
+          flex-direction: column;
+          margin-left: 2px;
+          .audio-description__name {
+            font-size: 1.3rem;
+            line-height: 2rem;
+            color: $txt-color;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+          }
+          .audio-description__size {
+            font-size: 1rem;
+            line-height: 1.4rem;
+            color: $txt-light-color;
+          }
+        }
+      }
+      img,
+      video {
+        width: 100%;
         height: 100%;
         object-fit: cover;
       }
-      span {
+      span.preview-item__remove {
         display: inline-flex;
         justify-content: center;
         align-items: center;
@@ -93,6 +155,16 @@
         }
         &:hover {
           background-color: $light-gray-color;
+        }
+      }
+      div.preview-item__play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        img {
+          width: 40px;
+          height: 40px;
         }
       }
       &:hover span {

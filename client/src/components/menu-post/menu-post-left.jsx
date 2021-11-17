@@ -6,7 +6,8 @@ import {GLOBALTYPES} from './../../redux/constants/globalTypes';
 function MenuPostLeft({}) {
     const dispatch = useDispatch();
     const openModal = () => {
-        dispatch({type: GLOBALTYPES.MODAL, payload: true})
+        dispatch({type: GLOBALTYPES.FILE_MODAL_IN_CREATE_POST, payload: false})
+        dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: true})
     }
     return (
         <div className="menu-post__left">
