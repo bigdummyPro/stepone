@@ -30,16 +30,20 @@ body {
 .wrapper {
   margin: 0 auto;
   background-color: $white-color;
+  position: relative;
+  overflow-y: hidden;
 }
 .main-content {
   width: calc(100% - ($sidebar-left-width + $sidebar-right-width));
+  margin-top: 72px;
   margin-left: $sidebar-left-width;
+  position: relative;
+  z-index: 21;
 }
 .main-container {
   width: 100%;
   display: flex;
   .main-body {
-    margin-top: 70px;
     width: 100%;
     padding: 20px 20px 20px;
     position: relative;

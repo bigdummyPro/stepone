@@ -1,14 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clickOutsideRef from '../../utils/dropdown-event';
 import GirlImage from './../../assets/images/girl.png';
 
-function TopMenu(props) {
+function TopMenu() {
 
 
     const dropdown_content_el = useRef(null);
     const dropdown_toggle_el = useRef(null);
 
-    clickOutsideRef(dropdown_content_el, dropdown_toggle_el);
+
+    useEffect(()=>{
+        const sidebarEl = document.querySelector('.sidebar-right-container');
+        clickOutsideRef(dropdown_content_el, dropdown_toggle_el, sidebarEl);
+    },[])
 
     return (
         <div className="sidebar-right__top-menu">
@@ -17,7 +21,10 @@ function TopMenu(props) {
                 <input type="text" name="" id="" placeholder="Search"/>
             </div>
             <div className="top-menu-action menu-noti">
-                <div className="top-menu-action__icon" ref={dropdown_toggle_el}>
+                <div 
+                    className="top-menu-action__icon" 
+                    ref={dropdown_toggle_el}
+                >
                     <span className="icon-bell">
                         <i className="fas fa-bell"></i>
                     </span>

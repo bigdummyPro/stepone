@@ -1,0 +1,13 @@
+@import "./../../stylesheets/variable";
+
+.home-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.home-post {
+  width: 550px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px 20px;
+}

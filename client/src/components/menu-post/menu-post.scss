@@ -3,7 +3,7 @@
 .menu-post-wrapper {
   width: calc(100% - ($sidebar-left-width + $sidebar-right-width));
   position: fixed;
-  z-index: 10;
+  z-index: 39;
   top: 0;
   left: $sidebar-left-width;
   right: $sidebar-right-width;

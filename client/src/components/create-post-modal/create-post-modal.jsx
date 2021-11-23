@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './create-post-modal.scss';
-import EmotionModal from '../emotion-modal/emotion-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import CreateFileModal from '../create-file-modal/create-file-modal';
@@ -9,9 +8,6 @@ import moreRightItems from '../../assets/json-data/more-right-item.json';
 
 function CreatePostModal(props) {
 
-    // const [fileModalStatus, setFileModaStatus] = useState(false);
-    const [emotionModalStatus, setEmotionModalStatus] = useState(false);
-    const [emotionModalPosition, setEmotionModalPosition] = useState({x: 0, y: 0});
     const [postText, setPostText] = useState('');
     const [cursorPosition, setCursorPosition] = useState(null);
     const [moreItemActive, setMoreItemActive] = useState(null);
@@ -21,52 +17,29 @@ function CreatePostModal(props) {
     const textareaEl = useRef(null);
 
     const dispatch = useDispatch();
-    // const emotionModalStatus = useSelector(state => state.modalReducer.emotionModalInCreatePost);
+
     const fileModalStatus = useSelector(state => state.modalReducer.fileModalInCreatePost);
     const initFileModalType = useSelector(state => state.modalReducer.initFileModalType);
+
+    const {emotionModalStatus, emotionValue, emotionChange} = useSelector(state => state.emotionModalReducer);
+    const textareaElReducer = useSelector(state => state.emotionModalReducer.textareaEl);
 
     const closeModal = () => {
         dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: false});
     }
     const toggleFileModal = (status) => {
-        // setMoreItemActive(index);
         dispatch({type: GLOBALTYPES.FILE_MODAL_IN_CREATE_POST, payload: status});
     }
-    const closeEmotionModalOnScroll = () => {
-        if(emotionModalStatus !== false){
-            // dispatch({type: GLOBALTYPES.EMOTION_MODAL_IN_CREATE_POST, payload: false})
-            setEmotionModalStatus(false)
-        }
-    }
-    const toggleEmotionModal = () => {
-        // dispatch({type: GLOBALTYPES.EMOTION_MODAL_IN_CREATE_POST, payload: !emotionModalStatus})
-        setEmotionModalStatus(!emotionModalStatus);
-        const toggleElement = document.getElementById('emotion-toggle-icon');
-        const rect = toggleElement.getBoundingClientRect();
-        // dispatch({type: GLOBALTYPES.EMOTION_MODAL_POSITION, payload: {x: rect.left, y: rect.top}})
-        setEmotionModalPosition({x: rect.left, y: rect.top});
-    }
-    const autoResizeHeight = (e) => {
-        if(e.target.value !== ''){
-            e.target.style.height = 'auto';
-            e.target.style.height = (e.target.scrollHeight - 2) + 'px';
+    const autoResizeHeight = () => {
+        if(textareaEl.current.value !== ''){
+            textareaEl.current.style.height = 'auto';
+            textareaEl.current.style.height = (textareaEl.current.scrollHeight - 2) + 'px';
         }else{
-            e.target.style.height = '130px'
+            textareaEl.current.style.height = '130px'
         }
     }
     const handleChangeInput = (e) => {
         setPostText(e.target.value);
-    }
-    const addEmotionToTextPost = (emotion) => {
-        const cursorPos = textareaEl.current.value.slice(0, textareaEl.current.selectionStart).length;
-        
-        setCursorPosition(cursorPos);
-
-        let newPostText = '';console.log(cursorPosition)
-
-        newPostText = postText.substring(0, cursorPos) + emotion + postText.substring(cursorPos, postText.length);
-
-        setPostText(newPostText);
     }
     const actionInMoreRightItem = (index) => {
         setMoreItemActive(index);
@@ -80,6 +53,29 @@ function CreatePostModal(props) {
             toggleFileModal(false)
         }
     }
+
+    const handleEmotionModal = (toggleIconEl) => {
+        dispatch({type: !emotionModalStatus ? GLOBALTYPES.OPEN_EMOTION_MODAL : GLOBALTYPES.CLOSE_EMOTION_MODAL})
+        dispatch({type: GLOBALTYPES.SET_TOGGLE_ICON_EL, payload: toggleIconEl})
+        dispatch({type: GLOBALTYPES.SET_TEXTAREA_EL, payload: textareaEl})
+    }
+
+    useEffect(()=>{
+        if(textareaEl === textareaElReducer){
+            const cursorPos = textareaEl.current.value.slice(0, textareaEl.current.selectionStart).length;
+            setCursorPosition(cursorPos);
+    
+            let newPostText = '';
+            newPostText = postText.substring(0, cursorPos) + emotionValue + postText.substring(cursorPos, postText.length);
+            //Prevent other post set state when state in reducer change
+            setPostText(newPostText);
+        }
+    },[emotionChange])
+
+    useEffect(()=>{
+        autoResizeHeight();
+    },[postText])
+
     useEffect(()=>{
         textareaEl.current.selectionStart = cursorPosition + 2
         textareaEl.current.selectionEnd = cursorPosition + 2
@@ -88,6 +84,8 @@ function CreatePostModal(props) {
     useEffect(()=>{
         initFileModalType !== null && setFileModalType(initFileModalType);
     },[initFileModalType])
+
+
     return (
         <div className="create-modal-wrapper">
             <div className="create-modal">
@@ -101,14 +99,16 @@ function CreatePostModal(props) {
                     </span>
                 </div>
                 <div className="create-modal__center">
-                    <div className="modal-center-content" onScroll={closeEmotionModalOnScroll}>
+                    <div 
+                        className="modal-center-content" 
+                    >
                         <div className="modal-center-text">
                             <textarea 
                                 id="post-text"
                                 value={postText}
                                 name="" 
                                 placeholder="What do you think?"
-                                onInput={autoResizeHeight}
+                                // onInput={autoResizeHeight}
                                 onChange={handleChangeInput}
                                 ref={textareaEl}
                             >
@@ -116,7 +116,7 @@ function CreatePostModal(props) {
                             </textarea>
                         </div>
                         <div className="modal-center-icon">
-                            <span id="emotion-toggle-icon" onClick={toggleEmotionModal}>
+                            <span id="emotion-toggle-icon" onClick={(e)=>handleEmotionModal(e.target.parentNode)}>
                                 <i className="far fa-grin-alt"></i>
                             </span>
                         </div>
@@ -124,19 +124,12 @@ function CreatePostModal(props) {
                             fileModalStatus ?
                                 <div className="modal-center-file">
                                     <CreateFileModal 
-                                        // onClose={()=>setFileModaStatus(false)}
                                         onClose={()=>toggleFileModal(false)}
                                         fileModalType={fileModalType}
                                     />
                                 </div> : null
                         }
                     </div>
-                    <EmotionModal 
-                        emotionModalStatus={emotionModalStatus}
-                        emotionModalPosition={emotionModalPosition}
-                        closeEmotionModal={()=>setEmotionModalStatus(false)}
-                        addEmotion={(emotion)=>addEmotionToTextPost(emotion)}
-                    />
                     <div className="modal-center-more">
                         <span className="modal-center-more__left">
                             Add to post

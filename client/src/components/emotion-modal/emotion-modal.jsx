@@ -1,15 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
-// import clickOutsideRef from '../../utils/dropdown-event';
 import './emotion-modal.scss';
 
-function EmotionModal({
-    emotionModalStatus, 
-    emotionModalPosition, 
-    closeEmotionModal,
-    addEmotion
-}) {
+function EmotionModal() {
     const emotions = [   
         '❤️', '😆', '😯', '😢', '😡', '👍', '👎', '😄',
         '😂', '😍', '😘', '😗', '😚', '😳', '😭', '😓',
@@ -17,29 +11,57 @@ function EmotionModal({
     ]
 
     const dropdown_content_el = useRef(null);
-    // const dropdown_toggle_el = useRef(null);
 
-    // clickOutsideRef(dropdown_content_el, dropdown_toggle_el);
-    // const emotionModalStatus = useSelector(state => state.modalReducer.emotionModalInCreatePost);
-    // const emotionModalPosition = useSelector(state => state.modalReducer.emotionModalPosition);
+
+    const [emotionModalPosition, setEmotionModalPosition] = useState({x: 0, y: 0});
+
+    const {
+        emotionModalStatus, 
+        emotionChange, 
+        toggleIconEl
+    } = useSelector(state => state.emotionModalReducer);
 
     const dispatch = useDispatch();
 
+    const addEmotionToTextPost = (emotion) => {
+        dispatch({type: GLOBALTYPES.SET_EMOTION_VALUE, payload: emotion});
+        dispatch({type: GLOBALTYPES.SET_EMOTION_CHANGE, payload: !emotionChange})
+    }
+
+    useEffect(()=>{
+        const wrapRect = document.body.getBoundingClientRect();
+        
+        if(toggleIconEl){
+            const toggleElement = toggleIconEl;
+            const rect = toggleElement.getBoundingClientRect();
+            setEmotionModalPosition({x: rect.left - wrapRect.left, y: rect.top - wrapRect.top});
+        }
+    },[emotionModalStatus])
+
     useEffect(() => {
-        document.addEventListener('mousedown', (e) => {
-            const dropdown_toggle_el = document.getElementById('emotion-toggle-icon');
-            if(dropdown_content_el.current && !dropdown_content_el.current.contains(e.target) && !dropdown_toggle_el.contains(e.target)){
-                // dispatch({type: GLOBALTYPES.EMOTION_MODAL_IN_CREATE_POST, payload: false})
-                closeEmotionModal()
+        function toggleModal(e){
+            const dropdown_toggle_el = toggleIconEl;
+                if(dropdown_content_el.current && !dropdown_content_el.current.contains(e.target) && !dropdown_toggle_el.contains(e.target)){
+                    dispatch({type: GLOBALTYPES.CLOSE_EMOTION_MODAL})
+                }
+        }
+        function closeModalOnScroll(){
+            if(toggleModal){
+                dispatch({type: GLOBALTYPES.CLOSE_EMOTION_MODAL})
             }
-        })
-    },[])
+        }
+        if(toggleIconEl){
+            document.addEventListener('mousedown', toggleModal);
+            window.addEventListener('scroll', closeModalOnScroll);
+        }
+        return () => {
+            document.removeEventListener('mousedown', toggleModal);
+            window.removeEventListener('scroll', closeModalOnScroll);
+        }
+    },[toggleIconEl])
 
     return (
         <div className="emotion-modal">
-            {/* <span className="emotion-modal__icon" ref={dropdown_toggle_el}>
-                <i className="far fa-grin-alt"></i>
-            </span> */}
             <div 
                 className={`emotion-modal__content ${emotionModalStatus ? '--active' : ''}`} 
                 ref={dropdown_content_el}
@@ -51,7 +73,7 @@ function EmotionModal({
                             <span 
                                 key={index}
                                 className="emotion-modal-item"
-                                onClick={()=>addEmotion(emotion)}
+                                onClick={()=>addEmotionToTextPost(emotion)}
                             >
                                 {emotion}
                             </span>

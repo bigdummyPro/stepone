@@ -2,7 +2,6 @@
 
 .emotion-modal {
   // position: relative;
-  margin-bottom: 5px;
   .emotion-modal__icon {
     font-size: 2.5rem;
     color: $main-color;
@@ -12,6 +11,7 @@
     }
   }
   .emotion-modal__content {
+    width: 100%;
     position: absolute;
     // bottom: calc(100% + 12px);
     // bottom: calc(100% + 8px);
@@ -19,8 +19,8 @@
     top: 0;
     right: 0;
     // transform: translateX(50%);
-    transform: translate(-50%, -100%);
-    z-index: 20;
+    transform: translate(calc(-50% - 2px), calc(-100% - 3px));
+    z-index: 40;
     background-color: $white-color;
     box-shadow: $light-box-shadow;
     border-radius: 10px;
@@ -49,14 +49,15 @@
       width: 100%;
       display: grid;
       grid-template-columns: repeat(8, 1fr);
+      gap: 5px;
       .emotion-modal-item {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        width: 38px;
-        height: 38px;
+        width: 35px;
+        height: 35px;
         border-radius: 5px;
-        font-size: 2.2rem;
+        font-size: 2rem;
         cursor: pointer;
         transition: all 0.2s linear;
         user-select: none;

@@ -1,0 +1,12 @@
+[
+    {
+        "icon": "fas fa-link",
+        "tooltipContent": "Attached Link",
+        "acceptType": ""
+    },
+    {
+        "icon": "fas fa-photo-video",
+        "tooltipContent": "Images/Video",
+        "acceptType": "video/*,image/*"
+    }
+]

@@ -14,8 +14,8 @@ function MenuPostLeft({}) {
             <a href="#vv" className="menu-post-left-avatar">
                 <img src={GirlImg} alt="" />
             </a>
-            <div className="menu-post-left-action">
-                <div className="action-btn" onClick={openModal}>
+            <div className="menu-post-left-action" onClick={openModal}>
+                <div className="action-btn">
                     <i className="fas fa-pencil-alt"></i>
                     What do you think?
                 </div>

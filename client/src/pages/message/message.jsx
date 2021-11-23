@@ -5,6 +5,7 @@ import SidebarLeft from '../../components/sidebar-left/sidebar-left';
 import SidebarRight from '../../components/sidebar-right/sidebar-right';
 import MessageLeft from './message-left';
 import MessageRight from './message-right';
+import EmotionModal from '../../components/emotion-modal/emotion-modal';
 
 function Message() {
     return (
@@ -22,6 +23,7 @@ function Message() {
                 </div>
             </div>
             <SidebarRight />
+            <EmotionModal />
         </div>
     );
 }

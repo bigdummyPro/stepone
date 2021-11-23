@@ -1,0 +1,214 @@
+@import "../../stylesheets/variable";
+
+.profile {
+  display: flex;
+  flex-direction: column;
+}
+.profile__header {
+  display: flex;
+  flex-direction: column;
+  background-color: $medium-white-color;
+  border-radius: 10px;
+  margin-top: 45px;
+  padding: 0 20px;
+}
+.profile-info {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px 0px 30px 0px;
+  position: relative;
+  border-bottom: 1px solid $line-color;
+}
+.profile-info__avatar {
+  width: 135px;
+  height: 135px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 12px solid $medium-white-color;
+  background-color: $medium-white-color;
+  position: absolute;
+  left: 10px;
+  top: 0;
+  transform: translateY(-35%);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.profile-info__content {
+  display: flex;
+  flex-direction: column;
+  padding-left: 160px;
+  .profile-info-name {
+    font-size: 1.6rem;
+    color: $txt-color;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .profile-info-friend {
+    font-size: 1.3rem;
+    color: $txt-light-color;
+  }
+}
+.profile-info__tool {
+  font-size: 1.2rem;
+  color: $txt-white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  background-color: $main-color;
+  margin-left: auto;
+  cursor: pointer;
+  transition: filter 0.2s linear;
+  &:hover {
+    filter: brightness(1.1);
+  }
+  i {
+    margin-right: 8px;
+  }
+}
+.profile-menu {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  //   padding: 10px 0 15px;
+}
+.profile-menu__list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  .profile-menu-item {
+    a {
+      display: inline-block;
+      padding: 10px 18px 8px;
+      font-size: 1.4rem;
+      // font-weight: 600;
+      color: $txt-light-color;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      border-bottom: 4px solid transparent;
+      transition: all 0.2s linear;
+      // opacity: 0.7;
+      user-select: none;
+      &:hover {
+        background-color: $main-light-color;
+        border-bottom-color: rgba($main-color, 0.3);
+      }
+    }
+    &.--active a {
+      // opacity: 1;
+      color: $txt-color;
+      font-weight: 600;
+    }
+  }
+  .menu-line {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 4px;
+    border-radius: 15px;
+    background-color: $main-color;
+    transition: all 0.2s ease;
+  }
+}
+
+.profile__body {
+  margin-top: 15px;
+  padding: 12px 0px 15px;
+  width: 100%;
+  border-radius: 3px 3px 10px 10px;
+  .profile-body-filter {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    margin-bottom: 12px;
+    overflow: hidden;
+    .profile-body-filter__toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 28px;
+      background-color: $main-color;
+      border-radius: 5px;
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
+      user-select: none;
+      transition: filter 0.2s linear;
+      &:hover {
+        filter: brightness(1.1);
+      }
+      .toggle-icon-open,
+      .toggle-icon-close {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .toggle-icon-open {
+        img {
+          width: 15px;
+          height: 15px;
+          object-fit: cover;
+          margin-right: 5px;
+        }
+        span {
+          font-size: 1.3rem;
+          color: $txt-white;
+        }
+      }
+      .toggle-icon-close {
+        font-size: 1.3rem;
+        color: $txt-white;
+        i {
+          margin-right: 4px;
+        }
+      }
+    }
+    .profile-body-filter__list {
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(100%);
+      transition: transform 0.3s linear;
+      &.--active {
+        transform: translateX(0);
+      }
+      .profile-body-filter-item {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        font-size: 1.3rem;
+        color: $txt-color;
+        padding: 0 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s linear;
+        &:hover {
+          background-color: $main-light-color;
+        }
+        &.--active {
+          color: $main-color;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  .profile-body-post-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .profile-body-post {
+      max-width: 550px;
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      grid-gap: 20px 20px;
+      gap: 20px 20px;
+    }
+  }
+}
