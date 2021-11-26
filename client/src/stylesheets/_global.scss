@@ -28,6 +28,8 @@ body {
   // }
 }
 .wrapper {
+  // width: 1370px;
+  // overflow: scroll;
   margin: 0 auto;
   background-color: $white-color;
   position: relative;
@@ -45,6 +47,7 @@ body {
   display: flex;
   .main-body {
     width: 100%;
+    min-height: calc(100vh - 72px);
     padding: 20px 20px 20px;
     position: relative;
     z-index: 9;

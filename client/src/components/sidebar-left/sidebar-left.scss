@@ -41,6 +41,8 @@
   }
   .menu-list {
     // margin-left: 10px;
+    display: flex;
+    flex-direction: column;
     .menu-item {
       display: flex;
       align-items: center;
@@ -92,45 +94,113 @@
 .sidebar-left__account {
   padding-right: 20px;
   .account-title {
-    font-size: 1.6rem;
-    color: $txt-white;
-    font-weight: 600;
     margin-bottom: 40px;
-  }
-  .account-content {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    .account-content__avatar {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 15px;
-      padding: 8px;
-      border: 1px solid $txt-light-color;
-      border-radius: 100%;
-      background-color: $white-color;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    justify-content: space-between;
+    span {
+      font-size: 1.6rem;
+      color: $txt-white;
+      font-weight: 600;
+      &:first-child {
+        margin-right: 10px;
+      }
+      &:last-child {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
       }
     }
-    .account-content__info {
+  }
+  .account-content {
+    position: relative;
+    width: 200px;
+    height: 115px;
+    transform-style: preserve-3d;
+    transition: all 0.5s linear;
+    &.--active {
+      transform: rotateX(-180deg);
+    }
+    .account-content__front,
+    .account-content__back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      span {
-        &:first-child {
-          font-size: 1.4rem;
-          color: $txt-white;
-          text-align: center;
-          margin-bottom: 2px;
+      justify-content: center;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      overflow: hidden;
+    }
+    .account-content__front {
+      z-index: 2;
+      background-color: $main-color;
+      .account-front-avatar {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+        padding: 8px;
+        border: 1px solid $txt-light-color;
+        border-radius: 100%;
+        background-color: $white-color;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
-        &:last-child {
-          font-size: 1.2rem;
-          color: $txt-light-color;
-          overflow: hidden;
-          text-overflow: ellipsis;
+      }
+      .account-front-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        span {
+          &:first-child {
+            font-size: 1.4rem;
+            color: $txt-white;
+            text-align: center;
+            margin-bottom: 2px;
+          }
+          &:last-child {
+            font-size: 1.2rem;
+            color: $txt-light-color;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+    .account-content__back {
+      z-index: 1;
+      background-color: #fafafa;
+      transform: rotateX(180deg);
+      .account-back-tool {
+        width: 100%;
+        padding: 15px 15px;
+        .account-tool-item {
+          width: 100%;
+          padding: 10px 12px;
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          font-size: 1.4rem;
+          color: $txt-color;
+          cursor: pointer;
+          transition: background-color 0.2s linear;
+          &:hover {
+            background-color: $main-light-color;
+          }
+          i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+          }
         }
       }
     }

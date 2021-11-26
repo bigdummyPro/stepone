@@ -1,31 +1,29 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import {useLocation} from 'react-router';
+import sidebarLeftMenu from '../../assets/json-data/sidebar-left-menu.json';
 
-function Menu(props) {
+function Menu() {
+    const location = useLocation();
+    const activeMenuIndex = sidebarLeftMenu.findIndex(siLeMe => siLeMe.link === location.pathname);
+
     return (
         <div className="sidebar-left__menu">
             <div className="menu-title">Menu</div>
-            <ul className="menu-list">
-                <li className="menu-item --active">
-                    <i className="fas fa-home"></i>
-                    Home
-                </li>
-                <li className="menu-item">
-                    <i className="fas fa-comment-dots"></i>
-                    Message
-                </li>
-                <li className="menu-item">
-                    <i className="fas fa-user-alt"></i>
-                    Profile
-                </li>
-                <li className="menu-item">
-                    <i className="fas fa-save"></i>
-                    Saved Post
-                </li>
-                <li className="menu-item">
-                    <i className="fas fa-cog"></i>
-                    Setting
-                </li>
-            </ul>
+            <div className="menu-list">
+                {
+                    sidebarLeftMenu.map((siLeMe, index) => (
+                        <Link 
+                            to={siLeMe.link} 
+                            className={`menu-item ${activeMenuIndex === index ? '--active' : ''}`}
+                            key={index}
+                        >
+                            <i className={siLeMe.icon}></i>
+                            {siLeMe.content}
+                        </Link>
+                    ))
+                }
+            </div>
         </div>
     );
 }

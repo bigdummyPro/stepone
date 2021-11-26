@@ -1,4 +1,5 @@
 import React from 'react';
+import VideoBox from '../video-box/video-box';
 import './img-video-box.scss';
 
 function ImgVideoBox({boxItemList}) {
@@ -9,13 +10,16 @@ function ImgVideoBox({boxItemList}) {
                 ${boxItemList.length === 1 ? 'box-one-item' : ''} 
                 ${boxItemList.length === 2 ? 'box-two-item' : ''}
                 ${boxItemList.length === 3 ? 'box-three-item' : ''}
-                ${boxItemList.length === 4 ? 'box-four-item' : ''}
+                ${boxItemList.length === 4 ? 'box-more-item' : ''}
                 ${boxItemList.length === 5 ? 'box-more-item' : ''}
                 `}
             >
+                <div className="box-item box-item-video">
+                    <VideoBox />
+                </div>
                 {
                     boxItemList.map((poItLi, index)=>(
-                        <div 
+                        <div
                             className="box-item"
                             key={index}
                         >

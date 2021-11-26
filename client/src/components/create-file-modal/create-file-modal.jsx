@@ -19,7 +19,6 @@ function CreateFileModal(props) {
         const newFilesUrl = Array.from(newFiles).map((newFile)=>{
             return {file: newFile, preview: URL.createObjectURL(newFile)}
         })
-        
         if(newFilesUrl){
             const storageList = [...fileList, ...newFilesUrl];
             setFileList(storageList);

@@ -212,21 +212,35 @@
     margin-bottom: 15px;
   }
   .comment-box-line {
-    width: 2px;
+    width: 3px;
     height: 100%;
     position: absolute;
     top: 45px;
     left: 20px;
-    background-color: $main-light-color;
+    background-color: rgba($main-light-color, 0.5);
   }
-  &.comment-box-lv2-list .comment-box-line {
+  &.comment-box-lv2-list .comment-box-lv2-item > .comment-box-line {
+    left: -35px;
+    top: 5px;
+    height: calc(100%);
+  }
+  &.comment-box-lv2-list
+    .comment-box-lv2-item
+    .comment-box-item__lv2
+    .comment-box-line {
     left: 15px;
     top: 35px;
-    height: calc(100% - 35px);
+  }
+  &.comment-box-lv3-list .comment-box-lv3-item > .comment-box-line {
+    left: -35px;
+    top: 5px;
+    height: calc(100%);
   }
 }
 .comment-box-item--style {
   display: flex;
+  position: relative;
+  overflow: hidden;
   .comment-box-avatar {
     width: 40px;
     height: 40px;
@@ -307,15 +321,15 @@
   .comment-box-curve {
     position: absolute;
     top: -5px;
-    left: 0;
+    left: -1px;
     transform: translateX(calc(-100% - 6px));
     width: 28px;
     height: 20px;
     border-style: solid;
-    border-width: 0 0 2px 2px;
-    border-left-color: $main-light-color;
-    border-bottom-color: $main-light-color;
-    border-bottom-left-radius: 12px;
+    border-width: 0 0 3px 3px;
+    border-left-color: rgba($main-light-color, 0.6);
+    border-bottom-color: rgba($main-light-color, 0.6);
+    border-bottom-left-radius: 15px;
   }
 }
 .comment-box-item__child.comment-box-lv2-list {
@@ -323,13 +337,17 @@
   position: relative;
   .comment-box-lv2-item {
     position: relative;
-    margin-top: 10px;
+  }
+  .comment-box-lv2-input,
+  .comment-box-lv3-input {
+    position: relative;
   }
 }
 .comment-box-item__child.comment-box-lv3-list {
   padding-left: 50px;
   position: relative;
   overflow: hidden;
+  padding-bottom: 10px;
   .comment-box-lv3-item {
     position: relative;
     margin-top: 5px;
@@ -361,14 +379,14 @@
     align-items: center;
     padding: 9px 0;
     border-radius: 20px;
-    border: 1px solid $line-color;
+    border: 1px solid rgba($color: $line-color, $alpha: 0.5);
     background-color: $main-light-color;
     .input-text {
       width: 100%;
       height: 20px;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       line-height: 2rem;
-      color: #405281;
+      color: $txt-color;
       padding: 0px 80px 0px 15px;
       border: none;
       outline: none;
@@ -401,6 +419,19 @@
           color: $txt-color;
           transition: color 0.2s linear;
         }
+      }
+    }
+  }
+  &.comment-box-create--small {
+    margin-top: 0px;
+    .comment-box-create__avatar {
+      width: 30px;
+      height: 30px;
+    }
+    .comment-box-create__input {
+      padding: 6px 0;
+      .input-tool {
+        bottom: 5px;
       }
     }
   }

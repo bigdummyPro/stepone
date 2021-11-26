@@ -1,0 +1,27 @@
+[
+    {
+        "content": "Home", 
+        "icon": "fas fa-home",
+        "link": "/"
+    },
+    {
+        "content": "Message", 
+        "icon": "fas fa-comment-dots",
+        "link": "/message"
+    },
+    {
+        "content": "Profile", 
+        "icon": "fas fa-user-alt",
+        "link": "/profile"
+    },
+    {
+        "content": "Saved Post", 
+        "icon": "fas fa-save",
+        "link": "/saved-post"
+    },
+    {
+        "content": "Setting", 
+        "icon": "fas fa-cog",
+        "link": "/general-setting"
+    }
+]

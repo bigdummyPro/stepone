@@ -10,24 +10,18 @@ import './profile.scss';
 
 function Profile() {
     return (
-        <div className="wrapper">
-            <SidebarLeft />
-            <MenuPost />
-            <div className="main-content">
-                <div className="main-container">
-                    <div className="main-body">
-                        <div className="profile">
-                            <div className="profile__header">
-                                <ProfileInfo />
-                                <ProfileMenu />
-                            </div> 
-                            <ProfileBody />
-                        </div>
+        <div className="main-content">
+            <div className="main-container">
+                <div className="main-body">
+                    <div className="profile">
+                        <div className="profile__header">
+                            <ProfileInfo />
+                            <ProfileMenu />
+                        </div> 
+                        <ProfileBody />
                     </div>
                 </div>
             </div>
-            <SidebarRight />
-            {/* <DetailPostModal /> */}
         </div>
     );
 }

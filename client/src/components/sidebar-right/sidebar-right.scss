@@ -10,7 +10,7 @@
   z-index: 20;
   background-color: $main-light-color;
   &.--active {
-    z-index: 22;
+    z-index: 50;
   }
   .sidebar-right {
     width: 100%;
