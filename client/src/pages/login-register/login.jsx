@@ -1,10 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import FbImage from './images/facebook.png';
 import GgImage from './images/google.png';
 import LiImage from './images/linkedin.png';
 import {Validator} from './../../utils/validation';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {loginUser} from '../../redux/actions/authAction';
 
 function Login() {
+    const [loginInfo, setLoginInfo] = useState({email: '', password: ''});
+    const handleChangeInput = (e) => {
+        const {name, value} = e.target;
+        setLoginInfo({...loginInfo, [name]: value});
+    }
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const authState = useSelector(state => state.authReducer);
+
+    
+    useEffect(() => {console.log(authState.isAuthenticated)
+        if(authState.isAuthenticated) navigate("/")
+    }, [authState.isAuthenticated, navigate])
 
     useEffect(()=>{
         Validator({
@@ -12,13 +28,18 @@ function Login() {
             formGroupSelector: '.form-center__group',
             errorSelector: '.form-group-message',
             rules: [
-                Validator.isRequired('#email', 'Enter your email'),
-                Validator.isRequired('#password', 'Enter your password'),
-                Validator.isUserName('#email', 'Invalid email'),
-                Validator.minLength('#password', 6, 'Password is required 6 characters at least')
+                Validator.isRequired('#email-login', 'Enter your email'),
+                Validator.isRequired('#password-login', 'Enter your password'),
+                Validator.isUserName('#email-login', 'Invalid email'),
+                Validator.minLength('#password-login', 6, 'Password is required 6 characters at least')
             ],
             onSubmit: async function (data) {
                 // Call API
+                const response = await dispatch(loginUser(data));
+                if(response.data.success){console.log('vv')
+                    setLoginInfo({email: '', password: ''})
+                    navigate('/')
+                }
             }
         });
     },[])
@@ -42,12 +63,12 @@ function Login() {
                 </div>
                 <div className="form-center">
                     <div className="form-center__group">
-                        <input type="text" id="email" name="email" placeholder=" "/>
+                        <input type="text" id="email-login" name="email" placeholder=" " value={loginInfo.email} onChange={handleChangeInput}/>
                         <label className="form-group-label">Email</label>
                         <span className="form-group-message"></span>
                     </div>
                     <div className="form-center__group">
-                        <input type="password" id="password" name="password" placeholder=" "/>
+                        <input type="password" id="password-login" name="password" placeholder=" " value={loginInfo.password} onChange={handleChangeInput}/>
                         <label className="form-group-label">Password</label>
                         <span className="form-group-message"></span>
                     </div>

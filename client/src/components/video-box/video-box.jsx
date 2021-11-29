@@ -37,11 +37,17 @@ function VideoBox(props) {
         videoRef.current.currentTime = seekTime;
     }
     useEffect(()=>{
-        videoRef.current.onplay = function(){
+        let videoRefEl = videoRef.current;
+        videoRefEl.onplay = function(){
             setTogglePlayStatus(true);
         }
-        videoRef.current.onpause = function(){
+        videoRefEl.onpause = function(){
             setTogglePlayStatus(false);
+        }
+        return ()=>{
+            //clear event to prevent memory leak
+            videoRefEl.onplay = function(){}
+            videoRefEl.onpause = function(){}
         }
     },[])
     return (

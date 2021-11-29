@@ -5,13 +5,13 @@ import GirlImage from './../../assets/images/girl.png';
 function TopMenu() {
 
 
-    const dropdown_content_el = useRef(null);
-    const dropdown_toggle_el = useRef(null);
+    const menu_noti_modal_content = useRef(null);
+    const top_menu_toggle_icon = useRef(null);
 
 
     useEffect(()=>{
-        const sidebarEl = document.querySelector('.sidebar-right-container');
-        clickOutsideRef(dropdown_content_el, dropdown_toggle_el, sidebarEl);
+        const sidebarEl = document.querySelector('.sidebar-right-container') || document.querySelector('.sidebar-right-container .--active');
+        clickOutsideRef(menu_noti_modal_content, top_menu_toggle_icon, sidebarEl);
     },[])
 
     return (
@@ -23,13 +23,13 @@ function TopMenu() {
             <div className="top-menu-action menu-noti">
                 <div 
                     className="top-menu-action__icon" 
-                    ref={dropdown_toggle_el}
+                    ref={top_menu_toggle_icon}
                 >
                     <span className="icon-bell">
                         <i className="fas fa-bell"></i>
                     </span>
                 </div>
-                <div className="top-menu-action__modal menu-noti__modal" ref={dropdown_content_el}>
+                <div className="top-menu-action__modal menu-noti__modal" ref={menu_noti_modal_content}>
                     <div className="noti-modal-list">
                         <a href="#vv" className="noti-modal-item">
                             <div className="noti-modal-item__avatar">

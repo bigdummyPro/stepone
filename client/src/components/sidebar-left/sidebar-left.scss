@@ -183,6 +183,10 @@
       transform: rotateX(180deg);
       .account-back-tool {
         width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         padding: 15px 15px;
         .account-tool-item {
           width: 100%;

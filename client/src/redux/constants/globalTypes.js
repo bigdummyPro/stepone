@@ -1,4 +1,9 @@
 export const GLOBALTYPES = {
+    //Api config
+    ApiUrl: process.env.NODE_ENV !== 'production' ? 'http://localhost:5000/api' : '',
+    //Localstorage config
+    LOCAL_STORAGE_ACCESS_TOKEN_NAME: 'social-website-access-token',
+    LOCAL_STORAGE_REFRESH_TOKEN_NAME: 'social-website-refresh-token',
     //Modal
     CREATE_POST_MODAL_STATUS: 'CREATE_POST_MODAL_STATUS',
     EMOTION_MODAL_IN_CREATE_POST: 'EMOTION_MODAL_IN_CREATE_POST',
@@ -12,5 +17,8 @@ export const GLOBALTYPES = {
     SET_TOGGLE_ICON_EL: 'SET_TOGGLE_ICON_EL',
     SET_EMOTION_VALUE: 'SET_EMOTION_VALUE',
     SET_TEXTAREA_EL: 'SET_TEXTAREA_EL',
-    SET_EMOTION_CHANGE: 'SET_EMOTION_CHANGE'
+    SET_EMOTION_CHANGE: 'SET_EMOTION_CHANGE',
+
+    //Auth
+    SET_AUTH: 'SET_AUTH'
 } 

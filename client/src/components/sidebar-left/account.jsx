@@ -8,8 +8,7 @@ function Account(props) {
 
 
     useEffect(()=>{
-        const sidebarEl = document.querySelector('.sidebar-right-container');
-        clickOutsideRef(dropdown_content_el, dropdown_toggle_el, sidebarEl);
+        clickOutsideRef(dropdown_content_el, dropdown_toggle_el, null);
     },[])
     return (
         <div className="sidebar-left__account">

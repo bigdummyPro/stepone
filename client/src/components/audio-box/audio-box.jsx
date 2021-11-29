@@ -141,13 +141,19 @@ function AudioBox(props) {
     }
     //Hooks
     useEffect(()=>{
-        audioRef.current.onplay = function(){
+        let audioRefEl = audioRef.current;
+        audioRefEl.onplay = function(){
             setTogglePlayStatus(true);
             audioDiskAnimation && audioDiskAnimation.play();
         }
-        audioRef.current.onpause = function(){
+        audioRefEl.onpause = function(){
             setTogglePlayStatus(false);
             audioDiskAnimation && audioDiskAnimation.pause();
+        }
+        return () => {
+            //clear event to prevent memory leak
+            audioRefEl.onplay = function(){}
+            audioRefEl.onpause = function(){}
         }
     },[audioDiskAnimation])
     useEffect(()=>{

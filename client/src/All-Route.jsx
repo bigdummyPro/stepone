@@ -14,6 +14,7 @@ function AllRoute(){
             <Route path="/profile" element={<Profile />}/>
             <Route path="/saved-post" element={<SavedPost />}/>
             <Route path="/general-setting" element={<GeneralSetting />}/>
+            <Route path="/*" element={null}/>
         </Routes>
     );
 }

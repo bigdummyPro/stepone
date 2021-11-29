@@ -1,27 +1,29 @@
 import './stylesheets/app.scss';
-import { BrowserRouter} from 'react-router-dom';
-import SidebarLeft from './components/sidebar-left/sidebar-left';
-import MenuPost from './components/menu-post/menu-post';
-import AllRoute from './All-Route';
-import SidebarRight from './components/sidebar-right/sidebar-right';
-import EmotionModal from './components/emotion-modal/emotion-modal';
-import { useSelector } from 'react-redux';
-import CreatePostModal from './components/create-post-modal/create-post-modal';
-
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import LoginRegister from './pages/login-register/login-register';
+import ProtectedRoute from './Protected-Route';
+import { useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadUser} from './redux/actions/authAction';
 function App() {
-  const modalState = useSelector(state => state.modalReducer.createPostModalStatus);
+  const authState = useSelector(state => state.authReducer);
+
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(loadUser());
+  },[dispatch])
+    
   return (
     <div className="App">
-      <BrowserRouter>
-        <div className="wrapper">
-          <SidebarLeft />
-          <MenuPost />
-          <AllRoute />
-          <SidebarRight />
-          {modalState ? <CreatePostModal /> : null}
-          <EmotionModal />
-        </div>
-      </BrowserRouter>
+      { authState.isWaiting && 
+          <BrowserRouter>
+            <Routes>
+                  <Route path="/login-register" element={<LoginRegister />}/> 
+                  <Route path="/*" element={<ProtectedRoute/>} />
+            </Routes>
+          </BrowserRouter>
+      }
     </div>
   );
 }
