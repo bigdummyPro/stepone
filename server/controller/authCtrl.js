@@ -4,7 +4,7 @@ const argon2 = require('argon2');
 
 
 const createToken = (payload) => {
-    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '20m'});
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10m'});
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '1d'});
     return {accessToken, refreshToken};
 }
@@ -46,14 +46,15 @@ const userCtrl = {
     login: async (req, res)=>{
         const {email, password} = req.body;
         if(!email || !password)
-            return res.status(400).json({success: false, message: "Please enter full information."})
+            return res.json({success: false, message: "Please enter full information."})
         try {
             //check for existing loginName
             const user = await Users.findOne({email});
-            if(!user) return res.status(400).json({success: false, message: "Email or Password are incorrect"})
+            if(!user) return res.json({success: false, message: "Email or Password are incorrect"})
             //check for existing password
             const passwordValid = await argon2.verify(user.password, password);
-            if(!passwordValid) return res.status(400).json({success: false, message: "Email or Password are incorrect"})
+            if(!passwordValid) return res.json({success: false, message: "Email or Password are incorrect"}) //nếu có res.status(400) thì khi có lỗi, chương trình sẽ không cho phép các câu lệnh phía dưới lời gọi API này hoạt động.
+
             //all good
             const tokens = createToken({id: user._id});
             updateRefreshToken(email, tokens.refreshToken);
@@ -96,6 +97,8 @@ const userCtrl = {
         const {refreshToken} = req.body;
         if(!refreshToken) return res.status(401).json({success: false, message: "Please Login or Register"});
 
+        // console.log(refreshToken)
+        // console.log('////////')
         const user = await Users.findOne({refreshToken});
         if(!user) return res.status(403).json({success: false, message: "RefreshToken Wrong"});
 

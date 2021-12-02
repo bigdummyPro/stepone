@@ -9,10 +9,8 @@ export const loadUser = () => async (dispatch) => {
     }
     try {
         const response = await axios.get(`${GLOBALTYPES.ApiUrl}/user`);
-        console.log(response)
         if (response.data.success) {
             localStorage.setItem(GLOBALTYPES.LOCAL_STORAGE_REFRESH_TOKEN_NAME, response.data.user.refreshToken);
-            console.log('mm')
             dispatch({
                 type: GLOBALTYPES.SET_AUTH,
                 payload: {
@@ -22,7 +20,7 @@ export const loadUser = () => async (dispatch) => {
                 }
             })
         }
-    } catch (error) {console.log('êrr')
+    } catch (error) {
         localStorage.removeItem(GLOBALTYPES.LOCAL_STORAGE_ACCESS_TOKEN_NAME);
         setAuthToken(null);
         dispatch({
@@ -53,20 +51,45 @@ export const loginUser = userForm => async dispatch => {
             localStorage.setItem(GLOBALTYPES.LOCAL_STORAGE_ACCESS_TOKEN_NAME, response.data.accessToken);
         }
         await dispatch(loadUser());
-        // dispatch({
-        //     type: GLOBALTYPES.SET_AUTH,
-        //     payload: {
-        //         isAuthenticated: true,
-        //         user: null,
-        //         isWaiting: true
-        //     }
-        // })
         return response;
     } catch (error) {
         if(error.response.data) return error.response.data
         else return {success: false, message: error.message}
     }
+} 
+//Logout
+export const logoutUser = () => async (dispatch) => {
+    try {
+        localStorage.removeItem(GLOBALTYPES.LOCAL_STORAGE_ACCESS_TOKEN_NAME);
+        localStorage.removeItem(GLOBALTYPES.LOCAL_STORAGE_REFRESH_TOKEN_NAME);
+        dispatch({
+            type: GLOBALTYPES.SET_AUTH,
+            payload: {isAuthenticated: false, user: null, isWaiting: true}
+        })
+        //khi await call api logout không trả về kết quả thì nếu đặt code phía dưới nó sẽ không thực thi được
+        await axios.put(`${GLOBALTYPES.ApiUrl}/auth/logout`);
+    } catch (error) {
+        if(error.response.data) return error.response.data
+        else return {success: false, message: error.message}
+    }
 }
+//refresh token
+export const refreshToken = () => async dispatch => {
+    const res = await axios.put(`${GLOBALTYPES.ApiUrl}/auth/refreshToken`, {refreshToken : localStorage[GLOBALTYPES.LOCAL_STORAGE_REFRESH_TOKEN_NAME]});
+    if(res.data.success){
+
+        // localStorage.setItem(GLOBALTYPES.LOCAL_STORAGE_REFRESH_TOKEN_NAME, res.data.tokens.refreshToken);
+
+        localStorage.setItem(GLOBALTYPES.LOCAL_STORAGE_ACCESS_TOKEN_NAME, res.data.tokens.accessToken);
+
+        await dispatch(loadUser()); 
+        setTimeout(()=>{console.log('ooo')
+            dispatch(refreshToken());
+        }, 5 * 60 * 1000)
+    }
+}
+
+
 // export const loginUserWith = async userForm => {
 //     try {
 //         const response = await axios.post(`${GLOBALTYPES.ApiUrl}/admin/login-with`, userForm);
@@ -81,12 +104,3 @@ export const loginUser = userForm => async dispatch => {
 // }
 
 
-//Logout
-// export const logoutUser = (dispatch) => {
-//     localStorage.removeItem(GLOBALTYPES.LOCAL_STORAGE_ACCESS_TOKEN_NAME);
-//     localStorage.removeItem(GLOBALTYPES.LOCAL_STORAGE_REFRESH_TOKEN_NAME);
-//     dispatch({
-//         type: GLOBALTYPES.SET_AUTH,
-//         payload: {isAuthenticated: false, user: null}
-//     })
-// }

@@ -1,21 +1,36 @@
-import React from 'react';
-import DetailPostModal from '../../components/detail-post-modal/detail-post-modal';
-import MenuPost from '../../components/menu-post/menu-post';
-import SidebarLeft from '../../components/sidebar-left/sidebar-left';
-import SidebarRight from '../../components/sidebar-right/sidebar-right';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {useParams} from 'react-router-dom';
+import { getUserProfile } from '../../redux/actions/profileAction';
 import ProfileBody from './profile-body';
 import ProfileInfo from './profile-info';
 import ProfileMenu from './profile-menu';
 import './profile.scss';
 
 function Profile() {
+    const profileState = useSelector(state => state.profileReducer);
+    const authState = useSelector(state => state.authReducer);
+    const dispatch = useDispatch();
+
+    const {id} = useParams();
+
+    useEffect(()=>{
+        if(profileState.ids.every(item => item !== id)){
+            dispatch(getUserProfile({id}));
+        }
+    },[dispatch, id, profileState.ids])
     return (
         <div className="main-content">
             <div className="main-container">
                 <div className="main-body">
                     <div className="profile">
                         <div className="profile__header">
-                            <ProfileInfo />
+                            <ProfileInfo 
+                                id={id}
+                                profile={profileState}
+                                auth={authState}
+                                dispatch={dispatch}
+                            />
                             <ProfileMenu />
                         </div> 
                         <ProfileBody />

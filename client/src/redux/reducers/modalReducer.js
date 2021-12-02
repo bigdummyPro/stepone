@@ -1,5 +1,4 @@
 import { GLOBALTYPES } from "../constants/globalTypes";
-// import { LOCALTYPES } from "../constants/localTypes";
 
 const initialState = {
     createPostModalStatus: false,

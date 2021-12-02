@@ -181,17 +181,17 @@
     }
   }
 }
-.sidebar-right__active-user {
+.sidebar-right__suggestion-user {
   border-bottom: 1px solid $line-color;
   padding-bottom: 12px;
-  .active-user-title {
+  .suggestion-user-title {
     font-size: 1.6rem;
     color: $txt-color;
     font-weight: 600;
     margin-bottom: 25px;
   }
-  .active-user-list {
-    .active-user-item {
+  .suggestion-user-list {
+    .suggestion-user-item {
       display: flex;
       align-items: center;
       margin-bottom: 25px;
@@ -228,7 +228,7 @@
       }
       .user-item-button {
         margin-left: auto;
-        padding: 8px 14px;
+        padding: 6px 8px;
         font-size: 1.1rem;
         text-transform: none;
         &:hover {
@@ -237,7 +237,7 @@
       }
     }
   }
-  .active-user-see-all {
+  .suggestion-user-see-all {
     text-align: center;
     a {
       position: relative;

@@ -1,0 +1,19 @@
+.toggle-follow-btn {
+  margin-left: auto;
+}
+.follow-btn,
+.unfollow-btn {
+  text-transform: none;
+  &:hover {
+    filter: brightness(1.2);
+  }
+  &.--small-size {
+    padding: 4px 8px;
+    font-size: 1rem;
+    line-height: 1.8rem;
+  }
+  &.--big-size {
+    font-size: 1.2rem;
+    padding: 5px 15px;
+  }
+}

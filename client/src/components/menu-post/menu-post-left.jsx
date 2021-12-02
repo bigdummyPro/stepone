@@ -1,19 +1,22 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {Link} from 'react-router-dom';
 import GirlImg from './../../assets/images/girl.png';
 import {GLOBALTYPES} from './../../redux/constants/globalTypes';
 
-function MenuPostLeft({}) {
+function MenuPostLeft() {
     const dispatch = useDispatch();
     const openModal = () => {
         dispatch({type: GLOBALTYPES.FILE_MODAL_IN_CREATE_POST, payload: false})
         dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: true})
     }
+    const authState = useSelector(state => state.authReducer);
+
     return (
         <div className="menu-post__left">
-            <a href="#vv" className="menu-post-left-avatar">
+            <Link to={`/profile/${authState.user._id}/post`} className="menu-post-left-avatar">
                 <img src={GirlImg} alt="" />
-            </a>
+            </Link>
             <div className="menu-post-left-action" onClick={openModal}>
                 <div className="action-btn">
                     <i className="fas fa-pencil-alt"></i>

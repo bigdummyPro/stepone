@@ -1,0 +1,22 @@
+[
+    {
+        "content": "Post", 
+        "link": "/post"
+    },
+    {
+        "content": "About", 
+        "link": "/about"
+    },
+    {
+        "content": "Follow", 
+        "link": "/follow"
+    },
+    {
+        "content": "Image", 
+        "link": "/image"
+    },
+    {
+        "content": "Video", 
+        "link": "/video"
+    }
+]

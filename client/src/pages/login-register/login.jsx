@@ -17,8 +17,8 @@ function Login() {
     const navigate = useNavigate();
     const authState = useSelector(state => state.authReducer);
 
-    
-    useEffect(() => {console.log(authState.isAuthenticated)
+    //handle navigate url when loginpage load but nonAuthenticated
+    useEffect(() => {
         if(authState.isAuthenticated) navigate("/")
     }, [authState.isAuthenticated, navigate])
 
@@ -36,9 +36,8 @@ function Login() {
             onSubmit: async function (data) {
                 // Call API
                 const response = await dispatch(loginUser(data));
-                if(response.data.success){console.log('vv')
+                if(response.data.success){
                     setLoginInfo({email: '', password: ''})
-                    navigate('/')
                 }
             }
         });

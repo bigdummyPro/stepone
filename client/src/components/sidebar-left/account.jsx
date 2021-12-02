@@ -1,12 +1,19 @@
 import React, { useEffect, useRef } from 'react';
+import {useDispatch, useSelector} from 'react-redux'
 import GirlImage from '../../assets/images/girl.png'
 import clickOutsideRef from '../../utils/dropdown-event';
+import {logoutUser} from '../../redux/actions/authAction';
 
 function Account(props) {
     const dropdown_content_el = useRef(null);
     const dropdown_toggle_el = useRef(null);
 
+    const dispatch = useDispatch();
+    const {user} = useSelector(state => state.authReducer);
 
+    const handleLogout =() => {
+        dispatch(logoutUser());
+    }
     useEffect(()=>{
         clickOutsideRef(dropdown_content_el, dropdown_toggle_el, null);
     },[])
@@ -24,13 +31,13 @@ function Account(props) {
                         <img src={GirlImage} alt="" />
                     </div>
                     <div className="account-front-info">
-                        <span>Nguyễn Hoàng Khánh Ngân</span>
-                        <span>khanhngan@gmail.com</span>
+                        <span>{user.username && user.username}</span>
+                        <span>{user.email && user.email}</span>
                     </div>
                 </div>
                 <div className="account-content__back">
                     <ul className="account-back-tool">
-                        <li className="account-tool-item">
+                        <li className="account-tool-item" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt"></i>
                             Log Out
                         </li>

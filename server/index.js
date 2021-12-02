@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./config/database/index');
 const cors = require('cors');
+const socketServer = require('./socket-server');
 
 const authRouter = require('./routes/authRoute');
 const userRouter = require('./routes/userRoute');
@@ -21,5 +22,18 @@ app.use('/api/user', userRouter);
 
 const PORT = process.env.PORT || 5000;
 
-const http = require('http').createServer(app)
-http.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
+//Define socket
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*'
+    }
+});
+
+io.on('connection', socket => {
+    console.log('Connect socket.io successfully');
+    socketServer(socket);
+})
+
+server.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

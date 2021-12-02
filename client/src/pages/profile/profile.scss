@@ -41,14 +41,18 @@
   flex-direction: column;
   padding-left: 160px;
   .profile-info-name {
+    // font-family: $second-font;
     font-size: 1.6rem;
     color: $txt-color;
     font-weight: 600;
     margin-bottom: 5px;
   }
   .profile-info-friend {
-    font-size: 1.3rem;
-    color: $txt-light-color;
+    span {
+      font-size: 1.3rem;
+      color: $txt-light-color;
+      margin-right: 10px;
+    }
   }
 }
 .profile-info__tool {
@@ -98,7 +102,7 @@
     }
     &.--active a {
       // opacity: 1;
-      color: $txt-color;
+      color: $main-color;
       font-weight: 600;
     }
   }
@@ -116,99 +120,294 @@
 
 .profile__body {
   margin-top: 15px;
+  margin-bottom: 60px;
   padding: 12px 0px 15px;
   width: 100%;
-  border-radius: 3px 3px 10px 10px;
-  .profile-body-filter {
-    display: flex;
-    flex-direction: row-reverse;
+}
+.profile-body-follow {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: $medium-white-color;
+  border-radius: 10px 10px;
+  padding: 15px 20px;
+}
+.profile-body-filter {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-bottom: 12px;
+  overflow: hidden;
+  .profile-body-filter__toggle {
+    display: inline-flex;
     align-items: center;
-    margin-bottom: 12px;
-    overflow: hidden;
-    .profile-body-filter__toggle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 70px;
-      height: 28px;
-      background-color: $main-color;
-      border-radius: 5px;
-      position: relative;
-      z-index: 2;
-      cursor: pointer;
-      user-select: none;
-      transition: filter 0.2s linear;
-      &:hover {
-        filter: brightness(1.1);
-      }
-      .toggle-icon-open,
-      .toggle-icon-close {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .toggle-icon-open {
-        img {
-          width: 15px;
-          height: 15px;
-          object-fit: cover;
-          margin-right: 5px;
-        }
-        span {
-          font-size: 1.3rem;
-          color: $txt-white;
-        }
-      }
-      .toggle-icon-close {
-        font-size: 1.3rem;
-        color: $txt-white;
-        i {
-          margin-right: 4px;
-        }
-      }
+    justify-content: center;
+    width: 70px;
+    height: 28px;
+    background-color: $main-color;
+    border-radius: 5px;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    user-select: none;
+    transition: filter 0.2s linear;
+    &:hover {
+      filter: brightness(1.1);
     }
-    .profile-body-filter__list {
-      margin-right: 10px;
+    .toggle-icon-open,
+    .toggle-icon-close {
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
-      gap: 10px;
-      transform: translateX(100%);
-      transition: transform 0.3s linear;
-      &.--active {
-        transform: translateX(0);
+      justify-content: center;
+    }
+    .toggle-icon-open {
+      img {
+        width: 15px;
+        height: 15px;
+        object-fit: cover;
+        margin-right: 5px;
       }
-      .profile-body-filter-item {
-        height: 30px;
-        display: flex;
-        align-items: center;
+      span {
         font-size: 1.3rem;
-        color: $txt-color;
-        padding: 0 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.2s linear;
-        &:hover {
-          background-color: $main-light-color;
-        }
-        &.--active {
-          color: $main-color;
-          font-weight: 600;
-        }
+        color: $txt-white;
+      }
+    }
+    .toggle-icon-close {
+      font-size: 1.3rem;
+      color: $txt-white;
+      i {
+        margin-right: 4px;
       }
     }
   }
-  .profile-body-post-wrapper {
-    width: 100%;
+  .profile-body-filter__list {
+    margin-right: 10px;
     display: flex;
-    justify-content: center;
-    .profile-body-post {
-      max-width: 550px;
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      grid-gap: 20px 20px;
-      gap: 20px 20px;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(100%);
+    transition: transform 0.3s linear;
+    &.--active {
+      transform: translateX(0);
+    }
+    .profile-body-filter-item {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      font-size: 1.3rem;
+      color: $txt-color;
+      padding: 0 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s linear;
+      &:hover {
+        background-color: $main-light-color;
+      }
+      &.--active {
+        color: $main-color;
+        font-weight: 600;
+      }
+    }
+  }
+}
+.profile-body-post-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .profile-body-post {
+    max-width: 550px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 20px 20px;
+    gap: 20px 20px;
+  }
+}
+.profile-follow-header {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  .profile-follow-header__search {
+    width: 25%;
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid $txt-light-color;
+    padding: 5px 5px;
+    background-color: $main-light-color;
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      font-size: 1.3rem;
+      color: $txt-color;
+      padding: 6px 10px 6px 28px;
+      &::placeholder {
+        color: $txt-light-color;
+      }
+    }
+    span {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      font-size: 1.5rem;
+      color: $txt-light-color;
+      transform: translateY(-44%);
+    }
+  }
+}
+.profile-follow-tab {
+  display: flex;
+  flex-direction: column;
+}
+.profile-follow-tab__menu {
+  display: flex;
+  .tab-menu-item {
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+    color: $txt-light-color;
+    padding: 14px 14px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: $main-color;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.1s linear;
+    }
+    &.--active {
+      color: $main-color;
+      font-weight: 600;
+      &::before {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}
+.profile-follow-tab__content {
+  margin-top: 20px;
+  .tab-content-item {
+  }
+}
+.user-follow-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+.user-follow-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 14px;
+  border-radius: 10px;
+  border: 1px solid $line-color;
+  .user-follow-item__avatar {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+    border: 1px solid $line-color;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .user-follow-item__info {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    a {
+      font-size: 1.4rem;
+      color: $txt-color;
+      line-height: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+      transition: color 0.2s linear;
+      &:hover {
+        color: $main-color;
+      }
+    }
+    span {
+      font-size: 1.1rem;
+      color: $txt-light-color;
+    }
+  }
+  .user-follow-item__tool {
+    margin-left: auto;
+    position: relative;
+    .tool-icon {
+      font-size: 1.8rem;
+      color: $txt-light-color;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: color 0.2s linear;
+      &:hover {
+        color: $main-color;
+      }
+    }
+    .tool-list {
+      width: 130px;
+      position: absolute;
+      z-index: 2;
+      top: calc(100% + 3px);
+      right: calc(50% - 65px);
+      padding: 10px 10px;
+      background-color: $medium-white-color;
+      box-shadow: $light-box-shadow;
+      border-radius: 10px;
+      transform: scale(0);
+      transform-origin: 50% 0;
+      transition: transform 0.2s ease-in-out;
+      &.--active {
+        transform: scale(1);
+      }
+      &::before {
+        position: absolute;
+        content: "";
+        top: -18px;
+        left: calc(50% - 10px);
+        border-style: solid;
+        border-width: 10px;
+        border-color: transparent transparent $medium-white-color transparent;
+      }
+      .tool-item {
+        display: flex;
+        align-items: center;
+        color: $txt-color;
+        padding: 6px 10px;
+        cursor: pointer;
+        transition: all 0.2s linear;
+        border-radius: 5px;
+        &:hover {
+          background-color: $main-light-color;
+        }
+        .tool-item__icon {
+          font-size: 1.6rem;
+          width: 25px;
+          height: 25px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 5px;
+        }
+        .tool-item__content {
+          font-size: 1.3rem;
+        }
+      }
     }
   }
 }
