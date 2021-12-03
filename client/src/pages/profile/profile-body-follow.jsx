@@ -4,7 +4,7 @@ import UserFollowBox from './user-follow-box';
 
 const tabMenuItems = ['Followers', 'Following'];
 
-function ProfileBodyFollow(props) {
+function ProfileBodyFollow({followers, following}) {
     const [tabMenuActive, setTabMenuActive] = useState(0);
 
     const handleTabMenuItem = (index) => {
@@ -35,10 +35,16 @@ function ProfileBodyFollow(props) {
                 <div className="profile-follow-tab__content">
                     <div className="tab-content-item">
                         <div className="user-follow-list">
-                            <UserFollowBox />
-                            <UserFollowBox />
-                            <UserFollowBox />
-                            <UserFollowBox />
+                            {
+                                tabMenuActive === 0 && followers.map((item, index)=>(
+                                    <UserFollowBox followData={item} key={index} typeKey={0}/>
+                                ))
+                            }
+                            {
+                                tabMenuActive === 1 && following.map((item, index)=>(
+                                    <UserFollowBox followData={item} key={index} typeKey={1}/>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>

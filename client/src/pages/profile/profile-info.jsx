@@ -33,7 +33,7 @@ function ProfileInfo({id, profile, auth, dispatch}) {
                     user._id === auth.user._id ?
                         <div className="profile-info__tool">
                             <i className="fas fa-pencil-alt"></i>
-                            Edit your profile
+                            Edit your avatar
                         </div> :
                         <FollowButton 
                             size="--big-size"

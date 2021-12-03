@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router';
 import ProfileBodyAbout from './profile-body-about';
 import ProfileBodyFollow from './profile-body-follow';
 import ProfileBodyPost from './profile-body-post';
 
-function ProfileBody(props) {
-    
+function ProfileBody({id, profile, auth}) {
+    const [userData, setUserData] = useState([]);
+
+    useEffect(()=>{
+        if(auth.user._id === id){
+            setUserData([auth.user])
+        }else{
+            const newData = profile.users.filter(user => user._id === id);
+            setUserData(newData);
+        }
+    },[id, auth.user, profile.users])
+
     return (
         <div className="profile__body">
-            <Routes>
-                <Route path="/post" element={<ProfileBodyPost />}/>
-                <Route path="/about" element={<ProfileBodyAbout />}/>
-                <Route path="/follow" element={<ProfileBodyFollow />}/>
-                <Route path="/image" element={<div>Đang cập nhật</div>}/>
-                <Route path="/video" element={<div>Đang cập nhật</div>}/>
-            </Routes>
+            {
+                userData.map((item, index) => (
+                    <Routes key={index}>
+                        <Route path="/post" element={<ProfileBodyPost />}/>
+                        <Route 
+                            path="/about" 
+                            element={<ProfileBodyAbout userData={item} auth={auth}/>}
+                        />
+                        <Route 
+                            path="/follow" 
+                            element={<ProfileBodyFollow followers={item.followers} following={item.following}/>}
+                        />
+                        <Route path="/image" element={<div>Đang cập nhật</div>}/>
+                        <Route path="/video" element={<div>Đang cập nhật</div>}/>
+                    </Routes>
+                ))
+            }
         </div>
     );
 }

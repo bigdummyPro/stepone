@@ -212,9 +212,13 @@
         display: flex;
         flex-direction: column;
         a {
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           color: $txt-color;
-          transition: color 0.3 linear;
+          max-width: 180px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          transition: color 0.3s linear;
           &:hover {
             color: $main-color;
           }

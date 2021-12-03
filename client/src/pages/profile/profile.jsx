@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {useParams} from 'react-router-dom';
 import { getUserProfile } from '../../redux/actions/profileAction';
 import ProfileBody from './profile-body';
+import ProfileEditModal from './profile-edit-modal';
 import ProfileInfo from './profile-info';
 import ProfileMenu from './profile-menu';
 import './profile.scss';
@@ -33,7 +34,12 @@ function Profile() {
                             />
                             <ProfileMenu />
                         </div> 
-                        <ProfileBody />
+                        <ProfileBody 
+                            id={id}
+                            profile={profileState}
+                            auth={authState}
+                        />
+                        <ProfileEditModal />
                     </div>
                 </div>
             </div>

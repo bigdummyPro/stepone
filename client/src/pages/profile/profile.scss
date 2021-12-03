@@ -294,9 +294,7 @@
   }
 }
 .profile-follow-tab__content {
-  margin-top: 20px;
-  .tab-content-item {
-  }
+  margin-top: 30px;
 }
 .user-follow-list {
   display: grid;
@@ -406,6 +404,270 @@
         }
         .tool-item__content {
           font-size: 1.3rem;
+        }
+      }
+    }
+  }
+}
+.profile-body-about {
+  padding: 20px 20px;
+  background-color: $medium-white-color;
+  border-radius: 10px;
+  position: relative;
+}
+.profile-body-about__list {
+  display: flex;
+  flex-direction: column;
+
+  .profile-about-item {
+    display: flex;
+    align-items: center;
+    span {
+      display: inline-block;
+      font-size: 1.4rem;
+      color: $txt-color;
+      padding: 18px 0;
+      &:first-child {
+        border-right: 1px solid $main-light-color;
+        width: 200px;
+        font-weight: 600;
+        i {
+          width: 18px;
+          font-size: 1.5rem;
+          margin-right: 5px;
+        }
+      }
+      &:last-child {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+.profile-body-about__tool {
+  position: absolute;
+  right: 20px;
+  top: calc(50% - 21px);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: $medium-white-color;
+  border: 1px solid $txt-light-color;
+  font-size: 1.5rem;
+  color: $txt-light-color;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  &:hover {
+    background-color: $main-light-color;
+    color: $main-color;
+  }
+}
+.profile-edit-modal-wrapper {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(240, 240, 242, 0.8);
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+  /* width */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: $main-light-color;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: $main-color;
+    border-radius: 3px;
+  }
+  .profile-edit-modal {
+    width: 500px;
+    height: min-content;
+    background-color: $medium-white-color;
+    box-shadow: $light-box-shadow;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+    margin-bottom: 80px;
+  }
+}
+.profile-edit-modal__header {
+  padding: 18px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid $line-color;
+  span {
+    &:first-child {
+      font-size: 1.7rem;
+      color: $txt-color;
+      font-weight: 600;
+    }
+    &:last-child {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid $line-color;
+      background-color: $main-light-color;
+      transform: translateY(-50%);
+      cursor: pointer;
+      &:hover {
+        color: $main-color;
+      }
+    }
+  }
+}
+.profile-edit-modal__body {
+  padding: 15px 15px;
+  .edit-form {
+    .edit-body-group {
+      display: flex;
+      flex-direction: column;
+      &:not(:first-child) {
+        margin-top: 15px;
+      }
+      label {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+      }
+      input {
+        border: 1px solid $line-color;
+        outline: none;
+        font-size: 1.3rem;
+        padding: 12px 10px;
+        border-radius: 5px;
+        background-color: $medium-white-color;
+      }
+      .edit-body-group-ratio {
+        margin-left: 10px;
+        margin-top: 10px;
+        display: flex;
+        .edit-body-group__item {
+          margin-right: 20px;
+          cursor: pointer;
+          span {
+            &:first-child {
+              margin-right: 5px;
+              font-size: 1.4em;
+            }
+            &:last-child {
+              font-size: 1.3rem;
+            }
+          }
+        }
+      }
+      .edit-body-group-select {
+        margin-top: 10px;
+      }
+    }
+  }
+  .edit-submit-btn {
+    margin-top: 30px;
+    text-align: center;
+    button:hover {
+      filter: brightness(1.2);
+    }
+  }
+}
+.location-select-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  .location-box-item {
+    position: relative;
+    .location-box-header {
+      padding: 10px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 5px;
+      border: 1px solid $line-color;
+      cursor: pointer;
+      span {
+        font-size: 1.3rem;
+        color: $txt-color;
+      }
+    }
+    .location-box-content {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      z-index: 2;
+      top: calc(100% + 10px);
+      left: 0;
+      width: 100%;
+      background-color: $medium-white-color;
+      border-radius: 5px;
+      box-shadow: $light-box-shadow;
+      padding: 10px 10px;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.2s linear;
+      &.--active {
+        visibility: visible;
+        opacity: 1;
+      }
+      .location-box-search {
+        padding: 10px 10px;
+        background-color: $main-light-color;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        input {
+          width: 100%;
+          outline: none;
+          border: none;
+          padding: 0 5px;
+          background-color: transparent;
+          &::placeholder {
+            color: $txt-color;
+          }
+        }
+      }
+      .location-box-list {
+        max-height: 150px;
+        overflow: auto;
+        /* width */
+        &::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+          background: $main-light-color;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+          background: $main-color;
+          border-radius: 3px;
+        }
+        .location-item {
+          padding: 10px 10px;
+          font-size: 1.3rem;
+          cursor: pointer;
+          border-radius: 5px;
+          &:hover {
+            background-color: $main-light-color;
+          }
         }
       }
     }
