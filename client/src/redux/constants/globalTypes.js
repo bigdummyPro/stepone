@@ -2,6 +2,7 @@ export const GLOBALTYPES = {
     //Api config
     ApiUrl: process.env.NODE_ENV !== 'production' ? 'http://localhost:5000/api' : '',
     API_URL:  process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : '',
+    LOCATION_API_URL: 'https://vapi.vnappmob.com/api',
     //Localstorage config
     LOCAL_STORAGE_ACCESS_TOKEN_NAME: 'social-website-access-token',
     LOCAL_STORAGE_REFRESH_TOKEN_NAME: 'social-website-refresh-token',
@@ -38,7 +39,15 @@ export const GLOBALTYPES = {
     UNFOLLOW: 'UNFOLLOW',
     SET_POSTS: 'SET_POSTS',
     UPDATE_POST: 'UPDATE_POST',
-    LOADING_PROFILE: 'LOADING_PROFILE'
+    LOADING_PROFILE: 'LOADING_PROFILE',
+
+    //Notification
+    GET_NOTIFICATIONS: 'GET_NOTIFICATIONS',
+    CREATE_NOTIFICATION: 'CREATE_NOTIFICATION',
+    REMOVE_NOTIFICATION: 'REMOVE_NOTIFICATION',
+    REMOVE_ALL_NOTIFICATION: 'REMOVE_ALL_NOTIFICATION',
+    UPDATE_NOTIFICATION: 'UPDATE_NOTIFICATION',
+    UPDATE_NOTIFICATION_SOUND: 'UPDATE_NOTIFICATION_SOUND'
 } 
 
 export const EditData = (data, id, post) => {

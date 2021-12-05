@@ -1,5 +1,6 @@
 import { DeleteData, GLOBALTYPES } from "../constants/globalTypes";
 import { getDataAPI, patchDataAPI } from "../../utils/fetch-data-api";
+import { imageUpload } from "../../utils/image-upload";
 
 export const getUserProfile = ({id, auth}) => async (dispatch) => {
     dispatch({type: GLOBALTYPES.SET_IDS, payload: id})
@@ -30,6 +31,33 @@ export const getUserProfile = ({id, auth}) => async (dispatch) => {
         // })
     }
     
+}
+
+export const updateUserProfile = ({userData, userAvatar, auth}) => async dispatch => {
+    try {
+        let media;
+        if(userAvatar) media = await imageUpload([userAvatar]);
+
+        const res = await patchDataAPI('user', {
+            ...userData,
+            avatar: userAvatar ? media[0].url : auth.user.avatar
+        });
+
+        dispatch({
+            type: GLOBALTYPES.SET_AUTH,
+            payload: {
+                ...auth,
+                user: {
+                    ...auth.user, ...userData,
+                    avatar: userAvatar ? media[0].url : auth.user.avatar,
+                }
+            }
+        })
+
+        return res
+    } catch (error) {
+        console.log(error.message)
+    }
 }
 
 export const follow = ({users, user, auth, socket}) => async dispatch => {

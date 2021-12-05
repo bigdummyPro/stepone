@@ -232,8 +232,8 @@
     width: 25%;
     position: relative;
     border-radius: 20px;
-    border: 1px solid $txt-light-color;
-    padding: 5px 5px;
+    // border: 1px solid $txt-light-color;
+    padding: 8px 5px;
     background-color: $main-light-color;
     input {
       width: 100%;
@@ -430,7 +430,6 @@
       &:first-child {
         border-right: 1px solid $main-light-color;
         width: 200px;
-        font-weight: 600;
         i {
           width: 18px;
           font-size: 1.5rem;
@@ -545,6 +544,54 @@
       &:not(:first-child) {
         margin-top: 15px;
       }
+      &--avatar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin: 10px 0 25px;
+      }
+      .user-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .avatar-tool {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(-100%, -50%);
+        &:hover span {
+          color: $main-color;
+        }
+        span {
+          font-size: 1.3rem;
+          color: $txt-color;
+          user-select: none;
+          i {
+            font-size: 1.6rem;
+            margin-right: 3px;
+          }
+        }
+        input {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          opacity: 0;
+          padding: 0;
+          cursor: pointer;
+          &::-webkit-file-upload-button {
+            visibility: hidden;
+          }
+        }
+      }
       label {
         font-size: 1.1rem;
         margin-bottom: 5px;
@@ -556,6 +603,11 @@
         padding: 12px 10px;
         border-radius: 5px;
         background-color: $medium-white-color;
+        &[type="number"]::-webkit-inner-spin-button,
+        &[type="number"]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
       }
       .edit-body-group-ratio {
         margin-left: 10px;
@@ -577,14 +629,25 @@
       }
       .edit-body-group-select {
         margin-top: 10px;
+        span.current-address {
+          display: inline-flex;
+          font-size: 1.1rem;
+          margin-bottom: 15px;
+          color: $txt-light-color;
+          p {
+            font-size: 1.3rem;
+            margin-left: 5px;
+            color: $txt-color;
+          }
+        }
       }
     }
-  }
-  .edit-submit-btn {
-    margin-top: 30px;
-    text-align: center;
-    button:hover {
-      filter: brightness(1.2);
+    .edit-submit-btn {
+      margin-top: 30px;
+      text-align: center;
+      button:hover {
+        filter: brightness(1.2);
+      }
     }
   }
 }
@@ -605,6 +668,10 @@
       span {
         font-size: 1.3rem;
         color: $txt-color;
+      }
+      &.--non-active {
+        pointer-events: none;
+        opacity: 0.5;
       }
     }
     .location-box-content {
@@ -643,7 +710,7 @@
         }
       }
       .location-box-list {
-        max-height: 150px;
+        max-height: 180px;
         overflow: auto;
         /* width */
         &::-webkit-scrollbar {

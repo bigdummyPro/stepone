@@ -11,36 +11,67 @@ import './profile.scss';
 function Profile() {
     const profileState = useSelector(state => state.profileReducer);
     const authState = useSelector(state => state.authReducer);
+    const [editModalStatus, setEditModalStatus] = useState(false);
+    const [userData, setUserData] = useState([]);
     const dispatch = useDispatch();
 
     const {id} = useParams();
+
+    const handleEditModal = (status) => {
+        const menuPostEl = document.querySelector('.menu-post-wrapper');
+        menuPostEl.style.zIndex = '20';
+        setEditModalStatus(status);
+    }
 
     useEffect(()=>{
         if(profileState.ids.every(item => item !== id)){
             dispatch(getUserProfile({id}));
         }
     },[dispatch, id, profileState.ids])
+
+    useEffect(()=>{
+        if(authState.user._id === id){
+            setUserData([authState.user])
+        }else{
+            const newData = profileState.users.filter(user => user._id === id);
+            setUserData(newData);
+        }
+    },[id, authState.user, profileState.users])
     return (
         <div className="main-content">
             <div className="main-container">
                 <div className="main-body">
-                    <div className="profile">
-                        <div className="profile__header">
-                            <ProfileInfo 
-                                id={id}
-                                profile={profileState}
-                                auth={authState}
-                                dispatch={dispatch}
-                            />
-                            <ProfileMenu />
-                        </div> 
-                        <ProfileBody 
-                            id={id}
-                            profile={profileState}
-                            auth={authState}
-                        />
-                        <ProfileEditModal />
-                    </div>
+                    {
+                        userData.map((usDa, index)=>(
+                            <div className="profile" key={index}>
+                                <div className="profile__header">
+                                    <ProfileInfo 
+                                        id={id}
+                                        profile={profileState}
+                                        auth={authState}
+                                        dispatch={dispatch}
+                                        handleEditModal={(status)=>handleEditModal(status)}
+                                    />
+                                    <ProfileMenu />
+                                </div> 
+                                <ProfileBody 
+                                    id={id}
+                                    profile={profileState}
+                                    auth={authState}
+                                    handleEditModal={(status)=>handleEditModal(status)}
+                                />
+                                {
+                                    editModalStatus ?
+                                    <ProfileEditModal 
+                                        handleEditModal={(status)=>handleEditModal(status)}
+                                        profile={usDa}
+                                        auth={authState}
+                                        dispatch={dispatch}
+                                    /> : null
+                                }
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         </div>

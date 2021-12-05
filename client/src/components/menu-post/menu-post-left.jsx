@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {Link} from 'react-router-dom';
-import GirlImg from './../../assets/images/girl.png';
+import UserAvatarImg from './../../assets/images/user-avatar.png';
 import {GLOBALTYPES} from './../../redux/constants/globalTypes';
 
 function MenuPostLeft() {
@@ -15,7 +15,7 @@ function MenuPostLeft() {
     return (
         <div className="menu-post__left">
             <Link to={`/profile/${authState.user._id}/post`} className="menu-post-left-avatar">
-                <img src={GirlImg} alt="" />
+                <img src={authState.user.avatar || UserAvatarImg} alt="" />
             </Link>
             <div className="menu-post-left-action" onClick={openModal}>
                 <div className="action-btn">

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom';
-import GirlImage from '../../assets/images/girl.png'
+import UserAvatarImg from '../../assets/images/user-avatar.png'
 import { getSuggestedUsers } from '../../redux/actions/suggestionAction';
 import FollowButton from '../follow-button/follow-button';
 
@@ -25,7 +25,7 @@ function SuggestionUser() {
                     suggestionState.users.map((user, index)=>(
                         <li className="suggestion-user-item" key={index}>
                             <div className="user-item-avatar">
-                                <img src={GirlImage} alt="" />
+                                <img src={user.avatar || UserAvatarImg} alt="" />
                             </div>
                             <div className="user-item-info">
                                 <Link to={`/profile/${user._id}/post`}>{user.username}</Link>

@@ -4,7 +4,7 @@ import ProfileBodyAbout from './profile-body-about';
 import ProfileBodyFollow from './profile-body-follow';
 import ProfileBodyPost from './profile-body-post';
 
-function ProfileBody({id, profile, auth}) {
+function ProfileBody({id, profile, auth, handleEditModal}) {
     const [userData, setUserData] = useState([]);
 
     useEffect(()=>{
@@ -24,7 +24,11 @@ function ProfileBody({id, profile, auth}) {
                         <Route path="/post" element={<ProfileBodyPost />}/>
                         <Route 
                             path="/about" 
-                            element={<ProfileBodyAbout userData={item} auth={auth}/>}
+                            element={<ProfileBodyAbout 
+                                userData={item} 
+                                auth={auth}
+                                handleEditModal={(status)=>handleEditModal(status)}
+                            />}
                         />
                         <Route 
                             path="/follow" 

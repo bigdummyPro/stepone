@@ -5,6 +5,8 @@ const socketServer = require('./socket-server');
 
 const authRouter = require('./routes/authRoute');
 const userRouter = require('./routes/userRoute');
+const notificationRouter = require('./routes/notificationRoute');
+
 
 //connect express
 const app = express();
@@ -18,6 +20,8 @@ db.connect();
 //define api of user
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+//define api of notification
+app.use('/api/notification', notificationRouter);
 
 
 const PORT = process.env.PORT || 5000;

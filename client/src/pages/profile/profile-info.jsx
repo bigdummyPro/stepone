@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import GirlImg from '../../assets/images/post-image.jpg';
+import UserAvatarImg from '../../assets/images/user-avatar.png';
 import FollowButton from '../../components/follow-button/follow-button';
 
-function ProfileInfo({id, profile, auth, dispatch}) {
+function ProfileInfo({id, profile, auth, dispatch, handleEditModal}) {
     const [userData, setUserData] = useState([]);
 
     useEffect(()=>{
@@ -18,7 +18,7 @@ function ProfileInfo({id, profile, auth, dispatch}) {
         userData.map((user, index)=>(
             <div className="profile-info" key={index}>
                 <div className="profile-info__avatar">
-                    <img src={GirlImg} alt="" />
+                    <img src={user.avatar || UserAvatarImg} alt="" />
                 </div>
                 <div className="profile-info__content">
                     <div className="profile-info-name">
@@ -31,7 +31,10 @@ function ProfileInfo({id, profile, auth, dispatch}) {
                 </div>  
                 {
                     user._id === auth.user._id ?
-                        <div className="profile-info__tool">
+                        <div 
+                            className="profile-info__tool"
+                            onClick={()=>handleEditModal(true)}
+                        >
                             <i className="fas fa-pencil-alt"></i>
                             Edit your avatar
                         </div> :

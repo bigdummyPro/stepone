@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import {useDispatch, useSelector} from 'react-redux'
-import GirlImage from '../../assets/images/girl.png'
+import UserAvatarImg from '../../assets/images/user-avatar.png'
 import clickOutsideRef from '../../utils/dropdown-event';
 import {logoutUser} from '../../redux/actions/authAction';
 
@@ -28,7 +28,7 @@ function Account(props) {
             <div className="account-content" ref={dropdown_content_el}>
                 <div className="account-content__front">
                     <div className="account-front-avatar">
-                        <img src={GirlImage} alt="" />
+                        <img src={user.avatar || UserAvatarImg} alt="" />
                     </div>
                     <div className="account-front-info">
                         <span>{user.username && user.username}</span>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ProfileBodyAbout({userData, auth}) {
+function ProfileBodyAbout({userData, auth, handleEditModal}) {
     return (
         <div className="profile-body-about">
             <ul className="profile-body-about__list">
@@ -37,12 +37,15 @@ function ProfileBodyAbout({userData, auth}) {
                         <i className="fas fa-mobile-alt"></i>
                         Phone Number
                     </span>
-                    <span>{userData.mobile || '***'}</span>
+                    <span>{`${userData.mobile && '+84'} ${userData.mobile || '***'}`}</span>
                 </li>
             </ul>
             {
                 userData._id === auth.user._id ?
-                    <span className="profile-body-about__tool">
+                    <span 
+                        className="profile-body-about__tool"
+                        onClick={()=>handleEditModal(true)}
+                    >
                         <i className="fas fa-pencil-alt"></i>
                     </span> : null
             }

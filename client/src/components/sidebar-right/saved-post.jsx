@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ToolTip from '../tooltip/tooltip';
-import GirlImage from './../../assets/images/girl.png'
+import UserAvatarImg from './../../assets/images/user-avatar.png'
 import PostImage from './../../assets/images/post-image.jpg';
 
 function SavedPost() {
@@ -17,7 +17,7 @@ function SavedPost() {
                     onMouseOver={()=>setTooltipStatus(true)}
                     onMouseOut={()=>setTooltipStatus(false)}
                 >
-                    <img src={GirlImage} alt="" />
+                    <img src={UserAvatarImg} alt="" />
                     <ToolTip 
                         content='Lê Hoàng Ánh Tuyết'
                         status={tooltipStatus} 
