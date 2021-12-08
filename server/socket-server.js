@@ -60,9 +60,8 @@ const socketServer = (socket) => {
         });
     })
 
-    socket.on('removeNotification', message => {console.log('uu')
+    socket.on('removeNotification', message => {
         const clients = users.filter(user => message.recipients.includes(user.id));
-        console.log(clients)
         clients.length > 0 && clients.forEach(client => {
             socket.to(`${client.socketId}`).emit('removeNotificationToClient', message)
         });

@@ -7,6 +7,7 @@ import socketReducer from './socketReducer';
 import profileReducer from './profileReducer';
 import notificationReducer from './notificationReducer';
 import postReducer from './postReducer';
+import detailPostReducer from './detailPostReducer';
 
 export default combineReducers({
     modalReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
     socketReducer,
     profileReducer,
     notificationReducer,
-    postReducer
+    postReducer,
+    detailPostReducer
 })

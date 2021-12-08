@@ -1,6 +1,6 @@
 
 
-const clickOutsideRef = (content_ref, toggle_ref, sidebarEl) => {console.log('dit')
+const clickOutsideRef = (content_ref, toggle_ref, sidebarEl) => {
     const dropEvent = (e) =>{
         if(toggle_ref.current && toggle_ref.current.contains(e.target)){
             content_ref.current.classList.toggle('--active');
@@ -12,11 +12,12 @@ const clickOutsideRef = (content_ref, toggle_ref, sidebarEl) => {console.log('di
             }
         }
     }
-    document.addEventListener('mousedown', (e) => dropEvent(e));
-
-    if(!content_ref || !toggle_ref)document.removeEventListener('mousedown', (e) => dropEvent(e));
-
-    return dropEvent
+    if(toggle_ref.current || content_ref.current){
+        document.addEventListener('mousedown', (e) => dropEvent(e));
+    }
+    else if(!toggle_ref.current && !content_ref.current){
+        document.removeEventListener('mousedown', (e) => dropEvent(e));
+    }
 }
 
 export default clickOutsideRef;

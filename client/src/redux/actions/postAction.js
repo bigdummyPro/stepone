@@ -28,7 +28,7 @@ export const createPost = ({content, images, videos, audios, auth, socket}) => a
             id: res.data.newPost._id,
             text: 'added a new post.',
             recipients: auth.user.followers.map(item => item._id),
-            url: `/post/${res.data.newPost._id}`,
+            url: `/profile/${auth.user._id}/post?id=${res.data.newPost._id}`,
             content, 
             image: image_media.length > 0 ? image_media[0].url : ''
         }
@@ -134,6 +134,18 @@ export const deletePost = ({post, auth, socket}) => async (dispatch) => {
         }
         dispatch(removeNotification({message, socket}))
         
+    } catch (err) {
+        console.log(err.message)
+        // dispatch({
+        //     type: GLOBALTYPES.ALERT,
+        //     payload: {error: err.response.data.msg}
+        // })
+    }
+}
+export const getPost = ({id}) => async (dispatch) => {
+    try {
+        const res = await getDataAPI(`post/${id}`)
+        dispatch({ type: GLOBALTYPES.GET_POST, payload: res.data.post })
     } catch (err) {
         console.log(err.message)
         // dispatch({

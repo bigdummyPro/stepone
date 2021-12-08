@@ -217,7 +217,7 @@
   display: flex;
   justify-content: center;
   .profile-body-post {
-    max-width: 550px;
+    width: 550px;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     grid-gap: 20px 20px;

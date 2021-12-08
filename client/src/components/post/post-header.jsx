@@ -7,21 +7,17 @@ import {deletePost} from '../../redux/actions/postAction';
 
 function PostHeader({user, createdAt, post, auth, dispatch, socket}) {
 
-    let dropdown_content_el = useRef(null);
-    let dropdown_toggle_el = useRef(null);
+    const dropdown_content_el = useRef(null);
+    const dropdown_toggle_el = useRef(null);
 
     const handleDeletePost = () => {
+        dropdown_content_el.current.classList.remove('--active');
         dispatch(deletePost({post, auth, socket}));
-        dropdown_toggle_el= null;
-        dropdown_toggle_el = null
     }
     useEffect(()=>{
-        let dropEvent = clickOutsideRef(dropdown_content_el, dropdown_toggle_el);
-        return () => {console.log('vv')
-            clickOutsideRef(dropdown_content_el, dropdown_toggle_el)
-            // document.removeEventListener('mousedown', dropEvent)
-        }
-    },[dropdown_content_el, dropdown_toggle_el])
+        clickOutsideRef(dropdown_content_el, dropdown_toggle_el, null);
+        return () => clickOutsideRef(dropdown_content_el, dropdown_toggle_el, null);
+    },[])
 
     return (
         <div className="post-item__header">

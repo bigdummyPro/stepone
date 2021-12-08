@@ -25,6 +25,11 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 users:[...state.users, payload.user]
             }
+        case GLOBALTYPES.GET_PROFILE_POSTS:
+            return {
+                ...state,
+                posts: [...state.posts, payload]
+            };
         case GLOBALTYPES.FOLLOW:
             return {
                 ...state,

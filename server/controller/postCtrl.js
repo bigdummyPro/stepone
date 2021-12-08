@@ -119,6 +119,45 @@ const postCtrl = {
             return res.status(500).json({success: false, message: err.message})
         }
     },
+    getUserPosts: async (req, res) => {
+        try {
+            const features = new APIfeatures(Posts.find({user: req.params.id}), req.query).paginating()
+
+            const posts = await features.query.sort("-createdAt").populate("user likes", "avatar username nickname followers")
+
+            res.json({
+                success: true,
+                posts,
+                result: posts.length
+            })
+
+        } catch (err) {
+            return res.status(500).json({message: err.message})
+        }
+    },
+    getPost: async (req, res) => {
+        try {
+            const post = await Posts.findById(req.params.id)
+            .populate("user likes", "avatar username fullname followers")
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "user likes",
+                    select: "-password"
+                }
+            })
+
+            if(!post) return res.status(400).json({success: false, message: 'This post does not exist.'})
+
+            res.json({
+                success: true,
+                post
+            })
+
+        } catch (err) {
+            return res.status(500).json({message: err.message})
+        }
+    },
 }
 
 module.exports = postCtrl;

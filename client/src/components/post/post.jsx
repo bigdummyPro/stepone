@@ -14,7 +14,6 @@ function Post({post, auth, dispatch, socket}) {
         setCommentBoxStatus(!commentBoxStatus);
         if(commentFocusStatus !== null) setCommentFocusStatus(null);
     }
-    // console.log(post)
     return (
         <div className="post-item-wrapper">
             <div className="post-item">

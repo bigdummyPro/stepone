@@ -9,7 +9,7 @@ export const getUserProfile = ({id, auth}) => async (dispatch) => {
     try {
         dispatch({type: GLOBALTYPES.LOADING_PROFILE, payload: true})
         const res = await getDataAPI(`user/get-user-by-id/${id}`)
-        // const res1 = getDataAPI(`/user_posts/${id}`, auth.token)
+        const res1 = await getDataAPI(`post/user-posts/${id}`)
         
         // const posts = await res1;
 
@@ -18,10 +18,10 @@ export const getUserProfile = ({id, auth}) => async (dispatch) => {
             payload: res.data
         })
 
-        // dispatch({
-        //     type: PROFILE_TYPES.GET_POSTS,
-        //     payload: {...posts.data, _id: id, page: 2}
-        // })
+        dispatch({
+            type: GLOBALTYPES.GET_PROFILE_POSTS,
+            payload: {...res1.data, _id: id, page: 2}
+        })
 
         dispatch({type: GLOBALTYPES.LOADING_PROFILE, payload: false})
     } catch (err) {
