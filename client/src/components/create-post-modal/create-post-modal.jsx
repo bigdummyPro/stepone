@@ -5,10 +5,12 @@ import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import CreateFileModal from '../create-file-modal/create-file-modal';
 import ToolTip from '../tooltip/tooltip';
 import moreRightItems from '../../assets/json-data/more-right-item.json';
+import { createPost } from '../../redux/actions/postAction';
 
 function CreatePostModal(props) {
 
     const [postText, setPostText] = useState('');
+    const [files, setFiles] = useState([]);
     const [cursorPosition, setCursorPosition] = useState(null);
     const [moreItemActive, setMoreItemActive] = useState(null);
     const [moreItemTooltip, setMoreIemTooltip] = useState(null);
@@ -20,6 +22,8 @@ function CreatePostModal(props) {
 
     const fileModalStatus = useSelector(state => state.modalReducer.fileModalInCreatePost);
     const initFileModalType = useSelector(state => state.modalReducer.initFileModalType);
+    const authState = useSelector(state => state.authReducer);
+    const socketState = useSelector(state => state.socketReducer);
 
     const {emotionModalStatus, emotionValue, emotionChange} = useSelector(state => state.emotionModalReducer);
     const textareaElReducer = useSelector(state => state.emotionModalReducer.textareaEl);
@@ -59,7 +63,31 @@ function CreatePostModal(props) {
         dispatch({type: GLOBALTYPES.SET_TOGGLE_ICON_EL, payload: toggleIconEl})
         dispatch({type: GLOBALTYPES.SET_TEXTAREA_EL, payload: textareaEl})
     }
-
+    const handleFileList = (files) => {
+        setFiles(files);
+    }
+    const handleSubmit = async () => {
+        let images = [];
+        let videos = [];
+        let audios = [];
+        files.forEach((item) => {
+            const typeString = item.file.type;
+            if(typeString.includes('image')) images.push(item.file);
+            else if(typeString.includes('video')) videos.push(item.file);
+            else if(typeString.includes('audio')) audios.push(item.file);
+        })
+        const res = await dispatch(createPost({
+            content: postText,
+            images,
+            videos,
+            audios,
+            auth: authState,
+            socket: socketState
+        }))
+        if(res.data.success){
+            dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: false});
+        }
+    }
     useEffect(()=>{
         if(textareaEl === textareaElReducer){
             const cursorPos = textareaEl.current.value.slice(0, textareaEl.current.selectionStart).length;
@@ -126,6 +154,7 @@ function CreatePostModal(props) {
                                     <CreateFileModal 
                                         onClose={()=>toggleFileModal(false)}
                                         fileModalType={fileModalType}
+                                        handleFileList={(files)=>handleFileList(files)}
                                     />
                                 </div> : null
                         }
@@ -159,7 +188,10 @@ function CreatePostModal(props) {
                     </div>
                 </div>
                 <div className="create-modal__bottom">
-                    <button className="btn btn--primary btn--radius-5px">
+                    <button 
+                        className="btn btn--primary btn--radius-5px"
+                        onClick={handleSubmit}
+                    >
                         Done
                     </button>
                 </div>

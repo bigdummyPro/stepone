@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import imgtest from '../../assets/images/post-image.jpg';
+import UserAvatarImg from '../../assets/images/user-avatar.png';
 import { unfollow } from '../../redux/actions/profileAction';
 import clickOutsideRef from '../../utils/dropdown-event';
 
@@ -24,7 +24,7 @@ function UserFollowBox({followData, typeKey}) {
     return (
         <div className="user-follow-item">
             <Link to={`/profile/${followData._id}/post`} className="user-follow-item__avatar">
-                <img src={imgtest} alt="" />
+                <img src={followData.avatar || UserAvatarImg} alt="" />
             </Link>
             <div className="user-follow-item__info">
                 <Link to={`/profile/${followData._id}/post`}>

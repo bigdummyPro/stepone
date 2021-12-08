@@ -4,7 +4,7 @@ import LocationSelectBox from './location-select-box';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import { updateUserProfile } from '../../redux/actions/profileAction';
 
-const genderArr  = ['Male', 'Female'];
+const genderArr  = ['Male', 'Female', 'Unset'];
 const initTextValue = {
     username: '',
     nickname: '',
@@ -12,7 +12,7 @@ const initTextValue = {
 }
 function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
     const [locationValue, setLocationValue] = useState();
-    const [genderValue, setGenderValue] = useState({key: 0, value: ''});
+    const [genderValue, setGenderValue] = useState({key: 2, value: 'Unset'});
     const [textValue, setTextValue] = useState(initTextValue);
     const [avatar, setAvatar] = useState('');
 
@@ -46,9 +46,8 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
     }
     useEffect(()=>{
         setTextValue({username: profile.username, nickname: profile.nickname, mobile: profile.mobile});
-        setGenderValue({key: profile.gender === 'unset' ? 0 : (profile.gender === 'Male' ? 0 : 1), value: profile.gender});
+        setGenderValue({key: profile.gender === 'Unset' ? 2 : (profile.gender === 'Male' ? 0 : 1), value: profile.gender});
     },[profile])
-
     useEffect(()=>{
         return () => avatar && URL.revokeObjectURL(avatar);
     },[])

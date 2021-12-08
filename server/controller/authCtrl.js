@@ -97,8 +97,6 @@ const userCtrl = {
         const {refreshToken} = req.body;
         if(!refreshToken) return res.status(401).json({success: false, message: "Please Login or Register"});
 
-        // console.log(refreshToken)
-        // console.log('////////')
         const user = await Users.findOne({refreshToken});
         if(!user) return res.status(403).json({success: false, message: "RefreshToken Wrong"});
 

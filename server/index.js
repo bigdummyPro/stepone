@@ -6,6 +6,7 @@ const socketServer = require('./socket-server');
 const authRouter = require('./routes/authRoute');
 const userRouter = require('./routes/userRoute');
 const notificationRouter = require('./routes/notificationRoute');
+const postRouter = require('./routes/postRoute');
 
 
 //connect express
@@ -22,6 +23,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 //define api of notification
 app.use('/api/notification', notificationRouter);
+//define api of post
+app.use('/api/post', postRouter);
 
 
 const PORT = process.env.PORT || 5000;

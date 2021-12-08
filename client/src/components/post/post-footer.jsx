@@ -1,19 +1,25 @@
 import React from 'react';
 
-function PostFooter({handleCommentBox}) {
+function PostFooter({handleCommentBox, likeCount, commentCount}) {
     return (
         <div className="post-item__footer">
-            <div className="post-footer-like">
-                <span>5,8k</span>
-                <span>likes</span>
-            </div>
-            <div 
-                className="post-footer-comment"
-                onClick={handleCommentBox}
-            >
-                <span>100</span>
-                <span>comments</span>
-            </div>
+            {
+                likeCount > 0 ?
+                    <div className="post-footer-like">
+                        <span>{likeCount}</span>
+                        <span>likes</span>
+                    </div> : null
+            }
+            {
+                commentCount > 0 ?
+                    <div 
+                        className="post-footer-comment"
+                        onClick={handleCommentBox}
+                    >
+                        <span>{commentCount}</span>
+                        <span>comments</span>
+                    </div> : null
+            }
         </div>
     );
 }

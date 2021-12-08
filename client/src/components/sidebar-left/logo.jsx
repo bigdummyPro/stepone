@@ -1,13 +1,13 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LogoImage from './../../assets/images/social-web-logo2.png';
 
-function Logo(props) {
+function Logo() {
     return (
         <div className="sidebar-left__logo">
-            <a href="/">
+            <Link to="/">
                 <img src={LogoImage} alt="" />
-            </a>
+            </Link>
         </div>
     );
 }

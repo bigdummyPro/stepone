@@ -19,7 +19,8 @@
 }
 .sidebar-left__logo {
   margin-bottom: 20px;
-  text-align: center;
+  padding-left: 10px;
+  text-align: left;
   a {
     display: inline-block;
     width: 140px;
@@ -106,6 +107,7 @@
         margin-right: 10px;
       }
       &:last-child {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: flex-end;

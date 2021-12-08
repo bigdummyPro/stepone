@@ -6,11 +6,11 @@ const notificationCtrl = require('../controller/notificationCtrl');
 
 const verifyToken = require('../middleware/auth');
 
-router.post('/notification', verifyToken, notificationCtrl.createNotification)
+router.post('/', verifyToken, notificationCtrl.createNotification)
 
-router.delete('/notification/:id', verifyToken, notificationCtrl.removeNotification)
+router.delete('/:id', verifyToken, notificationCtrl.removeNotification)
 
-router.get('/notification', verifyToken, notificationCtrl.getNotifications)
+router.get('/', verifyToken, notificationCtrl.getNotifications)
 
 router.patch('/isRead-update/:id', verifyToken, notificationCtrl.isReadUpdate)
 

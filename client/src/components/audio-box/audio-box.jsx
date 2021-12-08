@@ -10,14 +10,14 @@ import au04 from '../../assets/audio/PhaiChangEmDaYeu.mp3';
 import au05 from '../../assets/audio/SaiGonDauLongQua.mp3';
 import convertTime from '../../utils/convert-time';
 
-const audioList = [
-    {name: 'Chúng ta của sau này', link: au01},
-    {name: 'Dịu dàng em đến', link: au02},
-    {name: 'Lỡ say bye là bye', link: au03},
-    {name: 'Phải chăng em đã yêu', link: au04},
-    {name: 'Sài Gòn đau lòng quá', link: au05}
-]
-function AudioBox(props) {
+// const audioList = [
+//     {name: 'Chúng ta của sau này', link: au01},
+//     {name: 'Dịu dàng em đến', link: au02},
+//     {name: 'Lỡ say bye là bye', link: au03},
+//     {name: 'Phải chăng em đã yêu', link: au04},
+//     {name: 'Sài Gòn đau lòng quá', link: au05}
+// ]
+function AudioBox({audioList}) {
     const [audio, setAudio] = useState(null);
     const [audioCurrIndex, setAudioCurrIndex] = useState(0);
     const [togglePlayStatus, setTogglePlayStatus] = useState(false);
@@ -165,14 +165,13 @@ function AudioBox(props) {
         audioDiskAnimation.pause();
         setAudioDiskAnimation(audioDiskAnimation);
     },[])
-   
     return (
         <div className="audio-box-wrapper">
             <div className="audio-box">
                 <div className="audio-box-dashboard">
                     <div className="audio-box__header">
                         <span>Now Playing:</span>
-                        <span>{audioList[audioCurrIndex].name}</span>
+                        <span>{audioList[audioCurrIndex].file_name ? audioList[audioCurrIndex].file_name : 'Đang cập nhật'}</span>
                     </div>
                     <div className="audio-box__disk">
                         <div 
@@ -259,7 +258,7 @@ function AudioBox(props) {
                     <audio 
                         ref={audioRef}
                         id="audio" 
-                        src={audioList[audioCurrIndex].link}
+                        src={audioList[audioCurrIndex].url}
                         onLoadedData={handleLoadData}
                         onTimeUpdate={handleUpdateProgressBar}
                         onEnded={handleAudioEnded}
@@ -283,7 +282,7 @@ function AudioBox(props) {
                                                 <img src={Mp3Img} alt="" />
                                             </div>
                                             <div className="audio-item__content">
-                                                <span>{item.name}</span>
+                                                <span>{item.file_name ? item.file_name : 'Đang cập nhật'}</span>
                                             </div>
                                         </div>
                             })

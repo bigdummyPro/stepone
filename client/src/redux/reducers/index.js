@@ -5,6 +5,8 @@ import authReducer from './authReducer';
 import suggestionReducer from './suggestionReducer';
 import socketReducer from './socketReducer';
 import profileReducer from './profileReducer';
+import notificationReducer from './notificationReducer';
+import postReducer from './postReducer';
 
 export default combineReducers({
     modalReducer,
@@ -12,5 +14,7 @@ export default combineReducers({
     authReducer,
     suggestionReducer,
     socketReducer,
-    profileReducer
+    profileReducer,
+    notificationReducer,
+    postReducer
 })

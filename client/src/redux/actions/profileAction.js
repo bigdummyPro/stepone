@@ -1,6 +1,7 @@
 import { DeleteData, GLOBALTYPES } from "../constants/globalTypes";
 import { getDataAPI, patchDataAPI } from "../../utils/fetch-data-api";
 import { imageUpload } from "../../utils/image-upload";
+import { createNotification, removeNotification } from "./notificationAction";
 
 export const getUserProfile = ({id, auth}) => async (dispatch) => {
     dispatch({type: GLOBALTYPES.SET_IDS, payload: id})
@@ -86,14 +87,14 @@ export const follow = ({users, user, auth, socket}) => async dispatch => {
         socket.emit('follow', res.data.newUser)
 
         // Notify
-        // const msg = {
-        //     id: auth.user._id,
-        //     text: 'has started to follow you.',
-        //     recipients: [newUser._id],
-        //     url: `/profile/${auth.user._id}`,
-        // }
+        const message = {
+            id: auth.user._id,
+            text: 'has started to follow you.',
+            recipients: [newUser._id],
+            url: `/profile/${auth.user._id}/about`,
+        }
 
-        // dispatch(createNotify({msg, auth, socket}))
+        dispatch(createNotification({message, auth, socket}))
 
     } catch (err) {
         console.log(err.message)
@@ -138,14 +139,14 @@ export const unfollow = ({users, user, auth, socket}) => async (dispatch) => {
         socket.emit('unFollow', res.data.newUser)
 
         // Notify
-        // const msg = {
-        //     id: auth.user._id,
-        //     text: 'has started to follow you.',
-        //     recipients: [newUser._id],
-        //     url: `/profile/${auth.user._id}`,
-        // }
+        const message = {
+            id: auth.user._id,
+            text: 'has started to follow you.',
+            recipients: [newUser._id],
+            url: `/profile/${auth.user._id}/about`,
+        }
 
-        // dispatch(removeNotify({msg, auth, socket}))
+        dispatch(removeNotification({message, auth, socket}))
 
     } catch (err) {
         console.log(err.message)

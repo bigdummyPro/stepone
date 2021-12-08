@@ -29,12 +29,14 @@
       &:first-child {
         font-size: 1.1rem;
         color: $main-color;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
       }
       &:last-child {
         font-family: $second-font;
-        font-size: 2rem;
+        font-size: 1.8rem;
+        line-height: 2.4rem;
         color: $txt-color;
+        text-align: center;
       }
     }
   }
@@ -220,7 +222,8 @@
       }
       &__content {
         span {
-          font-size: 1.3rem;
+          font-size: 1.2rem;
+          line-height: 1.6rem;
           color: $txt-color;
           overflow: hidden;
           text-overflow: ellipsis;

@@ -23,7 +23,7 @@ function ProfileBodyAbout({userData, auth, handleEditModal}) {
                         <i className="fas fa-venus-mars"></i>
                         Gender
                     </span>
-                    <span>{(userData.gender !== 'unset' && userData.gender) || '***'}</span>
+                    <span>{userData.gender !== 'Unset' ? userData.gender : '***'}</span>
                 </li>
                 <li className="profile-about-item">
                     <span>

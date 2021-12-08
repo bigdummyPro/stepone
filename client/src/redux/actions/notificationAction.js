@@ -5,8 +5,8 @@ import { GLOBALTYPES } from "../constants/globalTypes"
 
 export const createNotification = ({message, auth, socket}) => async (dispatch) => {
     try {
-        const res = await postDataAPI('notification', message)
-
+        const res = await postDataAPI('notification', message);
+        
         socket.emit('createNotification', {
             ...res.data.notifications,
             user: {
@@ -14,15 +14,16 @@ export const createNotification = ({message, auth, socket}) => async (dispatch) 
                 avatar: auth.user.avatar
             }
         })
+        
     } catch (err) {
         console.log(err.message);
         // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
     }
 }
 
-export const removeNotification = ({message, auth, socket}) => async (dispatch) => {
+export const removeNotification = ({message, socket}) => async (dispatch) => {
     try {
-        await deleteDataAPI(`notify/${message.id}?url=${message.url}`)
+        await deleteDataAPI(`notification/${message.id}?url=${message.url}`)
         
         socket.emit('removeNotification', message)
     } catch (err) {
@@ -43,10 +44,10 @@ export const getNotifications = () => async (dispatch) => {
 }
 
 
-export const isReadUpdate = ({message}) => async (dispatch) => {
-    dispatch({type: GLOBALTYPES.UPDATE_NOTIFICATION, payload: {...message, isRead: true}})
+export const isReadUpdate = ({notification}) => async (dispatch) => {
+    dispatch({type: GLOBALTYPES.UPDATE_NOTIFICATION, payload: {...notification, isRead: true}})
     try {
-        await patchDataAPI(`/isRead-update/${message._id}`)
+        await patchDataAPI(`notification/isRead-update/${notification._id}`, null)
     } catch (err) {
         console.log(err.message)
         // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.message}})

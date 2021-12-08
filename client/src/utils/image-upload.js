@@ -28,7 +28,7 @@ export const imageUpload = async (images) => {
         })
         
         const data = await res.json()
-        imgArr.push({public_id: data.public_id, url: data.secure_url})
+        imgArr.push({public_id: data.public_id, url: data.secure_url, file_name: item.name, file_size: item.size, file_type: item.type})
     }
     return imgArr;
 }

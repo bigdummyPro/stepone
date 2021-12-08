@@ -74,6 +74,7 @@
       border-radius: 100%;
       border: 2px solid $txt-light-color;
       cursor: pointer;
+      position: relative;
       transition: all 0.2s linear;
       &:hover {
         background-color: $medium-white-color;
@@ -82,10 +83,33 @@
         font-size: 1.6rem;
         color: $main-color;
       }
+      .noti-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        padding: 0 6px;
+        height: 16px;
+        font-size: 1rem;
+        line-height: 1rem;
+        color: $medium-white-color;
+        font-weight: 600;
+        background-color: $red-color;
+        border-radius: 50%;
+        &.--more {
+          padding: 0 4px;
+          top: -6px;
+          right: -4px;
+        }
+      }
     }
     .top-menu-action__modal {
       width: max-content;
-      max-width: 400px;
+      max-width: 350px;
+      min-width: 310px;
       display: flex;
       flex-direction: column;
       padding: 15px 10px 10px;
@@ -117,6 +141,7 @@
 }
 .noti-modal-list {
   max-height: 260px;
+  min-height: 260px;
   overflow-y: auto;
   /* width */
   &::-webkit-scrollbar {
@@ -135,15 +160,16 @@
   .noti-modal-item {
     display: flex;
     align-items: flex-start;
-    padding: 12px 12px;
+    padding: 12px 12px 12px 10px;
     border-radius: 10px;
     transition: background-color 0.2s linear;
+    position: relative;
     &:hover {
       background-color: $main-light-color;
     }
     .noti-modal-item__avatar {
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       img {
         width: 100%;
         height: 100%;
@@ -153,20 +179,55 @@
       }
     }
     .noti-modal-item__body {
+      width: calc(100% - 45px);
       margin-left: 10px;
+      padding-right: 6px;
       display: flex;
       flex-direction: column;
       span {
         &.noti-item-content {
           font-size: 1.3rem;
           color: $txt-color;
+          p {
+            font-weight: 600;
+          }
         }
         &.noti-item-time {
           font-size: 1.1rem;
+          line-height: 1.1rem;
+          margin-top: 3px;
           color: $txt-light-color;
         }
       }
     }
+    .active-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: $main-color;
+      border-radius: 50%;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate(-7px, -50%);
+    }
+  }
+}
+.noti-modal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 260px;
+  min-height: 260px;
+  img {
+    width: 110px;
+    height: 110px;
+  }
+  span {
+    font-size: 1.4rem;
+    color: $txt-color;
+    margin-top: 15px;
   }
 }
 .noti-modal-see-more {
@@ -196,15 +257,17 @@
       align-items: center;
       margin-bottom: 25px;
       .user-item-avatar {
+        flex-shrink: 0;
         width: 40px;
         height: 40px;
-        padding: 4px;
-        margin-right: 10px;
+        padding: 2px;
+        margin-right: 5px;
         border: 1px solid $txt-light-color;
         border-radius: 100%;
         img {
           width: 100%;
           height: 100%;
+          border-radius: 100%;
           object-fit: cover;
         }
       }
@@ -224,7 +287,9 @@
           }
         }
         span {
-          font-size: 1.2rem;
+          font-size: 1.1rem;
+          line-height: 1.5rem;
+          margin-top: 2px;
           color: $txt-light-color;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -317,7 +382,7 @@
       outline: 6px solid $main-light-color;
       border: 1px solid $line-color;
       border-radius: 100%;
-      background-color: $white-color;
+      background-color: $medium-white-color;
       position: absolute;
       top: 0;
       left: 50%;

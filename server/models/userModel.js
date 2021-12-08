@@ -29,7 +29,7 @@ const UserSchema = new Schema({
         default: ''
     },
     role: {type: String, default: 'user'},
-    gender: {type: String, default: 'unset'},
+    gender: {type: String, default: 'Unset'},
     mobile: {type: String, default: ''},
     address: {type: String, default: ''},
     friends: [{type: mongoose.Types.ObjectId, ref: 'users'}],

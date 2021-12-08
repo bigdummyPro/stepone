@@ -48,10 +48,10 @@ function ProfileBodyPost(props) {
             </div>
             <div className="profile-body-post-wrapper">
                 <div className="profile-body-post">
+                    {/* <Post />
                     <Post />
                     <Post />
-                    <Post />
-                    <Post />
+                    <Post /> */}
                 </div>
             </div>
         </div>

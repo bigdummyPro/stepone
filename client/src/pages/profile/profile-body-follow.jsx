@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UserFollowBox from './user-follow-box';
+import NoDataImg from '../../assets/images/no-data.png';
 
 
 const tabMenuItems = ['Followers', 'Following'];
@@ -33,20 +34,27 @@ function ProfileBodyFollow({followers, following}) {
                     }
                 </div>
                 <div className="profile-follow-tab__content">
-                    <div className="tab-content-item">
-                        <div className="user-follow-list">
-                            {
-                                tabMenuActive === 0 && followers.map((item, index)=>(
-                                    <UserFollowBox followData={item} key={index} typeKey={0}/>
-                                ))
-                            }
-                            {
-                                tabMenuActive === 1 && following.map((item, index)=>(
-                                    <UserFollowBox followData={item} key={index} typeKey={1}/>
-                                ))
-                            }
-                        </div>
-                    </div>
+                    {
+                        (followers.length > 0 && tabMenuActive === 0) || (following.length > 0 && tabMenuActive === 1) ?
+                            <div className="tab-content-item">
+                                <div className="user-follow-list">
+                                    {
+                                        tabMenuActive === 0 && followers.map((item, index)=>(
+                                            <UserFollowBox followData={item} key={index} typeKey={0}/>
+                                        ))
+                                    }
+                                    {
+                                        tabMenuActive === 1 && following.map((item, index)=>(
+                                            <UserFollowBox followData={item} key={index} typeKey={1}/>
+                                        ))
+                                    }
+                                </div>
+                            </div> : 
+                            <div className="tab-content-item--empty">
+                                <img src={NoDataImg} alt="" />
+                                <span>No users in the list</span>
+                            </div>
+                    }
                 </div>
             </div>
         </div>

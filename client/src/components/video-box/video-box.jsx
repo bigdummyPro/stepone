@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './video-box.scss';
-import TestVideo from '../../assets/video/test-video.mp4';
 import convertTime from '../../utils/convert-time';
 
-function VideoBox(props) {
+function VideoBox({video}) {
     const [togglePlayStatus, setTogglePlayStatus] = useState(false);
     const [progressBarPercent, setProgressBarPercent] = useState(0);
     const [durationTime, setDurationTime] = useState(0);
@@ -54,7 +53,7 @@ function VideoBox(props) {
         <div className="video-box">
             <div className="video-box__content">
                 <video 
-                    src={TestVideo} 
+                    src={video.url} 
                     autoPlay
                     muted
                     ref={videoRef}

@@ -92,6 +92,10 @@ function CreateFileModal(props) {
         }
     }
     useEffect(()=>{
+        props.handleFileList(fileList);
+    },[fileList, props]);
+
+    useEffect(()=>{
         setFileList([]);//remove files when fileModalType changed 
     },[props.fileModalType])
     return (

@@ -93,6 +93,9 @@
       border: none;
       outline: none;
       overflow-y: hidden;
+      &::placeholder {
+        color: $txt-color;
+      }
     }
   }
   .modal-center-file {
