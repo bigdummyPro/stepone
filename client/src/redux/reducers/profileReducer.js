@@ -40,6 +40,23 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 users: EditData(state.users, payload._id, payload)
             };
+        case GLOBALTYPES.UPDATE_POST: 
+            const postState = [...state.posts];
+            const newPost = postState.find(item => item._id === payload.user._id);
+
+            if(newPost){
+                const newPostUpdate = {...newPost, posts: EditData(newPost.posts, payload._id, payload)};
+    
+                return {
+                    ...state,
+                    posts: EditData(state.posts, newPostUpdate._id, newPostUpdate)
+                }
+            }else{
+                return {
+                    ...state,
+                    posts: []
+                }
+            }
         default:
             return state;
     }

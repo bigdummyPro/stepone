@@ -123,6 +123,17 @@
   margin-bottom: 60px;
   padding: 12px 0px 15px;
   width: 100%;
+  .profile-body-tool {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    a {
+      padding: 3px 10px;
+      font-size: 1.3rem;
+      letter-spacing: 0;
+    }
+  }
 }
 .profile-body-follow {
   display: flex;
@@ -133,10 +144,10 @@
   padding: 15px 20px;
 }
 .profile-body-filter {
+  margin-left: auto;
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-  margin-bottom: 12px;
   overflow: hidden;
   .profile-body-filter__toggle {
     display: inline-flex;

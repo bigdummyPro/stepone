@@ -52,6 +52,7 @@ function Profile() {
             setUserData(newData);
         }
     },[id, authState.user, profileState.users])
+
     return (
         <div className="main-content">
             <div className="main-container">

@@ -1,20 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
-import GirlImg from '../../assets/images/girl.png';
+import UserAvatarImg from '../../assets/images/user-avatar.png';
+import { createComment } from '../../redux/actions/commentAction';
 
 function CommentCreateBox({
     commentFocusStatus, 
     boxType,
-    hashtagLv2,
-    hashtagLv3
+    onReply,
+    post,
+    auth
 }) {
     const [inputComment, setInputComment] = useState('');
+    const [replyValue, setReplyValue] = useState(null);
     const textareaEl = useRef();
     const dispatch = useDispatch();
 
     const {emotionModalStatus, emotionValue, emotionChange} = useSelector(state => state.emotionModalReducer);
     const textareaElReducer = useSelector(state => state.emotionModalReducer.textareaEl);
+    const authState = useSelector(state => state.authReducer);
+    const socketState = useSelector(state => state.socketReducer);
 
     const [cursorPosition, setCursorPosition] = useState(null);
 
@@ -31,15 +36,53 @@ function CommentCreateBox({
         dispatch({type: GLOBALTYPES.SET_TOGGLE_ICON_EL, payload: toggleIconEl})
         dispatch({type: GLOBALTYPES.SET_TEXTAREA_EL, payload: textareaEl})
     }
-    const handleInputComment = (inputValue) => {
-        setInputComment(inputValue);
+    const handleInputComment = (e, inputValue) => {
+        if(!e.target.value.match(/\n/)){ //không có chứa kí tự \n (xuống dòng)
+            setInputComment(inputValue);
+        }
+    }
+    const handleSubmitWithKey = async (e) => {
+        if(e.key === 'Enter' && inputComment !== ''){
+            const newComment = {
+                content: inputComment,
+                likes: [],
+                user: authState.user,
+                createdAt: new Date().toISOString(),
+                reply: onReply.parentCommentId && onReply.parentCommentId,
+                tag: onReply.activeComment && onReply.activeComment.user
+            }
+            console.log(onReply)
+            console.log(newComment)
+            // const res = await dispatch(createComment({post, newComment, auth: authState, socket: socketState}))
+
+            // if(res.data.success){
+            //     setInputComment('');
+            // }
+        }
     }
 
     useEffect(()=>{
-        if(commentFocusStatus !== null){console.log('vvt')
+        const inputTagEl = document.getElementsByClassName('input-tag')[0];
+        if(inputTagEl){
+            if(replyValue.activeComment.user){
+                textareaEl.current.style.textIndent = inputTagEl.offsetWidth + 'px';
+                textareaEl.current.placeholder = '';
+            }
+        }else{
+            textareaEl.current.style.textIndent = '0px';
+        }
+    },[replyValue])
+
+    useEffect(()=>{
+        setReplyValue(onReply);
+    },[onReply])
+
+    useEffect(()=>{
+        if(commentFocusStatus !== null){
             textareaEl.current.focus();
         }
     },[commentFocusStatus])
+
     useEffect(()=>{
         autoResizeHeight();
     },[inputComment])
@@ -55,6 +98,7 @@ function CommentCreateBox({
             setInputComment(newPostText);
         }
     },[emotionChange])
+
     useEffect(()=>{
         if(cursorPosition !== null && textareaEl){
             textareaEl.current.selectionStart = cursorPosition + 2
@@ -62,31 +106,29 @@ function CommentCreateBox({
         }
     },[cursorPosition])
 
-    useEffect(()=>{
-        if(hashtagLv2 && hashtagLv2.content !== ''){
-            textareaEl.current.focus();
-            setInputComment(hashtagLv2.content);
-        }
-    },[hashtagLv2])
-    useEffect(()=>{
-        if(hashtagLv3 && hashtagLv3.content !== ''){
-            textareaEl.current.focus();
-            setInputComment(hashtagLv3.content);
-        }
-    },[hashtagLv3])
     return (
         <div className={`comment-box-create ${boxType === 'small' ? 'comment-box-create--small' : ''}`}>
             <div className="comment-box-create__avatar">
-                <img src={GirlImg} alt="" />
+                <img src={auth.user.avatar || UserAvatarImg} alt="" />
             </div>
             <div className="comment-box-create__input">
+                {
+                    replyValue && replyValue.activeComment.user ?
+                        <span className="input-tag">
+                            {replyValue.activeComment.user.username}
+                            <span onClick={()=>setReplyValue({...onReply, activeComment: {}})}>
+                                <i className="fas fa-times"></i>
+                            </span>
+                        </span> : null
+                }
                 <textarea 
                     ref={textareaEl}
                     name="inputComment" 
                     placeholder="Type your comment..."
                     className="input-text"
                     value={inputComment}
-                    onChange={(e)=>handleInputComment(e.target.value)}
+                    onChange={(e)=>handleInputComment(e, e.target.value)}
+                    onKeyDown={handleSubmitWithKey}
                 ></textarea>
                 <ul className="input-tool">
                     <li 

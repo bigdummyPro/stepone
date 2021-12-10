@@ -14,6 +14,10 @@ function Post({post, auth, dispatch, socket}) {
         setCommentBoxStatus(!commentBoxStatus);
         if(commentFocusStatus !== null) setCommentFocusStatus(null);
     }
+    const handleCommentFocus = () => {
+        if(!commentBoxStatus)setCommentBoxStatus(!commentBoxStatus);
+        setCommentFocusStatus(!commentFocusStatus)
+    }
     return (
         <div className="post-item-wrapper">
             <div className="post-item">
@@ -37,7 +41,7 @@ function Post({post, auth, dispatch, socket}) {
                     commentCount={post.comments.length}
                 />
                 <PostTaskbar 
-                    setCommentFocus={()=>setCommentFocusStatus(!commentFocusStatus)}
+                    setCommentFocus={handleCommentFocus}
                     auth={auth}
                     dispatch={dispatch}
                     socket={socket}
@@ -47,6 +51,8 @@ function Post({post, auth, dispatch, socket}) {
                     commentBoxStatus ?
                         <PostCommentBox 
                             commentFocusStatus={commentFocusStatus}
+                            post={post}
+                            auth={auth}
                         /> : null
                 }
             </div>

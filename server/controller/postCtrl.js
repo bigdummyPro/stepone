@@ -96,7 +96,7 @@ const postCtrl = {
 
             if(!like) return res.status(400).json({success: false, message: 'This post does not exist.'})
 
-            res.json({success: false, message: 'UnLiked Post!'})
+            res.json({success: true, message: 'UnLiked Post!'})
 
         } catch (err) {
             return res.status(500).json({success: false, message: err.message})

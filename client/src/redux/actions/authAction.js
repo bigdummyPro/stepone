@@ -85,7 +85,7 @@ export const refreshToken = () => async dispatch => {
         await dispatch(loadUser()); 
         setTimeout(()=>{console.log('ooo')
             dispatch(refreshToken());
-        }, 5 * 60 * 1000)
+        }, 50 * 60 * 1000)
     }
 }
 
