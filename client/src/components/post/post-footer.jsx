@@ -1,4 +1,5 @@
 import React from 'react';
+import LikeImg from '../../assets/images/like.png';
 
 function PostFooter({handleCommentBox, likeCount, commentCount}) {
     return (
@@ -7,7 +8,9 @@ function PostFooter({handleCommentBox, likeCount, commentCount}) {
                 likeCount > 0 ?
                     <div className="post-footer-like">
                         <span>{likeCount}</span>
-                        <span>likes</span>
+                        <span>
+                            <img src={LikeImg} alt="" />
+                        </span>
                     </div> : null
             }
             {

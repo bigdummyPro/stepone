@@ -4,7 +4,6 @@ import UserAvatarImg from '../../../assets/images/user-avatar.png';
 import moment from 'moment'
 
 function CommentCard({levelKey, handleReply, comment}) {
-    
     return (
         <div 
             className={`comment-box-item--style comment-box-item__lv${levelKey}`}
@@ -14,15 +13,27 @@ function CommentCard({levelKey, handleReply, comment}) {
                     <div className="comment-box-curve"></div> :
                     <div className="comment-box-line"></div>
             }
-            <Link to="#vv" className="comment-box-avatar">
+            <Link 
+                to={`/profile/${comment.user._id}/post`} className="comment-box-avatar"
+            >
                 <img src={comment.user.avatar || UserAvatarImg} alt="" />
             </Link>
             <div className="comment-box-body">
                 <div className="comment-box-body__content">
-                    <span className="comment-content-name">
+                    <Link 
+                        to={`/profile/${comment.user._id}/post`} className="comment-content-name"
+                    >
                         {comment.user.username}
-                    </span>
+                    </Link>
                     <span className="comment-content-text">
+                        {
+                            comment.tag ?
+                                <Link
+                                    to={`/profile/${comment.tag._id}/post`} 
+                                >
+                                    @{comment.tag.username}
+                                </Link> : null
+                        }
                         {comment.content}
                     </span>
                 </div>

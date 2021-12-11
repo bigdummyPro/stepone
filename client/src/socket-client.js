@@ -102,6 +102,23 @@ function SocketClient() {
 
         return () => socketState.off('unLikeToClient')
     },[socketState, dispatch])
+
+    //Comment
+    useEffect(() => {
+        socketState.on('createCommentToClient', newPost => {
+            dispatch({type: GLOBALTYPES.UPDATE_POST, payload: newPost})
+        })
+
+        return () => socketState.off('createCommentToClient');
+    },[socketState, dispatch])
+
+    useEffect(() => {
+        socketState.on('deleteCommentToClient', newPost =>{
+            dispatch({type: GLOBALTYPES.UPDATE_POST, payload: newPost})
+        })
+
+        return () => socketState.off('deleteCommentToClient')
+    },[socketState, dispatch])
     return (
         <>
             <audio 

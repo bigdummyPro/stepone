@@ -16,19 +16,33 @@ export const createComment = ({post, newComment, auth, socket}) => async (dispat
         dispatch({ type: GLOBALTYPES.UPDATE_POST, payload: newPost })
 
         // Socket
-        // socket.emit('createComment', newPost)
+        socket.emit('createComment', newPost)
 
         // Notify
-        // const message = {
-        //     id: res.data.newComment._id,
-        //     text: newComment.reply ? 'mentioned you in a comment.' : 'has commented on your post.',
-        //     recipients: newComment.reply ? [newComment.tag._id] : [post.user._id],
-        //     url: `/profile/${auth.user._id}/post?id=${post._id}`,
-        //     content: post.content, 
-        //     image: post.images[0].url
-        // }
+        let newRecipients = [];
+        let newText = '';
 
-        // dispatch(createNotification({message, auth, socket}))
+        if(!newComment.tag && !newComment.reply){
+            newRecipients = [post.user._id];
+            newText = 'has commented on your post.';
+        }else if(newComment.tag && newComment.reply){
+            newRecipients = [newComment.tag._id];
+            newText = 'mentioned you in a comment.';
+        }else if(!newComment.tag && newComment.reply){
+            newRecipients = [newComment.selectedUser._id];
+            newText = 'reply you in a comment';
+        }
+        const message = {
+            id: res.data.newComment._id,
+            text: newText,
+            recipients: newRecipients,
+            url: `/profile/${auth.user._id}/post?id=${post._id}`,
+            content: post.content, 
+            image: post.images.length > 0 ? post.images[0].url : ''
+        }
+
+        await dispatch(createNotification({message, auth, socket}))
+
         return res
         
     } catch (err) {

@@ -38,7 +38,7 @@ function Profile() {
     useEffect(()=>{
         const searchQuery = Object.fromEntries(new URLSearchParams(search.substring(1)));
         if(search !== ''){
-            if(detailPostState.every(item => item._id !== searchQuery.id.toString())){console.log(detailPostState.every(item => item._id !== searchQuery.id.toString())); console.log(detailPostState)
+            if(detailPostState.every(item => item._id !== searchQuery.id.toString())){
                 dispatch(getPost({id: searchQuery.id}));
             }
         }

@@ -35,7 +35,7 @@ function PostCommentBox({commentFocusStatus, post, auth}) {
             <CommentCreateBox 
                 commentFocusStatus={commentFocusStatus}
                 boxType="medium"
-                onReply={null}
+                onReply={{activeComment: null, parentCommentId: null, replyStatus: null}}
                 post={post}
                 auth={auth}
             />

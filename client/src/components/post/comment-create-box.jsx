@@ -12,7 +12,7 @@ function CommentCreateBox({
     auth
 }) {
     const [inputComment, setInputComment] = useState('');
-    const [replyValue, setReplyValue] = useState(null);
+    const [replyValue, setReplyValue] = useState({activeComment: null, parentCommentId: null});
     const textareaEl = useRef();
     const dispatch = useDispatch();
 
@@ -48,28 +48,28 @@ function CommentCreateBox({
                 likes: [],
                 user: authState.user,
                 createdAt: new Date().toISOString(),
-                reply: onReply.parentCommentId && onReply.parentCommentId,
-                tag: onReply.activeComment && onReply.activeComment.user
+                reply: replyValue.parentCommentId && replyValue.parentCommentId,
+                tag: replyValue.activeComment && replyValue.activeComment.user,
+                selectedUser: onReply.activeComment.user
             }
-            console.log(onReply)
-            console.log(newComment)
-            // const res = await dispatch(createComment({post, newComment, auth: authState, socket: socketState}))
+            const res = await dispatch(createComment({post, newComment, auth: authState, socket: socketState}))
 
-            // if(res.data.success){
-            //     setInputComment('');
-            // }
+            if(res.data.success){
+                setInputComment('');
+            }
         }
     }
 
     useEffect(()=>{
         const inputTagEl = document.getElementsByClassName('input-tag')[0];
         if(inputTagEl){
-            if(replyValue.activeComment.user){
+            if(replyValue.activeComment){
                 textareaEl.current.style.textIndent = inputTagEl.offsetWidth + 'px';
                 textareaEl.current.placeholder = '';
             }
         }else{
             textareaEl.current.style.textIndent = '0px';
+            textareaEl.current.placeholder = 'Type your comment...'
         }
     },[replyValue])
 
@@ -113,10 +113,10 @@ function CommentCreateBox({
             </div>
             <div className="comment-box-create__input">
                 {
-                    replyValue && replyValue.activeComment.user ?
+                    replyValue && replyValue.activeComment ?
                         <span className="input-tag">
                             {replyValue.activeComment.user.username}
-                            <span onClick={()=>setReplyValue({...onReply, activeComment: {}})}>
+                            <span onClick={()=>setReplyValue({...replyValue, activeComment: null})}>
                                 <i className="fas fa-times"></i>
                             </span>
                         </span> : null
