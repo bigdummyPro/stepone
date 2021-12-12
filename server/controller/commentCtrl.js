@@ -44,34 +44,34 @@ const commentCtrl = {
             return res.status(500).json({success: false, message: err.message})
         }
     },
-    // likeComment: async (req, res) => {
-    //     try {
-    //         const comment = await Comments.find({_id: req.params.id, likes: req.user._id})
-    //         if(comment.length > 0) return res.status(400).json({msg: "You liked this post."})
+    likeComment: async (req, res) => {
+        try {
+            const comment = await Comments.find({_id: req.params.id, likes: req.user.id})
+            if(comment.length > 0) return res.status(400).json({success: false, message: "You liked this post."})
 
-    //         await Comments.findOneAndUpdate({_id: req.params.id}, {
-    //             $push: {likes: req.user._id}
-    //         }, {new: true})
+            await Comments.findOneAndUpdate({_id: req.params.id}, {
+                $push: {likes: req.user.id}
+            }, {new: true})
 
-    //         res.json({msg: 'Liked Comment!'})
+            res.json({success: true, message: 'Liked Comment!'})
 
-    //     } catch (err) {
-    //         return res.status(500).json({msg: err.message})
-    //     }
-    // },
-    // unLikeComment: async (req, res) => {
-    //     try {
+        } catch (err) {
+            return res.status(500).json({success: false, message: err.message})
+        }
+    },
+    unLikeComment: async (req, res) => {
+        try {
 
-    //         await Comments.findOneAndUpdate({_id: req.params.id}, {
-    //             $pull: {likes: req.user._id}
-    //         }, {new: true})
+            await Comments.findOneAndUpdate({_id: req.params.id}, {
+                $pull: {likes: req.user.id}
+            }, {new: true})
 
-    //         res.json({msg: 'UnLiked Comment!'})
+            res.json({success: true, message: 'UnLiked Comment!'})
 
-    //     } catch (err) {
-    //         return res.status(500).json({msg: err.message})
-    //     }
-    // },
+        } catch (err) {
+            return res.status(500).json({success: false, message: err.message})
+        }
+    },
     // deleteComment: async (req, res) => {
     //     try {
     //         const comment = await Comments.findOneAndDelete({

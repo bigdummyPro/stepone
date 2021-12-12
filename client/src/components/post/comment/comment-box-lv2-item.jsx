@@ -36,6 +36,7 @@ function CommentBoxLv2Item({comment, post, auth, replyComments}) {
                 levelKey={2}
                 handleReply={(lv2Comment)=>handleReply(lv2Comment)}
                 comment={comment}
+                post={post}
             />
             <div className={`comment-box-item comment-box-item__child comment-box-lv3-list ${!onReply.replyStatus ? '--non-input' : ''} ${repCmsLv3.length <= 2 ? '--non-toggle' : ''} ${onReply.replyStatus || repCmsLv3.length > 2 ? '--both-style' : ''}`}>
                 {
@@ -50,6 +51,7 @@ function CommentBoxLv2Item({comment, post, auth, replyComments}) {
                                 levelKey={3}
                                 handleReply={(lv3Comment)=>handleReply(lv3Comment)}
                                 comment={repCm}
+                                post={post}
                             />
                         </div>
                     ))

@@ -50,7 +50,7 @@ function CommentCreateBox({
                 createdAt: new Date().toISOString(),
                 reply: replyValue.parentCommentId && replyValue.parentCommentId,
                 tag: replyValue.activeComment && replyValue.activeComment.user,
-                selectedUser: onReply.activeComment.user
+                selectedUser: onReply.activeComment ? onReply.activeComment.user : null
             }
             const res = await dispatch(createComment({post, newComment, auth: authState, socket: socketState}))
 

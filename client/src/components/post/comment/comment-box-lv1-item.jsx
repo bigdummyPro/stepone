@@ -38,6 +38,7 @@ function CommentBoxLv1Item({comment, replyComments, auth, post}) {
                 levelKey={1}
                 handleReply={(lv1Comment)=>handleReply(lv1Comment)}
                 comment={comment}
+                post={post}
             />
             <div className={`comment-box-item comment-box-item__child comment-box-lv2-list ${!onReply.replyStatus ? '--non-input' : ''} ${repCmsLv2.length <= 2 ? '--non-toggle' : ''} ${onReply.replyStatus || repCmsLv2.length > 2 ? '--both-style' : ''}`}>
                 {

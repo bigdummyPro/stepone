@@ -14,7 +14,7 @@ function PostCommentBox({commentFocusStatus, post, auth}) {
     useEffect(()=>{
         const newCm = post.comments.filter(comment => !comment.reply);
         setComments(newCm);
-        setShowComment(newCm.slice(0, next));
+        setShowComment(newCm.reverse().slice(0, next));
     },[post.comments, next])
 
     useEffect(()=>{
@@ -25,7 +25,7 @@ function PostCommentBox({commentFocusStatus, post, auth}) {
         <div className="post-item__comment-box">
             <div className="comment-box-list">
                 {
-                    showComment.map((comment, index)=>(
+                    showComment.reverse().map((comment, index)=>(
                         <CommentBoxLv1Item 
                             key={index}
                             comment={comment}

@@ -1,4 +1,4 @@
-import {EditData, GLOBALTYPES} from '../constants/globalTypes';
+import {DeleteData, EditData, GLOBALTYPES} from '../constants/globalTypes';
 import { patchDataAPI, postDataAPI } from '../../utils/fetch-data-api';
 import {createNotification} from '../actions/notificationAction';
 
@@ -28,7 +28,7 @@ export const createComment = ({post, newComment, auth, socket}) => async (dispat
         }else if(newComment.tag && newComment.reply){
             newRecipients = [newComment.tag._id];
             newText = 'mentioned you in a comment.';
-        }else if(!newComment.tag && newComment.reply){
+        }else if(!newComment.tag && newComment.reply && newComment.selectedUser){
             newRecipients = [newComment.selectedUser._id];
             newText = 'reply you in a comment';
         }
@@ -61,5 +61,41 @@ export const updateComment = ({comment, post, content, auth}) => async (dispatch
     } catch (err) {
         // dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg} })
         console.log(err.message)
+    }
+}
+
+export const likeComment = ({comment, post, auth}) => async (dispatch) => {
+    const newComment = {...comment, likes: [...comment.likes, auth.user]}
+
+    const newComments = EditData(post.comments, comment._id, newComment)
+
+    const newPost = {...post, comments: newComments}
+    console.log(newPost)
+    
+    dispatch({ type: GLOBALTYPES.UPDATE_POST, payload: newPost })
+
+    try {
+        await patchDataAPI(`comment/${comment._id}/like`, null, auth.token)
+    } catch (err) {
+        console.log(err.message)
+        // dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg} })
+    }
+}
+
+export const unLikeComment = ({comment, post, auth}) => async (dispatch) => {
+
+    const newComment = {...comment, likes: DeleteData(comment.likes, auth.user._id)}
+
+    const newComments = EditData(post.comments, comment._id, newComment)
+
+    const newPost = {...post, comments: newComments}
+    
+    dispatch({ type: GLOBALTYPES.UPDATE_POST, payload: newPost })
+
+    try {
+        await patchDataAPI(`comment/${comment._id}/unlike`, null, auth.token)
+    } catch (err) {
+        console.log(err.message)
+        // dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg} })
     }
 }

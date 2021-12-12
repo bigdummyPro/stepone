@@ -191,14 +191,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px 0;
+  padding: 7px 20px 0;
   .post-taskbar-icon {
     display: flex;
     align-items: center;
-    padding: 6px 16px;
+    padding: 7px 12px;
     font-size: 1.3rem;
     color: $txt-color;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     user-select: none;
     transition: background-color 0.2s linear;
@@ -222,7 +222,7 @@
   // }
 }
 .post-item__comment-box {
-  margin-top: 8px;
+  margin-top: 7px;
   padding-top: 20px;
   border-top: 1px solid $line-color;
 }
@@ -320,9 +320,10 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      padding: 10px 12px;
+      padding: 8px 12px;
       border-radius: 18px;
       background-color: $main-light-color;
+      position: relative;
       .comment-content-name {
         font-size: 1.3rem;
         line-height: 1.8rem;
@@ -345,6 +346,36 @@
           &:hover {
             text-decoration: underline;
             color: $main-color;
+          }
+        }
+      }
+      .comment-content-like-count {
+        min-width: 30px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-radius: 10px;
+        border: 1px solid $line-color;
+        background-color: $medium-white-color;
+        display: flex;
+        align-items: center;
+        padding: 1px 2px;
+        transform: translateX(65%);
+        span {
+          &:first-child {
+            width: 15px;
+            height: 15px;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+          &:last-child {
+            font-size: 1.1rem;
+            line-height: 1.3rem;
+            color: $txt-color;
+            margin-left: 2px;
           }
         }
       }
@@ -377,7 +408,10 @@
             text-decoration: underline;
           }
         }
-        &-time {
+        &-like {
+          &.--active {
+            color: $main-color;
+          }
         }
       }
     }
@@ -549,7 +583,7 @@
       font-size: 1.3rem;
       line-height: 2rem;
       color: $txt-color;
-      padding: 0px 80px 0px 15px;
+      padding: 0px 80px 0px 12px;
       border: none;
       outline: none;
       background-color: transparent;
