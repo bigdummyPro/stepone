@@ -65,7 +65,7 @@ const Info = ({id, auth, profile, dispatch}) => {
                             </div>
 
                             <h6>{user.fullname} <span className="text-danger">{user.mobile}</span></h6>
-                            <p className="m-0"><br>{user.address}</p>
+                            <p className="m-0">{user.address}</p>
                             <a href={user.website} target="_blank" rel="noreferrer">
                                 {user.website}
                             </a>
