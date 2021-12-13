@@ -56,7 +56,7 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 443
 http.listen(port, () => {
     console.log('Server is running on port', port)
 })
