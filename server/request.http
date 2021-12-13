@@ -1,1 +1,12 @@
 GET http://localhost:5000/api
+###
+POST http://localhost:5000/api/message
+Content-Type: application/json
+
+{
+    "sender": "61a24a633764a8ffbec457a1", 
+    "recipient": ["61a4e63f54fa573bbe390359", "61a4e70254fa573bbe390367", "61a4e83954fa573bbe390381"], 
+    "text": "bữa nào rảnh cafe", 
+    "media": [], 
+    "convID": "61b6f0e7002a6288aa8459a8"
+}

@@ -15,7 +15,7 @@ function Post({post, auth, dispatch, socket}) {
         if(commentFocusStatus !== null) setCommentFocusStatus(null);
     }
     const handleCommentFocus = () => {
-        if(!commentBoxStatus)setCommentBoxStatus(!commentBoxStatus);
+        if(!commentBoxStatus) setCommentBoxStatus(!commentBoxStatus);
         setCommentFocusStatus(!commentFocusStatus)
     }
     return (

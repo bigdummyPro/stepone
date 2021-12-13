@@ -8,6 +8,7 @@ const userRouter = require('./routes/userRoute');
 const notificationRouter = require('./routes/notificationRoute');
 const postRouter = require('./routes/postRoute');
 const commentRouter = require('./routes/commentRoute');
+const messageRouter = require('./routes/messageRoute');
 
 
 //connect express
@@ -28,6 +29,8 @@ app.use('/api/notification', notificationRouter);
 app.use('/api/post', postRouter);
 //define api of comment
 app.use('/api/comment', commentRouter);
+//define api of message
+app.use('/api/message', messageRouter);
 
 
 const PORT = process.env.PORT || 5000;

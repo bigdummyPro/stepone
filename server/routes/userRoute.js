@@ -8,6 +8,8 @@ const verifyToken = require('../middleware/auth');
 
 router.get('/', verifyToken, userCtrl.getUser);
 
+router.get('/search', verifyToken, userCtrl.searchUser);
+
 router.get('/suggested-user', verifyToken, userCtrl.suggestedUser);
 
 router.get('/get-user-by-id/:id', verifyToken, userCtrl.getUserById);

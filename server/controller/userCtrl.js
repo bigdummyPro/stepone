@@ -24,8 +24,7 @@ const userCtrl = {
     },
     searchUser: async (req, res) => {
         try {
-            const users = await Users.find({username: {$regex: req.query.username}})
-            .limit(10).select("username nickname avatar")
+            const users = await Users.find({username: {$regex: req.query.username}}).limit(10).select("username nickname avatar");
             
             res.json({success: true, users})
         } catch (err) {

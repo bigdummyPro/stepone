@@ -36,11 +36,10 @@ export const createComment = ({post, newComment, auth, socket}) => async (dispat
             id: res.data.newComment._id,
             text: newText,
             recipients: newRecipients,
-            url: `/profile/${auth.user._id}/post?id=${post._id}`,
+            url: `/profile/${post.user._id}/post?id=${post._id}`,
             content: post.content, 
             image: post.images.length > 0 ? post.images[0].url : ''
         }
-
         await dispatch(createNotification({message, auth, socket}))
 
         return res

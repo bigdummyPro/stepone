@@ -7,11 +7,18 @@ import moment from 'moment';
 import UserAvatarImg from './../../assets/images/user-avatar.png';
 import EmptyImg from '../../assets/images/empty-noti.png';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
+import { getDataAPI } from '../../utils/fetch-data-api';
 
 function TopMenu() {
 
     const menu_noti_modal_content = useRef(null);
     const top_menu_toggle_icon = useRef(null);
+
+    const search_modal_ref = useRef(null);
+    const search_modal_toggle_ref = useRef(null);
+
+    const [searchValue, setSearchValue] = useState('');
+    const [searchResult, setSearchResult] = useState([]);
 
     const dispatch = useDispatch();
     const notificationState = useSelector(state => state.notificationReducer);
@@ -20,6 +27,27 @@ function TopMenu() {
         dispatch(isReadUpdate({notification}));
     }
     const [notiCount, setNotiCount] = useState({type: null, value: null});
+
+    const storageRef = useRef(null);
+
+    const handleSearch = async (e) => {
+        setSearchValue(e.target.value);
+
+        try {
+            if(storageRef.current) clearTimeout(storageRef.current);
+
+            // storageRef.current = setTimeout(() => {
+                const res = await getDataAPI(`user/search?username=vận`);
+                console.log(res.data)
+                // if(res.data.success){
+                    setSearchResult(res.data.users);
+                // }
+            // }, 400)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    console.log(searchResult)
 
     useEffect(()=>{
         if(notificationState.data.length > 0){
@@ -36,7 +64,9 @@ function TopMenu() {
 
     useEffect(()=>{
         const sidebarEl = document.querySelector('.sidebar-right-container') || document.querySelector('.sidebar-right-container .--active');
+
         clickOutsideRef(menu_noti_modal_content, top_menu_toggle_icon, sidebarEl);
+        clickOutsideRef(search_modal_ref, search_modal_toggle_ref, null);
     },[])
 
     useEffect(()=>{
@@ -48,9 +78,27 @@ function TopMenu() {
     }
     return (
         <div className="sidebar-right__top-menu">
-            <div className="top-menu-input">
-                <span><i className="fas fa-search"></i></span>
-                <input type="text" name="" id="" placeholder="Search"/>
+            <div className="top-menu-search">
+                <div className="search-input" ref={search_modal_toggle_ref}>
+                    <span><i className="fas fa-search"></i></span>
+                    <input 
+                        type="text" 
+                        name="searchInput" 
+                        placeholder="Search"
+                        value={searchValue}
+                        onChange={handleSearch}
+                    />
+                </div>
+                <div className="search-modal" ref={search_modal_ref}>
+                    <ul className="search-modal__list">
+                        <li className="search-item">
+                            <Link to="#vv">
+                                <img src={UserAvatarImg} alt="" />
+                                <span>Sương Trần</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div className="top-menu-action menu-noti">
                 <div 

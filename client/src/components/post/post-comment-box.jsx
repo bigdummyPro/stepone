@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import CommentCreateBox from './comment-create-box';
 import CommentBoxLv1Item from './comment/comment-box-lv1-item';
 import CommentBoxToggleTool from './comment/comment-box-toggle-tool';
@@ -21,6 +20,7 @@ function PostCommentBox({commentFocusStatus, post, auth}) {
         const newRepCm = post.comments.filter(comment => comment.reply);
         setReplyComments(newRepCm);
     },[post.comments])
+    
     return (
         <div className="post-item__comment-box">
             <div className="comment-box-list">
@@ -36,7 +36,7 @@ function PostCommentBox({commentFocusStatus, post, auth}) {
                     ))
                 }
             </div>
-            <div>
+            <div className="comment-box-toggle">
                 <CommentBoxToggleTool 
                     repCms={comments}
                     next={next}

@@ -223,12 +223,14 @@
 }
 .post-item__comment-box {
   margin-top: 7px;
-  padding-top: 20px;
   border-top: 1px solid $line-color;
 }
 .comment-box-list {
   display: flex;
   flex-direction: column;
+  &:not(:empty) {
+    padding-top: 20px;
+  }
 }
 .toggle-comment {
   display: inline-flex;
@@ -376,6 +378,7 @@
             line-height: 1.3rem;
             color: $txt-color;
             margin-left: 2px;
+            margin-top: 1px;
           }
         }
       }

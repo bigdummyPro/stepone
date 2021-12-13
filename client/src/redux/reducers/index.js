@@ -8,6 +8,7 @@ import profileReducer from './profileReducer';
 import notificationReducer from './notificationReducer';
 import postReducer from './postReducer';
 import detailPostReducer from './detailPostReducer';
+import messageReducer from './messageReducer';
 
 export default combineReducers({
     modalReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
     profileReducer,
     notificationReducer,
     postReducer,
-    detailPostReducer
+    detailPostReducer,
+    messageReducer
 })

@@ -105,7 +105,7 @@ const postCtrl = {
     deletePost: async (req, res) => {
         try {
             const post = await Posts.findOneAndDelete({_id: req.params.id, user: req.user.id})
-            // await Comments.deleteMany({_id: {$in: post.comments }})
+            await Comments.deleteMany({_id: {$in: post.comments }})
 
             res.json({
                 success: true,
