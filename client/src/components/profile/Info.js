@@ -41,7 +41,7 @@ const Info = ({id, auth, profile, dispatch}) => {
 
                         <div className="info_content">
                             <div className="info_content_title">
-                                <h2>{user.username}</h2>
+                                <h2><br /> Name: {user.username}</h2>
                                 {
                                     user._id === auth.user._id
                                     ?  <button className="btn btn-outline-info"
