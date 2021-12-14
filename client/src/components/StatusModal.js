@@ -17,9 +17,9 @@ const StatusModal = () => {
     const refCanvas = useRef()
     const [tracks, setTracks] = useState('')
     var myArray = [
-      "Apples",
-      "Bananas",
-      "Pears"
+      "Hey whats up ",
+      "Whats on your mind",
+      "How are you feeling "
     ];
 
     var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
@@ -38,7 +38,7 @@ const StatusModal = () => {
             return newImages.push(file)
         })
 
-        if(err) dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err} })
+        if(err) dispatch({ twhats on yourype: GLOBALTYPES.ALERT, payload: {error: err} })
         setImages([...images, ...newImages])
     }
 
@@ -124,7 +124,7 @@ const StatusModal = () => {
 
                 <div className="status_body">
                     <textarea name="content" value={content}
-                    placeholder={`${randomItem}?`}
+                    placeholder={`${randomItem}?, ${auth.user.username`}
                     onChange={e => setContent(e.target.value)}
                     style={{
                         filter: theme ? 'invert(1)' : 'invert(0)',
