@@ -38,7 +38,7 @@ const StatusModal = () => {
             return newImages.push(file)
         })
 
-        if(err) dispatch({ twhats on yourype: GLOBALTYPES.ALERT, payload: {error: err} })
+        if(err) dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err} })
         setImages([...images, ...newImages])
     }
 
