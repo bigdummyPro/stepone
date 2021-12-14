@@ -17,9 +17,9 @@ const StatusModal = () => {
     const refCanvas = useRef()
     const [tracks, setTracks] = useState('')
     var myArray = [
-      "Hey whats up ",
+      "What are we writing today",
       "Whats on your mind",
-      "How are you feeling "
+      "How are you feeling"
     ];
 
     var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
@@ -124,7 +124,7 @@ const StatusModal = () => {
 
                 <div className="status_body">
                     <textarea name="content" value={content}
-                    placeholder={`${randomItem}?, ${auth.user.username`}
+                    placeholder={`${randomItem}`}
                     onChange={e => setContent(e.target.value)}
                     style={{
                         filter: theme ? 'invert(1)' : 'invert(0)',
