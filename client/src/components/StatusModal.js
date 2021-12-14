@@ -16,7 +16,13 @@ const StatusModal = () => {
     const videoRef = useRef()
     const refCanvas = useRef()
     const [tracks, setTracks] = useState('')
+    var myArray = [
+      "Apples",
+      "Bananas",
+      "Pears"
+    ];
 
+    var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
     const handleChangeImages = e => {
         const files = [...e.target.files]
         let err = ""
@@ -118,7 +124,7 @@ const StatusModal = () => {
 
                 <div className="status_body">
                     <textarea name="content" value={content}
-                    placeholder={`${auth.user.username}, what are you thinking?`}
+                    placeholder={`${randomItem}?`}
                     onChange={e => setContent(e.target.value)}
                     style={{
                         filter: theme ? 'invert(1)' : 'invert(0)',
