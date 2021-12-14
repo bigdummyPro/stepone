@@ -10,7 +10,7 @@ const Icons = ({setContent, content, theme}) => {
     return (
         <div className="nav-item dropdown" 
         style={{ opacity: 1, filter: theme ? 'invert(1)' : 'invert(0)' }}>
-
+            
             <span className="nav-link position-relative px-1" id="navbarDropdown" 
             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span style={{opacity: 0.4}}>😄</span>
@@ -24,4 +24,12 @@ const Icons = ({setContent, content, theme}) => {
                                 {icon}
                             </span>
                         ))
+                    }
+                </div>
+            </div>
+                
+        </div>
+    )
 }
+
+export default Icons
