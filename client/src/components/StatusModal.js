@@ -17,9 +17,12 @@ const StatusModal = () => {
     const refCanvas = useRef()
     const [tracks, setTracks] = useState('')
     var myArray = [
+      "How are you doing",
+      "What are we thinking today",
       "What are we writing today",
       "Whats on your mind",
-      "How are you feeling"
+      "How are you feeling",
+      "How are you"
     ];
 
     var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
