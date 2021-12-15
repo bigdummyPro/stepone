@@ -1,23 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react';
-import GirlImg from '../../assets/images/girl.png';
+import UserAvatarImg from '../../assets/images/user-avatar.png';
+import GroupAvatarImg from '../../assets/images/group-avatar.png';
 import MessageItem from '../../components/message-item/message-item';
 import buildFileSelector from '../../utils/build-file-selector';
 import messActionItem from '../../assets/json-data/mess-action-item.json';
 import ToolTip from '../../components/tooltip/tooltip';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { getMessages } from '../../redux/actions/messageAction';
 
 function MessageRight() {
     const [messInputValue, setMessInputValue] = useState('');
     const [messIconTooltip, setMessIconTooltip] = useState(null);
     const [cursorPosition, setCursorPosition] = useState(null);
 
+    const [currConversation, setCurrConversation] = useState({});
+    const [data, setData] = useState([]);
+
     const textareaEl = useRef(null);
     const dispatch = useDispatch();
+
+    const {id} = useParams();
 
     const {emotionModalStatus, emotionValue, emotionChange} = useSelector(state => state.emotionModalReducer);
 
     const textareaElReducer = useSelector(state => state.emotionModalReducer.textareaEl);
+
+    const messageState = useSelector(state => state.messageReducer);
 
     const autoResizeHeight = () => {
         if(textareaEl.current.value !== ''){
@@ -42,6 +52,34 @@ function MessageRight() {
         dispatch({type: GLOBALTYPES.SET_TOGGLE_ICON_EL, payload: toggleIconEl})
         dispatch({type: GLOBALTYPES.SET_TEXTAREA_EL, payload: textareaEl})
     }
+
+    useEffect(()=>{
+        const newData = messageState.data.find(item => item._id === id);
+        if(newData) setData(newData);
+    },[id, messageState.data])
+
+    useEffect(() => {
+        const getMessagesData = async () => {
+            if(messageState.data.every(item => item._id !== id)){
+                await dispatch(getMessages({id, page: 1}))
+            }
+        }
+        getMessagesData();
+    },[id, dispatch, messageState.data])
+
+    useEffect(() => {
+        if(id && messageState.conversations.length > 0){
+            const newConv = messageState.conversations.find(conv => conv._id === id);
+            if(newConv) setCurrConversation(newConv);
+        }
+    },[id, messageState.conversations])
+
+    useEffect(() => {
+        if(messageState.userStorage){
+            setCurrConversation(messageState.userStorage)
+        }
+    },[messageState.userStorage])
+
     useEffect(()=>{
         if(textareaEl === textareaElReducer){
             const cursorPos = textareaEl.current.value.slice(0, textareaEl.current.selectionStart).length;
@@ -62,12 +100,14 @@ function MessageRight() {
     useEffect(()=>{
         autoResizeHeight();
     },[messInputValue])
+
     return (
         <div className="message-right">
             <div className="message-right__top">
                 <div className="message-info">
-                    <img src={GirlImg} alt="" />
-                    <span>Nguyễn Hoàng Khánh Ngân</span>
+                    <img src={currConversation && (currConversation.convType === 'personal' ? (currConversation.recipients[0].avatar || UserAvatarImg): (currConversation.convAvatar || GroupAvatarImg)) } alt="" />
+
+                    <span>{currConversation.convType === 'personal' ? currConversation.recipients[0].username : currConversation.convName}</span>
                 </div>
                 <ul className="message-tool">
                     <li className="message-tool__item">
@@ -128,15 +168,6 @@ function MessageRight() {
                             onClick={(e)=>handleEmotionModal(e.target.parentNode)}
                         >
                             <i className="fas fa-grin-stars"></i>
-                            {/* <EmotionModal 
-                                toggleIconElement="emotion-toggle-icon"
-                                wrapToggleElement="main-body"
-                                emotionModalStatus={emotionModalStatus}
-                                closeEmotionModal={()=>setEmotionModalStatus(false)}
-                                inputValue={messInputValue}
-                                setInputValue={(textvalue)=>setMessInputValue(textvalue)}
-                                textareaEl={textareaEl}
-                            /> */}
                         </span>
                     </div>
                 </div>

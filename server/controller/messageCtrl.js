@@ -20,14 +20,15 @@ class APIfeatures {
 const messageCtrl = {
     createMessage: async (req, res) => {
         try {
-            const { sender, recipients, text, media, convID} = req.body;
+            const { sender, recipients, text, media} = req.body;
 
             if(!recipients || (!text.trim() && media.length === 0)) return;
 
             let newConversation;
-            if(convID){
+            const conv = await Conversations.findById(req.params.id);
+            if(conv){
                 newConversation = await Conversations.findOneAndUpdate({
-                    _id: convID
+                    _id: conv._id
                 }, {
                     recipients: [sender, ...recipients],
                     text, media
@@ -107,15 +108,16 @@ const messageCtrl = {
     getMessages: async (req, res) => {
         try {
             let features;
-            if(req.query.convID){
+            const conv = Conversations.findById(req.params.id);
+            if(conv){
                 features = new APIfeatures(Messages.find({
-                    conversation: req.query.convID
+                    conversation: conv._id
                 }), req.query).paginating()
             }else{
                 features = new APIfeatures(Messages.find({
                     $or: [
-                        {sender: req.user.id, recipients: req.query.userID},
-                        {sender: req.query.userID, recipients: req.user.id}
+                        {sender: req.user.id, recipients: req.params.id},
+                        {sender: req.params.id, recipients: req.user.id}
                     ]
                 }), req.query).paginating()
             }

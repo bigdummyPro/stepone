@@ -6,6 +6,8 @@ import {Link} from 'react-router-dom';
 import moment from 'moment';
 import UserAvatarImg from './../../assets/images/user-avatar.png';
 import EmptyImg from '../../assets/images/empty-noti.png';
+import EmptyDataImg from '../../assets/images/no-data.png';
+import LoadingImg from '../../assets/images/loading.gif';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import { getDataAPI } from '../../utils/fetch-data-api';
 
@@ -19,9 +21,11 @@ function TopMenu() {
 
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
+    const [searchLoading, setSearchLoading] = useState(false);
 
     const dispatch = useDispatch();
     const notificationState = useSelector(state => state.notificationReducer);
+    const authState = useSelector(state => state.authReducer);
 
     const handleIsRead = (notification) => {
         dispatch(isReadUpdate({notification}));
@@ -30,24 +34,40 @@ function TopMenu() {
 
     const storageRef = useRef(null);
 
-    const handleSearch = async (e) => {
+    const handleSearch = (e) => {
         setSearchValue(e.target.value);
-
-        try {
-            if(storageRef.current) clearTimeout(storageRef.current);
-
-            // storageRef.current = setTimeout(() => {
-                const res = await getDataAPI(`user/search?username=vận`);
-                console.log(res.data)
-                // if(res.data.success){
-                    setSearchResult(res.data.users);
-                // }
-            // }, 400)
-        } catch (error) {
-            console.log(error)
+        if(e.target.value.trim() !== ''){
+            try {
+                if(storageRef.current) clearTimeout(storageRef.current);
+    
+                storageRef.current = setTimeout(async () => {
+                    setSearchLoading(true);
+                    const res = await getDataAPI(`user/search?username=${e.target.value}`);
+                    if(res.data.success){
+                        setSearchResult(res.data.users.filter(user => user._id !== authState.user._id));
+                        setSearchLoading(false);
+                    }
+                }, 400)
+            } catch (error) {
+                console.log(error)
+            }
+        }else{
+            setSearchResult([]);
         }
     }
-    console.log(searchResult)
+    const handleSearchItem = (user) => {
+        const mutualFriend = authState.user.following.filter(item => user.following.includes(item._id));
+        const findFriend = authState.user.following.findIndex(item => item._id === user._id);
+        if(findFriend !== -1){
+            return `Friend`
+        }else{
+            if(mutualFriend.length > 0){
+                return `${mutualFriend.length} mutual friend${mutualFriend.length > 2 ? 's' : ''}`
+            }else{
+                return null
+            }
+        }
+    }
 
     useEffect(()=>{
         if(notificationState.data.length > 0){
@@ -66,9 +86,20 @@ function TopMenu() {
         const sidebarEl = document.querySelector('.sidebar-right-container') || document.querySelector('.sidebar-right-container .--active');
 
         clickOutsideRef(menu_noti_modal_content, top_menu_toggle_icon, sidebarEl);
-        clickOutsideRef(search_modal_ref, search_modal_toggle_ref, null);
     },[])
 
+    useEffect(()=>{
+        //Special dropdown with search
+        document.addEventListener('mousedown', (e) => {
+            if(search_modal_toggle_ref.current && search_modal_toggle_ref.current.contains(e.target)){
+                search_modal_ref.current.classList.add('--active');
+            }else{
+                if(search_modal_ref.current && !search_modal_ref.current.contains(e.target)){
+                    search_modal_ref.current.classList.remove('--active');
+                }
+            }
+        })
+    },[])
     useEffect(()=>{
         dispatch(getNotifications(dispatch));
     },[])
@@ -79,25 +110,43 @@ function TopMenu() {
     return (
         <div className="sidebar-right__top-menu">
             <div className="top-menu-search">
-                <div className="search-input" ref={search_modal_toggle_ref}>
+                <div className="search-input" >
                     <span><i className="fas fa-search"></i></span>
                     <input 
+                        ref={search_modal_toggle_ref}
                         type="text" 
-                        name="searchInput" 
                         placeholder="Search"
                         value={searchValue}
                         onChange={handleSearch}
                     />
                 </div>
                 <div className="search-modal" ref={search_modal_ref}>
-                    <ul className="search-modal__list">
-                        <li className="search-item">
-                            <Link to="#vv">
-                                <img src={UserAvatarImg} alt="" />
-                                <span>Sương Trần</span>
-                            </Link>
-                        </li>
-                    </ul>
+                    {
+                        searchLoading ? 
+                        <div className="search-loading">
+                            <img src={LoadingImg} alt="" />
+                        </div> :
+                        searchResult.length > 0 ?
+                        <ul className="search-modal__list">
+                            {
+                                searchResult.map((seRe, index)=>(
+                                    <li className="search-item" key={index}>
+                                        <Link to={`/profile/${seRe._id}/post`}>
+                                            <img src={seRe.avatar || UserAvatarImg} alt="" />
+                                            <div className="search-item__info">
+                                                <span>{seRe.username}</span>
+                                                <span>{handleSearchItem(seRe)}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                ))
+                            }
+                        </ul> : 
+                        <div className="search-modal__empty">
+                            <img src={EmptyDataImg} alt="" />
+                            <span>No results found</span>
+                        </div>
+                    }
                 </div>
             </div>
             <div className="top-menu-action menu-noti">

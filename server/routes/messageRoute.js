@@ -8,7 +8,7 @@ const verifyToken = require('../middleware/auth');
 
 router.post('/', verifyToken, messageCtrl.createMessage);
 
-router.get('/', verifyToken, messageCtrl.getMessages);
+router.get('/get-mess-by-conversation/:id', verifyToken, messageCtrl.getMessages);
 
 router.post('/conversations', verifyToken, messageCtrl.createConversation);
 

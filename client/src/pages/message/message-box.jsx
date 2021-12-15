@@ -1,22 +1,30 @@
 import React from 'react';
-import GirlImg from '../../assets/images/girl.png';
+import UserAvatarImg from '../../assets/images/user-avatar.png';
+import GroupAvatarImg from '../../assets/images/group-avatar.png';
+import moment from 'moment';
 
-function MessageItem(props) {
+function MessageItem({conversation}) {
     return (
         <div className="message-box">
             <div className="message-box__left">
-                <img src={GirlImg} alt="" />
+                <img src={conversation.convType === 'personal' ? (conversation.avatar || UserAvatarImg): (conversation.convAvatar || GroupAvatarImg)} alt="" />
             </div>
             <div className="message-box__center">
                 <span className="message-box-name">
-                    Nguyễn Hoàng Khánh Ngân
+                    {conversation.convType === 'personal' ? conversation.recipients[0].username : conversation.convName}
                 </span>
-                <span className="message-box-description">
-                    Ok bạn ơi!!
-                </span>
+                {
+                    <div className="message-box-description">
+                        <span className="message-content">
+                            {conversation.text ? conversation.text : ''}
+                        </span>
+                        <span className="message-time">
+                            2 ngày
+                        </span>
+                    </div>
+                }
             </div>
             <div className="message-box__right">
-                <span className="message-time">2 ngày</span>
                 <div className="message-tool">
                     <span className="message-tool__icon">
                         <i className="fas fa-ellipsis-h"></i>

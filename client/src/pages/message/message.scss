@@ -27,11 +27,9 @@
     .message-tool {
       display: flex;
       align-items: center;
-      gap: 6px;
       .message-tool__item {
         width: 35px;
         height: 35px;
-        padding: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -55,6 +53,7 @@
     padding: 0 10px;
     margin-top: 2px;
     margin-bottom: 15px;
+    position: relative;
     .search-wrapper {
       padding: 0px 15px 0px 35px;
       background-color: $main-light-color;
@@ -80,6 +79,93 @@
         left: 5px;
         top: 50%;
         transform: translate(50%, -50%);
+      }
+    }
+    .search-modal {
+      position: absolute;
+      z-index: 30;
+      top: 50px;
+      left: 10px;
+      right: 10px;
+      background-color: $medium-white-color;
+      border-radius: 10px;
+      box-shadow: $light-box-shadow;
+      // border: 1px solid $line-color;
+      padding: 12px 6px 12px 10px;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.2s linear;
+      &.--active {
+        visibility: visible;
+        opacity: 1;
+      }
+      .search-modal__loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100px;
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
+      .search-modal__list {
+        width: 100%;
+        max-height: 300px;
+        overflow-y: auto;
+        /* width */
+        &::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+          background: $medium-white-color;
+          border-radius: 10px;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+          background: $main-color;
+          border-radius: 3px;
+        }
+        .search-item a {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          padding: 10px 6px;
+          border-radius: 10px;
+          transition: background-color 0.2s linear;
+          cursor: pointer;
+          &:hover {
+            background-color: $main-light-color;
+          }
+          img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+          }
+          span {
+            font-size: 1.3rem;
+            color: $txt-color;
+            margin-left: 10px;
+          }
+        }
+      }
+      .search-modal__empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        img {
+          width: 80px;
+          height: 80px;
+        }
+        span {
+          font-size: 1.3rem;
+          color: $txt-color;
+        }
       }
     }
   }
@@ -123,6 +209,7 @@
     height: 45px;
     border-radius: 50%;
     border: 1px solid $line-color;
+    background-color: #6e83b7;
     img {
       width: 100%;
       height: 100%;
@@ -145,9 +232,17 @@
       color: $txt-color;
     }
     .message-box-description {
-      font-size: 1.2rem;
-      color: $txt-light-color;
       margin-top: 2px;
+      display: flex;
+      align-items: center;
+      .message-content {
+        font-size: 1.2rem;
+        color: $txt-light-color;
+      }
+      .message-time {
+        font-size: 1rem;
+        color: $txt-light-color;
+      }
     }
   }
   .message-box__right {
@@ -155,10 +250,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    .message-time {
-      font-size: 1rem;
-      color: $txt-light-color;
-    }
     .message-tool {
       visibility: hidden;
       opacity: 0;
@@ -201,6 +292,8 @@
       height: 35px;
       border-radius: 50%;
       border: 1px solid $txt-light-color;
+      background-color: #6e83b7;
+      padding: 2px;
     }
     span {
       font-size: 1.4rem;

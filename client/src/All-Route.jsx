@@ -10,7 +10,7 @@ function AllRoute(){
     return (
         <Routes>
             <Route path="/" element={<Home />}/>
-            <Route path="/message" element={<Message />}/>
+            <Route path="/message/:id" element={<Message />}/>
             <Route path="/profile/:id/*" element={<Profile />}/>
             <Route path="/saved-post" element={<SavedPost />}/>
             <Route path="/general-setting" element={<GeneralSetting />}/>
