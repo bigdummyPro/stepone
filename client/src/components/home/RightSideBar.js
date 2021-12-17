@@ -30,7 +30,7 @@ const RightSideBar = () => {
                     {
                         suggestions.users.map(user => (
                             <UserCard key={user._id} user={user} >
-                                <FollowBtn user={user.substring(0, 13)} />
+                                <FollowBtn user={user} />
                             </UserCard>
                         ))
                     }
