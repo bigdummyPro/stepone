@@ -41,7 +41,7 @@ const FollowBtn = ({user}) => {
             followed
             ? <button className="btn btn-outline-danger"
             onClick={handleUnFollow}>
-                UnFollow
+                Unfollow
             </button>
             : <button className="btn btn-outline-info"
             onClick={handleFollow}>
