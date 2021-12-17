@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const conversationSchema = new Schema({
     recipients: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
+    currentSender: { type: mongoose.Types.ObjectId, ref: 'users' },
     convName: String,
     convType: {
         type: String,

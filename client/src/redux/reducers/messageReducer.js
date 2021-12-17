@@ -14,30 +14,59 @@ const messageReducer = (state = initialState, action) => {
                 ...state,
                 userStorage: payload
             }
-        case GLOBALTYPES.CREATE_MESSAGE:
+        case GLOBALTYPES.CREATE_MESSAGE:console.log('check 06')
 
             let newConversations = [];
             let newData = [];
 
-            if(!state.conversations.includes(payload._id)){
-                newConversations = [...state.conversations, {_id: payload._id, text: payload.text, media: payload.media, recipients: [payload.recipients], convType: 'personal'}];
+            const convID = payload.recipients.filter(item => item._id !== payload.user._id)[0]._id;
 
-                newData = [...state.data, {result: 1, messages: [payload], _id: payload._id}];
+            if(state.conversations.every(item => item._id !== convID)){
+                newConversations = [...state.conversations, {
+                    _id: payload._convID, 
+                    text: payload.text, 
+                    currentSender: payload.sender,
+                    media: payload.media, 
+                    recipients: payload.recipients.filter(item => item._id !== payload.user._id), 
+                    convType: 'personal'
+                }];
+                //sort by updateAt
+                newConversations = sortConvWhenAddMess(newConversations)
+                    // const fromIndex = newConversations.length - 1;
+                    // const elementClone = newConversations[fromIndex];
+
+                    // newConversations.splice(fromIndex, 1);
+                    // newConversations.splice(0, 0, elementClone);
+                //end sort
+
+                newData = [...state.data, {result: 1, messages: [payload], _id: convID}];
+                console.log(newConversations)
             }else{
                 newConversations = state.conversations.map(conv => (
-                    conv._id === payload._id ? 
+                    conv._id === convID ? 
                     {
                         ...conv,
                         text: payload.text,
-                        media: payload.media
+                        currentSender: payload.sender,
+                        recipients: payload.recipients.filter(item => item._id !== payload.user._id),
+                        media: payload.media,
+                        updatedAt: payload.updatedAt
                     } : conv
                 ))
+                //sort by updateAt
+                newConversations = sortConvWhenAddMess(newConversations);
+                    // const fromIndex = newConversations.findIndex(conv => conv._id === payload._convID);
+                    // const elementClone = newConversations[fromIndex];
+
+                    // newConversations.splice(fromIndex, 1);
+                    // newConversations.splice(0, 0, elementClone);
+                //end sort
 
                 newData = state.data.map(data => (
-                    data._id === payload._id ?
+                    data._id === convID ?
                     {
                         ...data,
-                        message: [...data.message, payload],
+                        messages: [...data.messages, payload],
                         result: data.result + 1
                     } : data
                 ))
@@ -62,6 +91,18 @@ const messageReducer = (state = initialState, action) => {
         default:
             return state;
     }
+}
+
+const sortConvWhenAddMess = (conversations) => {
+    const newConversations = [...conversations];
+
+    const fromIndex = newConversations.length - 1;
+    const elementClone = newConversations[fromIndex];
+
+    newConversations.splice(fromIndex, 1);
+    newConversations.splice(0, 0, elementClone);
+
+    return newConversations
 }
 
 export default messageReducer;

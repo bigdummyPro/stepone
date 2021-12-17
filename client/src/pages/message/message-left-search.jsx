@@ -44,7 +44,7 @@ function MessageLeftSearch({auth}) {
         dispatch({type: GLOBALTYPES.SET_USER_STORAGE, payload: {
             _id: value._id, 
             convType: 'personal',
-            recipients: [value]
+            recipients: [{_id: value._id, username: value.username, avatar: value.avatar}]
         }})
         search_mess_content_ref.current.classList.remove('--active');
     }

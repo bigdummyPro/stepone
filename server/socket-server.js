@@ -112,6 +112,17 @@ const socketServer = (socket) => {
         }
     })
 
+    // Message
+    socket.on('addMessage', message => {
+        const clients = users.filter(user => message.recipients.find(item => item._id === user.id));
+
+        if(clients.length > 0){
+            clients.forEach(client => {
+                socket.to(`${client.socketId}`).emit('addMessageToClient', message)
+            })
+        }
+    })
+
 }
 
 module.exports = socketServer;

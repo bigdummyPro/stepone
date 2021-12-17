@@ -2,12 +2,17 @@ import React from 'react';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import GroupAvatarImg from '../../assets/images/group-avatar.png';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
-function MessageItem({conversation}) {
+function MessageBox({conversation, id, auth}) {
+    console.log(conversation)
     return (
-        <div className="message-box">
+        <Link 
+            to={`/message/${conversation._id}`} 
+            className={`message-box ${id === conversation._id ? '--active' : ''}`}
+        >
             <div className="message-box__left">
-                <img src={conversation.convType === 'personal' ? (conversation.avatar || UserAvatarImg): (conversation.convAvatar || GroupAvatarImg)} alt="" />
+                <img src={conversation.convType === 'personal' ? (conversation.recipients[0].avatar || UserAvatarImg): (conversation.convAvatar || GroupAvatarImg)} alt="" />
             </div>
             <div className="message-box__center">
                 <span className="message-box-name">
@@ -16,10 +21,13 @@ function MessageItem({conversation}) {
                 {
                     <div className="message-box-description">
                         <span className="message-content">
+                            {
+                                conversation.currentSender._id === auth.user._id ? 'You: ' : null
+                            }
                             {conversation.text ? conversation.text : ''}
                         </span>
                         <span className="message-time">
-                            2 ngày
+                            {moment(conversation.updatedAt).fromNow()}
                         </span>
                     </div>
                 }
@@ -31,8 +39,8 @@ function MessageItem({conversation}) {
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 
-export default MessageItem;
+export default MessageBox;

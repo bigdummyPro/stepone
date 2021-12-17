@@ -1,4 +1,4 @@
-import {getDataAPI} from '../../utils/fetch-data-api';
+import {getDataAPI, postDataAPI} from '../../utils/fetch-data-api';
 import { GLOBALTYPES } from '../constants/globalTypes';
 
 export const getConversations = ({auth, page = 1}) => async (dispatch) => {
@@ -9,13 +9,16 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
         res.data.conversations.forEach(item => {
             const newRecipients = item.recipients.filter(item => item._id !== auth.user._id);
             newConversation.push({
+                ...item,
                 _id: item.convType === 'group' ? item._id : newRecipients[0]._id,
-                convType: item.convType,
+                // convType: item.convType,
                 recipients: newRecipients, 
-                convName: item.convName,
-                convAvatar: item.convAvatar,
-                text: item.text, 
-                media: item.media
+                // currentSender: item.currentSender,
+                // convName: item.convName,
+                // convAvatar: item.convAvatar,
+                // text: item.text, 
+                // media: item.media,
+                // updatedAt: item.updatedAt
             })
         })
 
@@ -32,12 +35,37 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
 
 export const getMessages = ({id, page = 1}) => async (dispatch) => {
     try {
-        const res = await getDataAPI(`message/${id}?limit=${page * 9}`)
+        const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 9}`)
         const newData = {...res.data, messages: res.data.messages.reverse()}
-
-        dispatch({type: GLOBALTYPES.GET_MESSAGES, payload: {...newData, _id: id, page}})
+        console.log(newData)
+        
+        if(res.data.messages.length > 0){
+            dispatch({type: GLOBALTYPES.GET_MESSAGES, payload: {...newData, _id: id, page}})
+        }
     } catch (err) {
         // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
         console.log(err);
+    }
+}
+
+export const createMessage = ({message, auth, socket}) => async (dispatch) =>{
+    dispatch({type: GLOBALTYPES.CREATE_MESSAGE, payload: {...message, user: auth.user}})
+
+    const { _id, avatar, fullname, username } = auth.user
+    // socket.emit('addMessage', {...message, user: { _id, avatar, fullname, username }})
+    socket.emit('addMessage', message)
+    
+    try {
+        const newRecipients = []
+        message.recipients.forEach(item => {
+            if(item._id !== auth.user._id) newRecipients.push(item._id);
+        });
+
+        const res = await postDataAPI(`message`, {...message, recipients: newRecipients, sender: message.sender._id});
+
+        return res
+    } catch (err) {
+        // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+        console.log(err.message)
     }
 }

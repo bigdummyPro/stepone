@@ -8,7 +8,7 @@ import ToolTip from '../../components/tooltip/tooltip';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { getMessages } from '../../redux/actions/messageAction';
+import { createMessage, getMessages } from '../../redux/actions/messageAction';
 
 function MessageRight() {
     const [messInputValue, setMessInputValue] = useState('');
@@ -27,6 +27,10 @@ function MessageRight() {
 
     const textareaElReducer = useSelector(state => state.emotionModalReducer.textareaEl);
 
+    const authState = useSelector(state => state.authReducer);
+
+    const socketState = useSelector(state => state.socketReducer);
+
     const messageState = useSelector(state => state.messageReducer);
 
     const autoResizeHeight = () => {
@@ -39,7 +43,7 @@ function MessageRight() {
     }
 
     const handleChangeTextarea = (e) => {
-        setMessInputValue(e.target.value)
+        if(!e.target.value.match(/\n/)) setMessInputValue(e.target.value);
     }
 
     const handleFileSelect = (e, acceptType) => {
@@ -53,12 +57,33 @@ function MessageRight() {
         dispatch({type: GLOBALTYPES.SET_TEXTAREA_EL, payload: textareaEl})
     }
 
-    useEffect(()=>{
+    const handleSubmitWithKey = async (e) => {
+        if(e.key === 'Enter' && messInputValue !== ''){
+            const message = {
+                _convID: id,
+                sender: authState.user,
+                recipients: [...currConversation.recipients, {_id: authState.user._id, username: authState.user.username, avatar: authState.user.avatar}],
+                // recipients: currConversation.recipients,
+                // convName: currConversation.convName,
+                // convAvatar: currConversation.convAvatar,
+                text: messInputValue, 
+                media: [],
+                updatedAt: new Date().toISOString()
+            }
+            const res = await dispatch(createMessage({message, auth: authState, socket: socketState}));
+            if(res.data.success){
+                setMessInputValue('');
+            }
+        }
+    }
+
+    useEffect(()=>{console.log('check01')
         const newData = messageState.data.find(item => item._id === id);
-        if(newData) setData(newData);
+        console.log(newData)
+        if(newData) setData(newData);console.log('tutut')
     },[id, messageState.data])
 
-    useEffect(() => {
+    useEffect(() => {console.log('check02')
         const getMessagesData = async () => {
             if(messageState.data.every(item => item._id !== id)){
                 await dispatch(getMessages({id, page: 1}))
@@ -67,14 +92,14 @@ function MessageRight() {
         getMessagesData();
     },[id, dispatch, messageState.data])
 
-    useEffect(() => {
+    useEffect(() => {console.log('check03')
         if(id && messageState.conversations.length > 0){
             const newConv = messageState.conversations.find(conv => conv._id === id);
             if(newConv) setCurrConversation(newConv);
         }
     },[id, messageState.conversations])
 
-    useEffect(() => {
+    useEffect(() => {console.log('check04')
         if(messageState.userStorage){
             setCurrConversation(messageState.userStorage)
         }
@@ -100,7 +125,8 @@ function MessageRight() {
     useEffect(()=>{
         autoResizeHeight();
     },[messInputValue])
-
+    console.log(data.messages)
+    console.log(messageState)
     return (
         <div className="message-right">
             <div className="message-right__top">
@@ -123,14 +149,15 @@ function MessageRight() {
             </div>
             <div className="message-right__center">
                 <ul className="message-list">
-                    <MessageItem messageType={1}/>
-                    <MessageItem messageType={0}/>
-                    <MessageItem messageType={1}/>
-                    <MessageItem messageType={0}/>
-                    <MessageItem messageType={1}/>
-                    <MessageItem messageType={0}/>
-                    <MessageItem messageType={1}/>
-                    <MessageItem messageType={0}/>
+                    {
+                        data.messages && data.messages.map((mess, index)=>(
+                            <MessageItem 
+                                key={index}
+                                messageType={mess.sender._id === authState.user._id ? 0 : 1}
+                                message={mess}
+                            />
+                        ))
+                    }
                 </ul>
             </div>
             <div className="message-right__bottom">
@@ -162,6 +189,7 @@ function MessageRight() {
                             value={messInputValue}
                             placeholder="Enter your message"
                             onChange={handleChangeTextarea}
+                            onKeyDown={handleSubmitWithKey}
                         ></textarea>
                         <span 
                             id="emotion-toggle-icon"

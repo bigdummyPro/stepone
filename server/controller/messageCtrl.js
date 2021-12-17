@@ -20,27 +20,30 @@ class APIfeatures {
 const messageCtrl = {
     createMessage: async (req, res) => {
         try {
-            const { sender, recipients, text, media} = req.body;
+            const { sender, recipients, text, media, _convID} = req.body;
 
             if(!recipients || (!text.trim() && media.length === 0)) return;
 
             let newConversation;
-            const conv = await Conversations.findById(req.params.id);
-            if(conv){
+            const conv = await Conversations.findById(_convID);
+            if(conv){console.log('tt')
                 newConversation = await Conversations.findOneAndUpdate({
                     _id: conv._id
                 }, {
-                    recipients: [sender, ...recipients],
+                    recipients: recipients,
+                    currentSender: sender,
                     text, media
                 }, { new: true, upsert: true })
-            }else{
+            }else{console.log('bb')
+                // const revRecipients = [...recipients].reverse();
                 newConversation = await Conversations.findOneAndUpdate({
                     $or: [
-                        {recipients: [sender, ...recipients]},
-                        {recipients: [...recipients, sender]}
+                        {recipients: [...recipients, sender]},
+                        {recipients: [sender, ...recipients]}
                     ]
                 }, {
                     recipients: [sender, ...recipients],
+                    currentSender: sender,
                     text, media
                 }, { new: true, upsert: true })
             }
@@ -48,7 +51,9 @@ const messageCtrl = {
             const newMessage = new Messages({
                 conversation: newConversation._id,
                 sender,
-                recipients, text, media
+                recipients, 
+                text, 
+                media
             })
 
             await newMessage.save()
@@ -93,7 +98,7 @@ const messageCtrl = {
             }), req.query).paginating()
 
             const conversations = await features.query.sort('-updatedAt')
-            .populate('recipients', 'avatar username fullname')
+            .populate('recipients currentSender', 'avatar username nickname')
 
             res.json({
                 success: true,
@@ -108,7 +113,7 @@ const messageCtrl = {
     getMessages: async (req, res) => {
         try {
             let features;
-            const conv = Conversations.findById(req.params.id);
+            const conv = await Conversations.findById(req.params.id);
             if(conv){
                 features = new APIfeatures(Messages.find({
                     conversation: conv._id
@@ -122,7 +127,7 @@ const messageCtrl = {
                 }), req.query).paginating()
             }
 
-            const messages = await features.query.sort('-createdAt')
+            const messages = await features.query.sort('-createdAt').populate('recipients sender', 'avatar username nickname')
 
             res.json({
                 success: true,

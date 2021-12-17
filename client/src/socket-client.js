@@ -119,6 +119,23 @@ function SocketClient() {
 
         return () => socketState.off('deleteCommentToClient')
     },[socketState, dispatch])
+
+    // Message
+    useEffect(() => {
+        socketState.on('addMessageToClient', message =>{
+            dispatch({type: GLOBALTYPES.CREATE_MESSAGE, payload: {...message, user: authState.user}})
+            // dispatch({
+            //     type: GLOBALTYPES.ADD_USER, 
+            //     payload: {
+            //         ...message.user, 
+            //         text: message.text, 
+            //         media: message.media
+            //     }
+            // })
+        })
+
+        return () => socketState.off('addMessageToClient')
+    },[socketState, dispatch])
     return (
         <>
             <audio 

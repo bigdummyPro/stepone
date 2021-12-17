@@ -6,6 +6,7 @@
   border-radius: 10px;
   border: 1px solid $line-color;
   height: calc(100vh - 112px);
+  position: relative;
 }
 .message-left {
   display: flex;
@@ -24,10 +25,11 @@
       color: $txt-color;
       font-weight: 700;
     }
-    .message-tool {
+    .message-tool-left {
       display: flex;
       align-items: center;
-      .message-tool__item {
+      position: relative;
+      .tool-left__item {
         width: 35px;
         height: 35px;
         display: flex;
@@ -38,13 +40,63 @@
         // background-color: $main-light-color;
         cursor: pointer;
         transition: background-color 0.2s linear;
-        span {
+        span.tool-left-icon {
           font-size: 1.3rem;
           color: $main-color;
         }
+        .tool-left-menu {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          z-index: 31;
+          background-color: $medium-white-color;
+          box-shadow: $light-box-shadow;
+          padding: 12px 10px;
+          border-radius: 10px;
+          visibility: hidden;
+          opacity: 0;
+          transition: all 0.2s linear;
+          &::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            right: 0;
+            width: 100%;
+            height: 10px;
+            background-color: transparent;
+          }
+          .menu-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+            color: $txt-color;
+            padding: 10px 10px;
+            white-space: nowrap;
+            transition: background-color 0.2s linear;
+            border-radius: 10px;
+            &:first-child {
+              i {
+                margin-left: 2px;
+                margin-right: 3px;
+              }
+            }
+            i {
+              width: 22px;
+              height: auto;
+              font-size: 1.5rem;
+              margin-left: 5px;
+            }
+            &:hover {
+              background-color: $main-light-color;
+            }
+          }
+        }
         &:hover {
           background-color: $main-light-color;
-          //   background-color: $medium-white-color;
+          .tool-left-menu {
+            visibility: visible;
+            opacity: 1;
+          }
         }
       }
     }
@@ -204,12 +256,18 @@
   padding: 12px 8px;
   border-radius: 8px;
   cursor: pointer;
+  position: relative;
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
   .message-box__left {
     width: 45px;
     height: 45px;
-    border-radius: 50%;
     border: 1px solid $line-color;
     background-color: #6e83b7;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
     img {
       width: 100%;
       height: 100%;
@@ -220,11 +278,17 @@
     display: flex;
     flex-direction: column;
     margin-left: 8px;
+    flex: 1;
     span {
-      max-width: 170px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      &.message-box-name {
+        max-width: 220px;
+      }
+      &.message-content {
+        max-width: 120px;
+      }
     }
     .message-box-name {
       font-size: 1.3rem;
@@ -235,6 +299,7 @@
       margin-top: 2px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       .message-content {
         font-size: 1.2rem;
         color: $txt-light-color;
@@ -247,9 +312,9 @@
   }
   .message-box__right {
     margin-left: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    position: absolute;
+    top: 15px;
+    right: 10px;
     .message-tool {
       visibility: hidden;
       opacity: 0;
@@ -264,12 +329,15 @@
       }
     }
   }
-  &:hover {
+  &:not(&.--active):hover {
     background-color: $main-light-color;
   }
   &:hover .message-tool {
     visibility: visible;
     opacity: 1;
+  }
+  &.--active {
+    background-color: $main-light-color;
   }
 }
 .message-right {
@@ -438,6 +506,122 @@
     }
     &:hover {
       background-color: $main-light-color;
+    }
+  }
+}
+.setting-group-modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($color: $medium-white-color, $alpha: 0.8);
+  border-radius: 10px;
+}
+.setting-group-modal {
+  width: 400px;
+  max-height: 400px;
+  background-color: $medium-white-color;
+  box-shadow: $light-box-shadow;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+.setting-group-modal__header {
+  padding: 15px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid #e7e0f5;
+  span {
+    &:first-child {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: $txt-color;
+    }
+    &:last-child {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid #e7e0f5;
+      background-color: #f3f0fa;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+}
+.setting-group-modal__body {
+  padding: 15px 15px;
+  .setting-group-item {
+    width: 100%;
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+    label {
+      display: inline-block;
+      font-size: 1.1rem;
+      color: $txt-color;
+      margin-bottom: 5px;
+    }
+    .setting-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .group-avatar {
+        margin-right: 8px;
+        img {
+          width: 80px;
+          height: 80px;
+        }
+      }
+      .avatar-tool {
+        position: relative;
+        &:hover span {
+          color: $main-color;
+        }
+        span {
+          font-size: 1.2rem;
+          color: $txt-color;
+          user-select: none;
+          i {
+            margin-right: 2px;
+          }
+        }
+        input {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          opacity: 0;
+          padding: 0;
+          cursor: pointer;
+          &::-webkit-file-upload-button {
+            visibility: hidden;
+          }
+        }
+      }
+    }
+    .setting-group-name {
+      input {
+        width: 100%;
+        border: 1px solid $line-color;
+        outline: none;
+        font-size: 1.3rem;
+        padding: 10px 10px;
+        border-radius: 5px;
+        background-color: $medium-white-color;
+      }
     }
   }
 }
