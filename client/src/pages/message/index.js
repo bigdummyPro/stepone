@@ -7,6 +7,7 @@ const Message = () => {
             <div className="col-md-4 border-right px-0">
                 <LeftSide />
             </div>
+        </div>
     )
 }
 
