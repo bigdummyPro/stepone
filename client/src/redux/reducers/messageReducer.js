@@ -40,7 +40,6 @@ const messageReducer = (state = initialState, action) => {
                 //end sort
 
                 newData = [...state.data, {result: 1, messages: [payload], _id: convID}];
-                console.log(newConversations)
             }else{
                 newConversations = state.conversations.map(conv => (
                     conv._id === convID ? 
@@ -87,7 +86,12 @@ const messageReducer = (state = initialState, action) => {
                 data: [...state.data, payload]
             }
         case GLOBALTYPES.CREATE_CONVERSATION:
-            return
+            return {
+                ...state,
+                conversations: [ {
+                    ...payload, recipients: payload.recipients.filter(item => item._id !== payload.user._id)
+                },...state.conversations]
+            }
         default:
             return state;
     }

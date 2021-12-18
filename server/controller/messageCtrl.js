@@ -71,12 +71,14 @@ const messageCtrl = {
                 recipients,
                 convName,
                 convAvatar,
-                convType: 'group'
+                convType: 'group',
+                currentSender: null,
+                text: ''
             })
             await newConversation.save();
-            res.json({success: true, message: 'Create Success!'});
+            res.json({success: true, newConversation, message: 'Create Success!'});
         } catch (error) {
-            return res.status(500).json({success: false, message: err.message})
+            return res.status(500).json({success: false, message: error.message})
         }
     },
     updateConversation: async (req, res) => {

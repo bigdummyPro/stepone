@@ -80,7 +80,8 @@ function MessageRight() {
     useEffect(()=>{console.log('check01')
         const newData = messageState.data.find(item => item._id === id);
         console.log(newData)
-        if(newData) setData(newData);console.log('tutut')
+        if(newData) setData(newData);
+        else setData([]);
     },[id, messageState.data])
 
     useEffect(() => {console.log('check02')

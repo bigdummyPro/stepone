@@ -10,7 +10,7 @@ router.post('/', verifyToken, messageCtrl.createMessage);
 
 router.get('/get-mess-by-conversation/:id', verifyToken, messageCtrl.getMessages);
 
-router.post('/conversations', verifyToken, messageCtrl.createConversation);
+router.post('/conversation', verifyToken, messageCtrl.createConversation);
 
 router.get('/conversations', verifyToken, messageCtrl.getConversations);
 

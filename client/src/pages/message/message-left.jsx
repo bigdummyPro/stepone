@@ -5,7 +5,7 @@ import MessageLeftSearch from './message-left-search';
 import { getConversations } from '../../redux/actions/messageAction';
 import { useNavigate, useParams } from 'react-router';
 
-function MessageLeft(props) {
+function MessageLeft({handleModal}) {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.authReducer);
     const messageState = useSelector(state => state.messageReducer);
@@ -33,7 +33,10 @@ function MessageLeft(props) {
                             <i className="fas fa-ellipsis-h"></i>
                         </span>
                         <ul className="tool-left-menu">
-                            <li className="menu-item">
+                            <li 
+                                className="menu-item"
+                                onClick={()=>handleModal(true)}
+                            >
                                 <i className="fas fa-user-friends"></i>
                                 <span>Group chat</span>
                             </li>

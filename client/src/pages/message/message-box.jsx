@@ -22,7 +22,7 @@ function MessageBox({conversation, id, auth}) {
                     <div className="message-box-description">
                         <span className="message-content">
                             {
-                                conversation.currentSender._id === auth.user._id ? 'You: ' : null
+                                conversation.currentSender && conversation.currentSender._id === auth.user._id ? 'You: ' : null
                             }
                             {conversation.text ? conversation.text : ''}
                         </span>

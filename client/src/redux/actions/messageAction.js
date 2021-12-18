@@ -51,8 +51,6 @@ export const getMessages = ({id, page = 1}) => async (dispatch) => {
 export const createMessage = ({message, auth, socket}) => async (dispatch) =>{
     dispatch({type: GLOBALTYPES.CREATE_MESSAGE, payload: {...message, user: auth.user}})
 
-    const { _id, avatar, fullname, username } = auth.user
-    // socket.emit('addMessage', {...message, user: { _id, avatar, fullname, username }})
     socket.emit('addMessage', message)
     
     try {
@@ -67,5 +65,18 @@ export const createMessage = ({message, auth, socket}) => async (dispatch) =>{
     } catch (err) {
         // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
         console.log(err.message)
+    }
+}
+
+export const createConversation = ({conversation, auth, socket}) => async (dispatch) => {
+
+    try {
+        const res = await postDataAPI('message/conversation', conversation);
+        if(res.data.success){
+            dispatch({type: GLOBALTYPES.CREATE_CONVERSATION, payload: {...res.data.newConversation, user: auth.user}});
+        }
+        return res;
+    } catch (error) {
+        console.log(error.message);
     }
 }

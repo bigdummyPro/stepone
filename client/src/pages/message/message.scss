@@ -361,7 +361,6 @@
       border-radius: 50%;
       border: 1px solid $txt-light-color;
       background-color: #6e83b7;
-      padding: 2px;
     }
     span {
       font-size: 1.4rem;
@@ -513,22 +512,24 @@
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 35;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba($color: $medium-white-color, $alpha: 0.8);
+  background-color: rgba($color: $medium-white-color, $alpha: 0.5);
   border-radius: 10px;
 }
 .setting-group-modal {
   width: 400px;
-  max-height: 400px;
+  max-height: 440px;
   background-color: $medium-white-color;
   box-shadow: $light-box-shadow;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
+  position: relative;
 }
 .setting-group-modal__header {
   padding: 15px 14px;
@@ -563,6 +564,22 @@
 }
 .setting-group-modal__body {
   padding: 15px 15px;
+  overflow-y: auto;
+  /* width */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: $medium-white-color;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: $main-color;
+    border-radius: 3px;
+  }
   .setting-group-item {
     width: 100%;
     &:not(:last-child) {
@@ -572,7 +589,7 @@
       display: inline-block;
       font-size: 1.1rem;
       color: $txt-color;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     .setting-avatar {
       display: flex;
@@ -583,6 +600,7 @@
         img {
           width: 80px;
           height: 80px;
+          border-radius: 50%;
         }
       }
       .avatar-tool {
@@ -623,5 +641,189 @@
         background-color: $medium-white-color;
       }
     }
+    .setting-member {
+      display: flex;
+      flex-direction: column;
+      .member-list {
+        display: flex;
+        gap: 8px 7px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+        .member-item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2px 5px 2px 7px;
+          border-radius: 5px;
+          background-color: $main-light-color;
+          border: 1px solid $line-color;
+          span {
+            color: $main-color;
+            &:first-child {
+              font-size: 1.1rem;
+            }
+            &:last-child {
+              width: 18px;
+              height: 18px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 1.1rem;
+              line-height: 1.1rem;
+              border-radius: 50%;
+              margin-left: 3px;
+              cursor: pointer;
+              flex-shrink: 0;
+              &:hover {
+                border: 1px solid $line-color;
+              }
+            }
+          }
+        }
+      }
+      .member-search {
+        .member-search__input {
+          position: relative;
+          input {
+            width: 100%;
+            border: 1px solid $line-color;
+            outline: none;
+            font-size: 1.3rem;
+            color: $txt-color;
+            padding: 10px 38px 10px 10px;
+            border-radius: 5px;
+            background-color: $medium-white-color;
+            &::placeholder {
+              font-size: 1.2rem;
+            }
+          }
+          span {
+            position: absolute;
+            top: 50%;
+            right: 6px;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: $txt-color;
+            padding: 6px 8px;
+            cursor: pointer;
+            &:hover {
+              color: $main-color;
+            }
+          }
+        }
+        .member-search__modal {
+          padding: 6px 8px 8px;
+          background-color: $medium-white-color;
+          border-radius: 10px;
+          margin-top: 10px;
+          border: 1px solid $line-color;
+          .close-btn {
+            text-align: right;
+            margin-bottom: 2px;
+            span {
+              font-size: 1.2rem;
+              color: $txt-color;
+              cursor: pointer;
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+          .member-search-list {
+            max-height: 180px;
+            overflow-y: auto;
+            /* width */
+            &::-webkit-scrollbar {
+              width: 4px;
+            }
+
+            /* Track */
+            &::-webkit-scrollbar-track {
+              background: $medium-white-color;
+            }
+
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+              background: $main-color;
+              border-radius: 3px;
+            }
+            .member-search-item {
+              display: flex;
+              align-items: center;
+              padding: 8px 6px;
+              border-radius: 10px;
+              cursor: pointer;
+              user-select: none;
+              &:hover {
+                background-color: $main-light-color;
+              }
+              img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+              }
+              span {
+                font-size: 1.3rem;
+                line-height: 1.6rem;
+                color: $txt-color;
+                margin-left: 8px;
+              }
+            }
+          }
+        }
+        .member-search-empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 120px;
+          img {
+            width: 60px;
+            height: 60px;
+          }
+          span {
+            font-size: 1.3rem;
+            color: $txt-color;
+          }
+        }
+        .member-search-loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 120px;
+          img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
+    }
+  }
+}
+.setting-group-modal__footer {
+  text-align: center;
+  padding: 10px 12px;
+  button {
+    text-transform: unset;
+    &:hover {
+      filter: brightness(1.15);
+    }
+  }
+}
+.setting-group-modal__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($color: $medium-white-color, $alpha: 0.5);
+  img {
+    width: 60px;
+    height: 60px;
   }
 }
