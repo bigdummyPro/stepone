@@ -77,13 +77,13 @@ function SettingGroupModal({handleModal}) {
 
         const newMemberList = [];
         [authState.user,...memberList].forEach(item => newMemberList.push(item._id));
-
+        console.log(newMemberList)
         const conversation = {
             convName: groupName,
             convAvatar: newAvatar.length > 0 ? newAvatar[0].url : '',
             recipients: newMemberList
         }
-        console.log(conversation)
+        
         const res = await dispatch(createConversation({conversation, auth: authState, socket: socketState}));
 
         if(res.data.success){

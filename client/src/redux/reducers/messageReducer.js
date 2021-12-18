@@ -19,19 +19,25 @@ const messageReducer = (state = initialState, action) => {
             let newConversations = [];
             let newData = [];
 
-            const convID = payload.recipients.filter(item => item._id !== payload.user._id)[0]._id;
+            let convID = '';
+
+            if(payload.convType === 'personal'){
+                convID = payload.recipients.filter(item => item._id !== payload.user._id)[0]._id;
+            }else{
+                convID = payload._convID;
+            }
 
             if(state.conversations.every(item => item._id !== convID)){
-                newConversations = [...state.conversations, {
+                newConversations = [{
                     _id: payload._convID, 
                     text: payload.text, 
                     currentSender: payload.sender,
                     media: payload.media, 
                     recipients: payload.recipients.filter(item => item._id !== payload.user._id), 
                     convType: 'personal'
-                }];
+                }, ...state.conversations];
                 //sort by updateAt
-                newConversations = sortConvWhenAddMess(newConversations)
+                // newConversations = sortConvWhenAddMess(newConversations)
                     // const fromIndex = newConversations.length - 1;
                     // const elementClone = newConversations[fromIndex];
 
@@ -53,22 +59,25 @@ const messageReducer = (state = initialState, action) => {
                     } : conv
                 ))
                 //sort by updateAt
-                newConversations = sortConvWhenAddMess(newConversations);
+                newConversations = sortConvWhenAddMess(newConversations, convID);
                     // const fromIndex = newConversations.findIndex(conv => conv._id === payload._convID);
                     // const elementClone = newConversations[fromIndex];
 
                     // newConversations.splice(fromIndex, 1);
                     // newConversations.splice(0, 0, elementClone);
                 //end sort
-
-                newData = state.data.map(data => (
-                    data._id === convID ?
-                    {
-                        ...data,
-                        messages: [...data.messages, payload],
-                        result: data.result + 1
-                    } : data
-                ))
+                if(state.data.some(item => item._id === convID)){
+                    newData = state.data.map(data => (
+                        data._id === convID ?
+                        {
+                            ...data,
+                            messages: [...data.messages, payload],
+                            result: data.result + 1
+                        } : data
+                    ))
+                }else{
+                    newData = [...state.data, {result: 1, messages: [payload], _id: convID}];
+                }
             }
             return {
                 ...state,
@@ -97,10 +106,10 @@ const messageReducer = (state = initialState, action) => {
     }
 }
 
-const sortConvWhenAddMess = (conversations) => {
+const sortConvWhenAddMess = (conversations, id) => {
     const newConversations = [...conversations];
 
-    const fromIndex = newConversations.length - 1;
+    const fromIndex = newConversations.findIndex(item => item._id === id);
     const elementClone = newConversations[fromIndex];
 
     newConversations.splice(fromIndex, 1);

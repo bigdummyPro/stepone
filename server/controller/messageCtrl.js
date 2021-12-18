@@ -26,16 +26,14 @@ const messageCtrl = {
 
             let newConversation;
             const conv = await Conversations.findById(_convID);
-            if(conv){console.log('tt')
+            if(conv){console.log([sender, ...recipients])
                 newConversation = await Conversations.findOneAndUpdate({
                     _id: conv._id
                 }, {
-                    recipients: recipients,
                     currentSender: sender,
                     text, media
                 }, { new: true, upsert: true })
-            }else{console.log('bb')
-                // const revRecipients = [...recipients].reverse();
+            }else{
                 newConversation = await Conversations.findOneAndUpdate({
                     $or: [
                         {recipients: [...recipients, sender]},
@@ -76,6 +74,7 @@ const messageCtrl = {
                 text: ''
             })
             await newConversation.save();
+            newConversation.populate('recipients currentSender', 'avatar username nickname');
             res.json({success: true, newConversation, message: 'Create Success!'});
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})
@@ -121,10 +120,18 @@ const messageCtrl = {
                     conversation: conv._id
                 }), req.query).paginating()
             }else{
+                const convByPersonal = await Conversations.findOne({
+                    $or: [
+                        {recipients: [req.params.id, req.user.id]},
+                        {recipients: [req.user.id, req.params.id]}
+                    ]
+                })
+                if(!convByPersonal._id) return;
+
                 features = new APIfeatures(Messages.find({
                     $or: [
-                        {sender: req.user.id, recipients: req.params.id},
-                        {sender: req.params.id, recipients: req.user.id}
+                        {sender: req.user.id, recipients: req.params.id, conversation: convByPersonal._id.toString()},
+                        {sender: req.params.id, recipients: req.user.id, conversation: convByPersonal._id.toString()}
                     ]
                 }), req.query).paginating()
             }

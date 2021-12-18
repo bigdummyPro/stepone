@@ -29,9 +29,10 @@
       display: flex;
       align-items: center;
       position: relative;
+      gap: 5px;
       .tool-left__item {
-        width: 35px;
-        height: 35px;
+        width: 30px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -76,8 +77,8 @@
             border-radius: 10px;
             &:first-child {
               i {
-                margin-left: 2px;
-                margin-right: 3px;
+                margin-left: 1px;
+                margin-right: 5px;
               }
             }
             i {
@@ -371,13 +372,13 @@
   }
   .message-tool {
     display: flex;
-    gap: 15px;
+    gap: 5px;
     .message-tool__item {
       font-family: $second-font;
       font-size: 1.8rem;
       color: $main-color;
       cursor: pointer;
-      padding: 6px;
+      padding: 8px;
       border-radius: 50%;
       display: flex;
       align-items: center;

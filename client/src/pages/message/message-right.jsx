@@ -63,9 +63,7 @@ function MessageRight() {
                 _convID: id,
                 sender: authState.user,
                 recipients: [...currConversation.recipients, {_id: authState.user._id, username: authState.user.username, avatar: authState.user.avatar}],
-                // recipients: currConversation.recipients,
-                // convName: currConversation.convName,
-                // convAvatar: currConversation.convAvatar,
+                convType: currConversation.convType,
                 text: messInputValue, 
                 media: [],
                 updatedAt: new Date().toISOString()

@@ -5,7 +5,7 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
     try {
         const res = await getDataAPI(`message/conversations?limit=${page * 9}`)
         
-        let newConversation = [];
+        let newConversation = [];console.log(res.data)
         res.data.conversations.forEach(item => {
             const newRecipients = item.recipients.filter(item => item._id !== auth.user._id);
             newConversation.push({
@@ -58,7 +58,7 @@ export const createMessage = ({message, auth, socket}) => async (dispatch) =>{
         message.recipients.forEach(item => {
             if(item._id !== auth.user._id) newRecipients.push(item._id);
         });
-
+        console.log(newRecipients)
         const res = await postDataAPI(`message`, {...message, recipients: newRecipients, sender: message.sender._id});
 
         return res
