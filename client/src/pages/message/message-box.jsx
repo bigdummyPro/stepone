@@ -5,14 +5,14 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 function MessageBox({conversation, id, auth}) {
-    console.log(conversation)
     return (
         <Link 
-            to={`/message/${conversation._id}`} 
+            to={`/message/${conversation._id}`} //--unread
             className={`message-box ${id === conversation._id ? '--active' : ''}`}
         >
             <div className="message-box__left">
                 <img src={conversation.convType === 'personal' ? (conversation.recipients[0].avatar || UserAvatarImg): (conversation.convAvatar || GroupAvatarImg)} alt="" />
+                <span className="active-dot"></span>
             </div>
             <div className="message-box__center">
                 <span className="message-box-name">
@@ -39,6 +39,7 @@ function MessageBox({conversation, id, auth}) {
                     </span>
                 </div>
             </div>
+            <span className="message-box-status-dot"></span>
         </Link>
     );
 }

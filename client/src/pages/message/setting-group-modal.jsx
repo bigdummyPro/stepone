@@ -5,16 +5,17 @@ import LoadingImg from '../../assets/images/loading.gif';
 import { getDataAPI } from '../../utils/fetch-data-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { imageUpload } from '../../utils/image-upload';
-import { createConversation } from '../../redux/actions/messageAction';
+import { createConversation, updateConversation } from '../../redux/actions/messageAction';
+import { useParams } from 'react-router';
 
-function SettingGroupModal({handleModal}) {
+function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
     const [searchValue, setSearchValue] = useState('');
     const [searchModalStatus, setSearchModalStatus] = useState(false);
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchResult, setSearchResult] = useState([]);
 
     const [memberList, setMemberList] = useState([]);
-    const [groupName, setGroupName] = useState('');
+    const [groupName, setGroupName] = useState(' ');
     const [avatar, setAvatar] = useState();
     const [submitLoading, setSubmitLoading] = useState(false);
 
@@ -22,6 +23,8 @@ function SettingGroupModal({handleModal}) {
     const authState = useSelector(state => state.authReducer);
     const socketState = useSelector(state => state.socketReducer);
     const dispatch = useDispatch();
+
+    const {id} = useParams();
 
     const handleSearchChange = (e) => {
         if(!e.target.value.match(/\n/)) setSearchValue(e.target.value);
@@ -32,7 +35,6 @@ function SettingGroupModal({handleModal}) {
 
         if(file.size > 1024 * 1024 * 5) return error = 'The image largest is 5mb';
         if(file.type !== 'image/png' && file.type !== 'image/jpeg') return error = 'The Image is not correct format';
-
         setAvatar(file);
         //Reset input//
         // e.target.value = null;
@@ -73,30 +75,48 @@ function SettingGroupModal({handleModal}) {
         setSubmitLoading(true);
 
         let newAvatar = [];
-        if(avatar.type) newAvatar = await imageUpload([avatar]);
+        if(avatar && avatar.type) newAvatar = await imageUpload([avatar]);
+        else if(avatar && !avatar.type) newAvatar = [avatar];
 
         const newMemberList = [];
         [authState.user,...memberList].forEach(item => newMemberList.push(item._id));
-        console.log(newMemberList)
+
         const conversation = {
             convName: groupName,
-            convAvatar: newAvatar.length > 0 ? newAvatar[0].url : '',
+            convAvatar: newAvatar.length > 0 ? (newAvatar[0].url ? newAvatar[0].url : newAvatar[0]) : '',
             recipients: newMemberList
         }
         
-        const res = await dispatch(createConversation({conversation, auth: authState, socket: socketState}));
+        let res;
+        if(!editModalInfo.onEdit){
+            res = await dispatch(createConversation({conversation, auth: authState, socket: socketState}));
+        }else{
+            res = await dispatch(updateConversation({conversation: {...conversation, _id: id}, auth: authState, socket: socketState}))
+        }
 
         if(res.data.success){
             setSubmitLoading(false);
             handleModal(false);
+            resetEditModalInfo();
         }
     }
+
+    useEffect(()=>{
+        if(editModalInfo.onEdit){console.log(editModalInfo.info)
+            setMemberList(editModalInfo.info.recipients);
+            setGroupName(editModalInfo.info.convName);
+            setAvatar(editModalInfo.info.convAvatar);
+        }
+    },[editModalInfo])
     return (
         <div className="setting-group-modal-wrapper">
             <div className="setting-group-modal">
                 <div className="setting-group-modal__header">
-                    <span>Create group chat</span>
-                    <span onClick={()=>handleModal(false)}>
+                    <span>{`${editModalInfo.onEdit ? 'Edit' : 'Create'} group chat`}</span>
+                    <span onClick={()=>{
+                        handleModal(false)
+                        resetEditModalInfo()
+                    }}>
                         <i className="fas fa-times"></i>
                     </span>
                 </div>
@@ -105,7 +125,11 @@ function SettingGroupModal({handleModal}) {
                         <label htmlFor="">Avatar:</label>
                         <div className="setting-avatar">
                             <div className="group-avatar">
-                                <img src={(avatar && URL.createObjectURL(avatar)) || UserAvatarImg} alt="" />
+                                {
+                                    avatar && avatar.type ?
+                                    <img src={URL.createObjectURL(avatar) || UserAvatarImg} alt="" /> :
+                                    <img src={avatar || UserAvatarImg} alt="" />
+                                }
                             </div>
                             <div className="avatar-tool">
                                 <span>
@@ -121,7 +145,7 @@ function SettingGroupModal({handleModal}) {
                         <div className="setting-group-name">
                             <input 
                                 type="text" 
-                                value={groupName}
+                                value={groupName || ''}
                                 onChange={(e)=>setGroupName(e.target.value)}    
                             />
                         </div>

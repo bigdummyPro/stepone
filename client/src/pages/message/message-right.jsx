@@ -9,8 +9,9 @@ import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { createMessage, getMessages } from '../../redux/actions/messageAction';
+import { getDataAPI } from '../../utils/fetch-data-api';
 
-function MessageRight() {
+function MessageRight({handleModal, setEditModalInfo}) {
     const [messInputValue, setMessInputValue] = useState('');
     const [messIconTooltip, setMessIconTooltip] = useState(null);
     const [cursorPosition, setCursorPosition] = useState(null);
@@ -68,11 +69,16 @@ function MessageRight() {
                 media: [],
                 updatedAt: new Date().toISOString()
             }
+            console.log(message)
             const res = await dispatch(createMessage({message, auth: authState, socket: socketState}));
             if(res.data.success){
                 setMessInputValue('');
             }
         }
+    }
+    const handleEditModal = (info) => {
+        handleModal(true);
+        setEditModalInfo(info);
     }
 
     useEffect(()=>{console.log('check01')
@@ -88,13 +94,24 @@ function MessageRight() {
                 await dispatch(getMessages({id, page: 1}))
             }
         }
-        getMessagesData();
-    },[id, dispatch, messageState.data])
+        if(currConversation._id) getMessagesData();
+    },[id, dispatch, messageState.data, currConversation])
 
     useEffect(() => {console.log('check03')
+        const checkUserByID = async () => {
+            const res = await getDataAPI(`user/get-user-by-id/${id}`);
+            if(res.data.success) setCurrConversation({
+                _id: res.data.user._id, 
+                convType: 'personal',
+                recipients: [{_id: res.data.user._id, username: res.data.user.username, avatar: res.data.user.avatar}]
+            })
+        }
         if(id && messageState.conversations.length > 0){
             const newConv = messageState.conversations.find(conv => conv._id === id);
             if(newConv) setCurrConversation(newConv);
+            else {
+                checkUserByID();
+            }
         }
     },[id, messageState.conversations])
 
@@ -124,8 +141,7 @@ function MessageRight() {
     useEffect(()=>{
         autoResizeHeight();
     },[messInputValue])
-    console.log(data.messages)
-    console.log(messageState)
+
     return (
         <div className="message-right">
             <div className="message-right__top">
@@ -136,13 +152,35 @@ function MessageRight() {
                 </div>
                 <ul className="message-tool">
                     <li className="message-tool__item">
-                        <i className="fas fa-phone-alt"></i>
+                        <span>
+                            <i className="fas fa-phone-alt"></i>
+                        </span>
                     </li>
                     <li className="message-tool__item">
-                        <i className="fas fa-video"></i>
+                        <span>
+                            <i className="fas fa-video"></i>
+                        </span>
                     </li>
                     <li className="message-tool__item">
-                        <i className="fas fa-info-circle"></i>
+                        <span>
+                            <i className="fas fa-info-circle"></i>
+                        </span>
+                        <ul className="group-info-menu">
+                            {
+                                currConversation.convType === 'group' ?
+                                <li 
+                                    className="group-info-menu__item"
+                                    onClick={()=>handleEditModal(currConversation)}
+                                >
+                                    <i className="fas fa-user-edit"></i>
+                                    Edit group chat
+                                </li> : null
+                            }
+                            <li className="group-info-menu__item">
+                                <i className="fas fa-info-circle"></i>
+                                Information
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

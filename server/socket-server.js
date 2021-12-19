@@ -122,6 +122,22 @@ const socketServer = (socket) => {
             })
         }
     })
+    socket.on('addConvGroup', (conversation) => {
+        const clients = users.filter(user => conversation.recipients.find(item => item._id === user.id));
+        if(clients.length > 0){
+            clients.forEach(client => {
+                socket.to(`${client.socketId}`).emit('addConvGroupToClient', conversation)
+            })
+        }
+    })
+    socket.on('updateConvGroup', (conversation) => {
+        const clients = users.filter(user => conversation.recipients.find(item => item._id === user.id));
+        if(clients.length > 0){
+            clients.forEach(client => {
+                socket.to(`${client.socketId}`).emit('updateConvGroupToClient', conversation)
+            })
+        }
+    })
 
 }
 

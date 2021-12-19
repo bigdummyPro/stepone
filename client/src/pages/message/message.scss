@@ -71,7 +71,7 @@
             align-items: center;
             font-size: 1.3rem;
             color: $txt-color;
-            padding: 10px 10px;
+            padding: 10px 10px 10px 6px;
             white-space: nowrap;
             transition: background-color 0.2s linear;
             border-radius: 10px;
@@ -254,7 +254,7 @@
 .message-box {
   display: flex;
   align-items: center;
-  padding: 12px 8px;
+  padding: 12px 10px 12px 8px;
   border-radius: 8px;
   cursor: pointer;
   position: relative;
@@ -268,11 +268,23 @@
     background-color: #6e83b7;
     flex-shrink: 0;
     border-radius: 50%;
-    overflow: hidden;
+    position: relative;
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 50%;
+    }
+    .active-dot {
+      display: inline-block;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 10px;
+      height: 10px;
+      background-color: $green-color;
+      outline: 2px solid $medium-white-color;
+      border-radius: 50%;
     }
   }
   .message-box__center {
@@ -288,7 +300,7 @@
         max-width: 220px;
       }
       &.message-content {
-        max-width: 120px;
+        max-width: 110px;
       }
     }
     .message-box-name {
@@ -328,6 +340,25 @@
           color: $main-color;
         }
       }
+    }
+  }
+  .message-box-status-dot {
+    position: absolute;
+    top: 50%;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    transform: translateY(-50%);
+    background-color: $main-color;
+    border-radius: 50%;
+    display: none;
+  }
+  &.--unread {
+    .message-box__center span.message-box-name {
+      font-weight: 600;
+    }
+    .message-box-status-dot {
+      display: inline-block;
     }
   }
   &:not(&.--active):hover {
@@ -374,9 +405,6 @@
     display: flex;
     gap: 5px;
     .message-tool__item {
-      font-family: $second-font;
-      font-size: 1.8rem;
-      color: $main-color;
       cursor: pointer;
       padding: 8px;
       border-radius: 50%;
@@ -384,8 +412,49 @@
       align-items: center;
       justify-content: center;
       transition: background-color 0.2s linear;
+      position: relative;
+      span {
+        font-family: $second-font;
+        font-size: 1.8rem;
+        color: $main-color;
+      }
       &:hover {
         background-color: $main-light-color;
+        .group-info-menu {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+      .group-info-menu {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        z-index: 31;
+        background-color: #fafafa;
+        box-shadow: 0 3px 15px 2px rgb(0 0 0 / 8%);
+        padding: 12px 10px;
+        border-radius: 10px;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s linear;
+        .group-info-menu__item {
+          display: flex;
+          align-items: center;
+          font-size: 1.3rem;
+          color: #405281;
+          padding: 10px 10px 10px 8px;
+          white-space: nowrap;
+          transition: background-color 0.2s linear;
+          border-radius: 10px;
+          i {
+            width: 20px;
+            height: auto;
+            margin-right: 2px;
+          }
+          &:hover {
+            background-color: $main-light-color;
+          }
+        }
       }
     }
   }

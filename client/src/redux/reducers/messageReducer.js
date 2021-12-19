@@ -101,6 +101,21 @@ const messageReducer = (state = initialState, action) => {
                     ...payload, recipients: payload.recipients.filter(item => item._id !== payload.user._id)
                 },...state.conversations]
             }
+        case GLOBALTYPES.UPDATE_CONVERSATION:
+            let newUpdateConversations = state.conversations.map(conv => (
+                conv._id === payload._id ? 
+                {
+                    ...conv,
+                    recipients: payload.recipients.filter(item => item._id !== payload.user._id),
+                    convName: payload.convName,
+                    convAvatar: payload.convAvatar,
+                    updatedAt: payload.updatedAt
+                } : conv
+            ))
+            return {
+                ...state,
+                conversations: newUpdateConversations
+            }
         default:
             return state;
     }

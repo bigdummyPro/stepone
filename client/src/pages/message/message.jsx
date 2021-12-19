@@ -6,6 +6,8 @@ import SettingGroupModal from './setting-group-modal';
 
 function Message() {
     const [modalStatus, setModalStatus] = useState(false);
+    const [editModalInfo, setEditModalInfo] = useState({onEdit: false, info: null});
+
     const handleModal = (status) => {
         setModalStatus(status)
     }
@@ -15,13 +17,18 @@ function Message() {
                 <div className="main-body">
                     <div className="message">
                         <MessageLeft 
-                            handleModal={(status)=>handleModal(status)}
+                            handleModal={(status) => handleModal(status)}
                         />
-                        <MessageRight />
+                        <MessageRight 
+                            handleModal={(status) => handleModal(status)}
+                            setEditModalInfo={(info) => setEditModalInfo({onEdit: true, info: info})}
+                        />
                         {
                             modalStatus ?
                             <SettingGroupModal 
                                 handleModal={(status)=>handleModal(status)}
+                                editModalInfo={editModalInfo}
+                                resetEditModalInfo={() => setEditModalInfo({onEdit: false, info: null})}
                             /> : null
                         }
                     </div> 

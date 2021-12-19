@@ -38,7 +38,7 @@ function MessageLeft({handleModal}) {
                                 onClick={()=>handleModal(true)}
                             >
                                 <i className="fas fa-user-friends"></i>
-                                <span>Group chat</span>
+                                <span>Create group chat</span>
                             </li>
                             <li className="menu-item">
                                 <i className="fas fa-bell"></i>

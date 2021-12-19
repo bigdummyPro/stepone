@@ -124,18 +124,22 @@ function SocketClient() {
     useEffect(() => {
         socketState.on('addMessageToClient', message =>{
             dispatch({type: GLOBALTYPES.CREATE_MESSAGE, payload: {...message, user: authState.user}})
-            // dispatch({
-            //     type: GLOBALTYPES.ADD_USER, 
-            //     payload: {
-            //         ...message.user, 
-            //         text: message.text, 
-            //         media: message.media
-            //     }
-            // })
         })
 
         return () => socketState.off('addMessageToClient')
     },[socketState, dispatch])
+
+    useEffect(() => {
+        socketState.on('addConvGroupToClient', conversation => {
+            dispatch({type: GLOBALTYPES.CREATE_CONVERSATION, payload: {...conversation, user: authState.user}})
+        })
+    }, [socketState, dispatch])
+
+    useEffect(() => {
+        socketState.on('updateConvGroupToClient', conversation => {
+            dispatch({type: GLOBALTYPES.UPDATE_CONVERSATION, payload: {...conversation, user: authState.user}})
+        })
+    }, [socketState, dispatch])
     return (
         <>
             <audio 

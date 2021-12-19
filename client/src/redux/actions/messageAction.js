@@ -1,4 +1,4 @@
-import {getDataAPI, postDataAPI} from '../../utils/fetch-data-api';
+import {getDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetch-data-api';
 import { GLOBALTYPES } from '../constants/globalTypes';
 
 export const getConversations = ({auth, page = 1}) => async (dispatch) => {
@@ -58,10 +58,9 @@ export const createMessage = ({message, auth, socket}) => async (dispatch) =>{
         message.recipients.forEach(item => {
             if(item._id !== auth.user._id) newRecipients.push(item._id);
         });
-        console.log(newRecipients)
         const res = await postDataAPI(`message`, {...message, recipients: newRecipients, sender: message.sender._id});
 
-        return res
+        return res;
     } catch (err) {
         // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
         console.log(err.message)
@@ -74,9 +73,26 @@ export const createConversation = ({conversation, auth, socket}) => async (dispa
         const res = await postDataAPI('message/conversation', conversation);
         if(res.data.success){
             dispatch({type: GLOBALTYPES.CREATE_CONVERSATION, payload: {...res.data.newConversation, user: auth.user}});
+            socket.emit('addConvGroup', res.data.newConversation)
         }
         return res;
     } catch (error) {
         console.log(error.message);
+    }
+}
+
+export const updateConversation = ({conversation, auth, socket}) => async (dispatch) => {
+    try {
+        const res = await patchDataAPI(`message/conversation/${conversation._id}`, conversation);
+        if(res.data.success){
+            dispatch({type: GLOBALTYPES.UPDATE_CONVERSATION, payload: {
+                ...res.data.newConversation,
+                user: auth.user
+            }})
+            socket.emit('updateConvGroup', res.data.newConversation)
+        }
+        return res;
+    } catch (error) {
+        console.log(error.message)
     }
 }

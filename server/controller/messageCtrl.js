@@ -74,8 +74,9 @@ const messageCtrl = {
                 text: ''
             })
             await newConversation.save();
-            newConversation.populate('recipients currentSender', 'avatar username nickname');
-            res.json({success: true, newConversation, message: 'Create Success!'});
+            const resConversation = await newConversation.populate('recipients currentSender', 'avatar username nickname');
+            
+            res.json({success: true, newConversation: resConversation, message: 'Create Success!'});
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})
         }
@@ -84,10 +85,11 @@ const messageCtrl = {
         try {
             const {recipients, convName, convAvatar} = req.body;
 
-            await Conversations.findOneAndUpdate({_id: req.params.id}, {
-                $push: {recipients: recipients}, convName, convAvatar
-            })
-            res.json({success: true, message: 'Update Success!'});
+            const newConversation = await Conversations.findOneAndUpdate({_id: req.params.id}, {
+                recipients, convName, convAvatar
+            }, {new: true}).populate('recipients currentSender', 'avatar username nickname');
+
+            res.json({success: true, newConversation, message: 'Update Success!'});
         } catch (error) {
             return res.status(500).json({success: false, message: err.message})
         }
@@ -115,7 +117,7 @@ const messageCtrl = {
         try {
             let features;
             const conv = await Conversations.findById(req.params.id);
-            if(conv){
+            if(conv){console.log(req.user.id)
                 features = new APIfeatures(Messages.find({
                     conversation: conv._id
                 }), req.query).paginating()
