@@ -21,11 +21,11 @@ const socketServer = (socket) => {
                 data.followers.find(item => item._id === user.id)
             )
 
-            // if(clients.length > 0){
-            //     clients.forEach(client => {
-            //         socket.to(`${client.socketId}`).emit('CheckUserOffline', data.id)
-            //     })
-            // }
+            if(clients.length > 0){
+                clients.forEach(client => {
+                    socket.to(`${client.socketId}`).emit('CheckUserOffline', data.id)
+                })
+            }
 
             // if(data.call){
             //     const callUser = users.find(user => user.id === data.call)
@@ -137,6 +137,24 @@ const socketServer = (socket) => {
                 socket.to(`${client.socketId}`).emit('updateConvGroupToClient', conversation)
             })
         }
+    })
+
+    // Check User Online / Offline
+    socket.on('checkUserOnline', data => {
+        const following = users.filter(user => 
+            data.following.find(item => item._id === user.id)
+        )
+        socket.emit('checkUserOnlineToMe', following)
+
+        const clients = users.filter(user => 
+            data.followers.find(item => item._id === user.id)
+        )
+        if(clients.length > 0){
+            clients.forEach(client => {
+                socket.to(`${client.socketId}`).emit('checkUserOnlineToClient', data._id)
+            })
+        }
+        
     })
 
 }

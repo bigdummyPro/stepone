@@ -9,6 +9,7 @@ import notificationReducer from './notificationReducer';
 import postReducer from './postReducer';
 import detailPostReducer from './detailPostReducer';
 import messageReducer from './messageReducer';
+import onlineReducer from './onlineReducer';
 
 export default combineReducers({
     modalReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
     notificationReducer,
     postReducer,
     detailPostReducer,
-    messageReducer
+    messageReducer,
+    onlineReducer
 })

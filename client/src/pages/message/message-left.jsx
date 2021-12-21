@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import MessageLeftSearch from './message-left-search';
 import { getConversations } from '../../redux/actions/messageAction';
 import { useNavigate, useParams } from 'react-router';
+import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 
 function MessageLeft({handleModal}) {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.authReducer);
     const messageState = useSelector(state => state.messageReducer);
+    const onlineState = useSelector(state => state.onlineReducer);
 
     const {id} = useParams();
     const navigate = useNavigate();
@@ -18,8 +20,18 @@ function MessageLeft({handleModal}) {
     },[id, messageState.conversations, navigate])
 
     useEffect(()=>{
+        if(messageState.firstLoad) return;
         dispatch(getConversations({auth: authState, page: 1}))
-    },[authState, dispatch])
+    },[authState, dispatch, messageState.firstLoad])
+
+    useEffect(()=>{
+        
+    },[])
+    // Check User Online - Offline
+    useEffect(()=>{
+        if(messageState.firstLoad)
+        dispatch({type: GLOBALTYPES.CHECK_ONLINE_OFFLINE, payload: onlineState})
+    },[dispatch, onlineState, messageState.firstLoad, messageState.conversations.length])
     
     return (
         <div className="message-left">

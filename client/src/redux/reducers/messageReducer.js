@@ -3,7 +3,8 @@ const { GLOBALTYPES } = require("../constants/globalTypes");
 const initialState = {
     userStorage: {},
     conversations: [],
-    data: []
+    data: [],
+    firstLoad: false
 }
 
 const messageReducer = (state = initialState, action) => {
@@ -87,7 +88,8 @@ const messageReducer = (state = initialState, action) => {
         case GLOBALTYPES.GET_CONVERSATIONS:
             return {
                 ...state,
-                conversations: payload.newConversation
+                conversations: payload.newConversation,
+                firstLoad: true
             }
         case GLOBALTYPES.GET_MESSAGES:
             return {
@@ -115,6 +117,38 @@ const messageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 conversations: newUpdateConversations
+            }
+        case GLOBALTYPES.SET_NO_ACTIVE_USER:
+            return {
+                ...state,
+                conversations: state.conversations.map(conv => (
+                    conv._id === payload._id ? 
+                    {
+                        ...conv
+                    } : conv
+                ))
+            }
+        case GLOBALTYPES.CHECK_ONLINE_OFFLINE:
+            let newConvWithStatus = [];
+
+            state.conversations.forEach(conv => {
+                if(conv.convType === 'personal'){console.log(action.payload)
+                    if(action.payload.includes(conv.recipients[0]._id)) 
+                        newConvWithStatus.push({...conv, online: true})
+                    else 
+                        newConvWithStatus.push({...conv, online: false})
+                }
+
+                if(conv.convType === 'group'){
+                    if(conv.recipients.some(item => action.payload.includes(item._id)))
+                        newConvWithStatus.push({...conv, online: true})
+                    else if(conv.recipients.every(item => !action.payload.includes(item._id)))
+                        newConvWithStatus.push({...conv, online: false})
+                }
+            })
+            return {
+                ...state,
+                conversations: newConvWithStatus
             }
         default:
             return state;

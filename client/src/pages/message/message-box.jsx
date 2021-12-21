@@ -12,7 +12,10 @@ function MessageBox({conversation, id, auth}) {
         >
             <div className="message-box__left">
                 <img src={conversation.convType === 'personal' ? (conversation.recipients[0].avatar || UserAvatarImg): (conversation.convAvatar || GroupAvatarImg)} alt="" />
-                <span className="active-dot"></span>
+                {
+                    conversation.online ?
+                    <span className="active-dot"></span> : null
+                }
             </div>
             <div className="message-box__center">
                 <span className="message-box-name">
