@@ -81,7 +81,7 @@ export const createConversation = ({conversation, auth, socket}) => async (dispa
     }
 }
 
-export const updateConversation = ({conversation, auth, socket}) => async (dispatch) => {
+export const updateConversation = ({conversation, auth, socket, noActiveData}) => async (dispatch) => {
     try {
         const res = await patchDataAPI(`message/conversation/${conversation._id}`, conversation);
         if(res.data.success){
@@ -90,6 +90,8 @@ export const updateConversation = ({conversation, auth, socket}) => async (dispa
                 user: auth.user
             }})
             socket.emit('updateConvGroup', res.data.newConversation)
+
+            if(noActiveData.noActiveUser) socket.emit('preventUser', noActiveData)
         }
         return res;
     } catch (error) {

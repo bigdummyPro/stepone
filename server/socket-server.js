@@ -138,6 +138,14 @@ const socketServer = (socket) => {
             })
         }
     })
+    socket.on('preventUser', (noActiveData) => {
+        const clients = users.filter(user => noActiveData.noActiveUser.find(item => item === user.id));
+        if(clients.length > 0){
+            clients.forEach(client => {
+                socket.to(`${client.socketId}`).emit('preventUserToClient', noActiveData)
+            })
+        }
+    })
 
     // Check User Online / Offline
     socket.on('checkUserOnline', data => {

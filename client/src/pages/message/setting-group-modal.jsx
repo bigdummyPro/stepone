@@ -19,6 +19,8 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
     const [avatar, setAvatar] = useState();
     const [submitLoading, setSubmitLoading] = useState(false);
 
+    const [noActiveUser, setNoActiveUser] = useState([]);
+
 
     const authState = useSelector(state => state.authReducer);
     const socketState = useSelector(state => state.socketReducer);
@@ -70,6 +72,9 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
         let newMemberList = [...memberList].filter(item => item._id !== id);
         //chú ý mảng sau khi filter sẽ không lưu lại giá trị, vì vậy cần tạo biến để chứa giá trị đó.
         setMemberList(newMemberList);
+
+        if(editModalInfo.info.recipients.find(item => item._id === id));
+        setNoActiveUser([...noActiveUser, id]);
     }
     const handleSubmitAll = async () => {
         setSubmitLoading(true);
@@ -91,7 +96,15 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
         if(!editModalInfo.onEdit){
             res = await dispatch(createConversation({conversation, auth: authState, socket: socketState}));
         }else{
-            res = await dispatch(updateConversation({conversation: {...conversation, _id: id}, auth: authState, socket: socketState}))
+            res = await dispatch(updateConversation({
+                conversation: {...conversation, _id: id}, 
+                auth: authState, 
+                socket: socketState,
+                noActiveData: {
+                    _convID: id,
+                    noActiveUser: noActiveUser.length > 0 ? noActiveUser : null
+                }
+            }))
         }
 
         if(res.data.success){
@@ -102,7 +115,7 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
     }
 
     useEffect(()=>{
-        if(editModalInfo.onEdit){console.log(editModalInfo.info)
+        if(editModalInfo.onEdit){
             setMemberList(editModalInfo.info.recipients);
             setGroupName(editModalInfo.info.convName);
             setAvatar(editModalInfo.info.convAvatar);

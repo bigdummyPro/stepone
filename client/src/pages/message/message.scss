@@ -577,6 +577,31 @@
       background-color: $main-light-color;
     }
   }
+  .no-active-notification {
+    background-color: $main-light-color;
+    border-radius: 5px;
+    padding: 10px 10px;
+    font-size: 1.3rem;
+    text-align: center;
+    color: $txt-color;
+  }
+}
+.message-right-no-data {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .no-data-title {
+    font-size: 1.5rem;
+    color: $txt-color;
+    font-weight: 600;
+  }
+  .no-data-content {
+    font-size: 1.3rem;
+    color: $txt-color;
+    margin-top: 4px;
+  }
 }
 .setting-group-modal-wrapper {
   position: absolute;

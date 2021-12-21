@@ -104,16 +104,24 @@ const messageReducer = (state = initialState, action) => {
                 },...state.conversations]
             }
         case GLOBALTYPES.UPDATE_CONVERSATION:
-            let newUpdateConversations = state.conversations.map(conv => (
-                conv._id === payload._id ? 
-                {
-                    ...conv,
-                    recipients: payload.recipients.filter(item => item._id !== payload.user._id),
-                    convName: payload.convName,
-                    convAvatar: payload.convAvatar,
-                    updatedAt: payload.updatedAt
-                } : conv
-            ))
+            let newUpdateConversations = [];
+            if(state.conversations.every(item => item._id !== payload._id)){
+                newUpdateConversations = [ {
+                    ...payload, recipients: payload.recipients.filter(item => item._id !== payload.user._id)
+                },...state.conversations]
+            }else if(state.conversations.some(item => item._id === payload._id)){
+                newUpdateConversations = state.conversations.map(conv => (
+                    conv._id === payload._id ? 
+                    {
+                        ...conv,
+                        recipients: payload.recipients.filter(item => item._id !== payload.user._id),
+                        convName: payload.convName,
+                        convAvatar: payload.convAvatar,
+                        updatedAt: payload.updatedAt,
+                        noActiveStatus: false
+                    } : conv
+                ))
+            }
             return {
                 ...state,
                 conversations: newUpdateConversations
@@ -124,7 +132,8 @@ const messageReducer = (state = initialState, action) => {
                 conversations: state.conversations.map(conv => (
                     conv._id === payload._id ? 
                     {
-                        ...conv
+                        ...conv,
+                        noActiveStatus: true
                     } : conv
                 ))
             }

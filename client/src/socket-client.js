@@ -36,6 +36,7 @@ function SocketClient() {
     const socketState = useSelector(state => state.socketReducer);
     const notificationState = useSelector(state => state.notificationReducer);
     const onlineState = useSelector(state => state.onlineReducer);
+    const messageState = useSelector(state => state.messageReducer);
     
     // joinUser
     useEffect(() => {
@@ -139,6 +140,12 @@ function SocketClient() {
     useEffect(() => {
         socketState.on('updateConvGroupToClient', conversation => {
             dispatch({type: GLOBALTYPES.UPDATE_CONVERSATION, payload: {...conversation, user: authState.user}})
+        })
+    }, [socketState, dispatch])
+
+    useEffect(() => {
+        socketState.on('preventUserToClient', noActiveData => {
+            dispatch({type: GLOBALTYPES.SET_NO_ACTIVE_USER, payload: {_id: noActiveData._convID}})
         })
     }, [socketState, dispatch])
 

@@ -134,113 +134,139 @@ function MessageRight({handleModal, setEditModalInfo}) {
     },[emotionChange])
 
     useEffect(()=>{
-        textareaEl.current.selectionStart = cursorPosition + 2
-        textareaEl.current.selectionEnd = cursorPosition + 2
+        if(textareaEl.current){
+            textareaEl.current.selectionStart = cursorPosition + 2;
+            textareaEl.current.selectionEnd = cursorPosition + 2;
+        }
     },[cursorPosition])
 
     useEffect(()=>{
-        autoResizeHeight();
+        if(textareaEl.current) autoResizeHeight();
     },[messInputValue])
 
     return (
-        <div className="message-right">
-            <div className="message-right__top">
-                <div className="message-info">
-                    <img src={currConversation && (currConversation.convType === 'personal' ? (currConversation.recipients[0].avatar || UserAvatarImg): (currConversation.convAvatar || GroupAvatarImg)) } alt="" />
+        <>
+        {
+            messageState.data.length > 0 ?
+            <div className="message-right">
+                <div className="message-right__top">
+                    <div className="message-info">
+                        <img src={currConversation && (currConversation.convType === 'personal' ? (currConversation.recipients[0].avatar || UserAvatarImg): (currConversation.convAvatar || GroupAvatarImg)) } alt="" />
 
-                    <span>{currConversation.convType === 'personal' ? currConversation.recipients[0].username : currConversation.convName}</span>
-                </div>
-                <ul className="message-tool">
-                    <li className="message-tool__item">
-                        <span>
-                            <i className="fas fa-phone-alt"></i>
-                        </span>
-                    </li>
-                    <li className="message-tool__item">
-                        <span>
-                            <i className="fas fa-video"></i>
-                        </span>
-                    </li>
-                    <li className="message-tool__item">
-                        <span>
-                            <i className="fas fa-info-circle"></i>
-                        </span>
-                        <ul className="group-info-menu">
-                            {
-                                currConversation.convType === 'group' ?
-                                <li 
-                                    className="group-info-menu__item"
-                                    onClick={()=>handleEditModal(currConversation)}
-                                >
-                                    <i className="fas fa-user-edit"></i>
-                                    Edit group chat
-                                </li> : null
-                            }
-                            <li className="group-info-menu__item">
-                                <i className="fas fa-info-circle"></i>
-                                Information
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div className="message-right__center">
-                <ul className="message-list">
-                    {
-                        data.messages && data.messages.map((mess, index)=>(
-                            <MessageItem 
-                                key={index}
-                                messageType={mess.sender._id === authState.user._id ? 0 : 1}
-                                message={mess}
-                            />
-                        ))
-                    }
-                </ul>
-            </div>
-            <div className="message-right__bottom">
-                <ul className="message-action">
-                    {
-                        messActionItem.map((meAcIt, index)=>(
-                            <li 
-                                key={index}
-                                className="message-action__item"
-                                onClick={(e)=>handleFileSelect(e, meAcIt.acceptType)}
-                                onMouseOver={()=>setMessIconTooltip(index)}
-                                onMouseOut={()=>setMessIconTooltip(null)}
-                            >
-                                <i className={meAcIt.icon}></i>
-                                <ToolTip 
-                                    content={meAcIt.tooltipContent}
-                                    status={messIconTooltip === index ? true : false } 
-                                    colorClass='--third-color'
-                                />
-                            </li>
-                        ))
-                    }
-                </ul>
-                <div className="message-input">
-                    <div className="message-input__wrapper">
-                        <textarea 
-                            ref={textareaEl}
-                            name="" 
-                            value={messInputValue}
-                            placeholder="Enter your message"
-                            onChange={handleChangeTextarea}
-                            onKeyDown={handleSubmitWithKey}
-                        ></textarea>
-                        <span 
-                            id="emotion-toggle-icon"
-                            onClick={(e)=>handleEmotionModal(e.target.parentNode)}
-                        >
-                            <i className="fas fa-grin-stars"></i>
-                        </span>
+                        <span>{currConversation.convType === 'personal' ? currConversation.recipients[0].username : currConversation.convName}</span>
                     </div>
+                    {
+                        !currConversation.noActiveStatus ?
+                        <ul className="message-tool">
+                            <li className="message-tool__item">
+                                <span>
+                                    <i className="fas fa-phone-alt"></i>
+                                </span>
+                            </li>
+                            <li className="message-tool__item">
+                                <span>
+                                    <i className="fas fa-video"></i>
+                                </span>
+                            </li>
+                            <li className="message-tool__item">
+                                <span>
+                                    <i className="fas fa-info-circle"></i>
+                                </span>
+                                <ul className="group-info-menu">
+                                    {
+                                        currConversation.convType === 'group' ?
+                                        <li 
+                                            className="group-info-menu__item"
+                                            onClick={()=>handleEditModal(currConversation)}
+                                        >
+                                            <i className="fas fa-user-edit"></i>
+                                            Edit group chat
+                                        </li> : null
+                                    }
+                                    <li className="group-info-menu__item">
+                                        <i className="fas fa-info-circle"></i>
+                                        Information
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul> : null
+                    }
                 </div>
-                <div className="message-icon">
-                    <i className="fas fa-heart"></i>
+                <div className="message-right__center">
+                    <ul className="message-list">
+                        {
+                            data.messages && data.messages.map((mess, index)=>(
+                                <MessageItem 
+                                    key={index}
+                                    messageType={mess.sender._id === authState.user._id ? 0 : 1}
+                                    message={mess}
+                                />
+                            ))
+                        }
+                    </ul>
+                </div>
+                {
+                    !currConversation.noActiveStatus ?
+                    <div className="message-right__bottom">
+                        <ul className="message-action">
+                            {
+                                messActionItem.map((meAcIt, index)=>(
+                                    <li 
+                                        key={index}
+                                        className="message-action__item"
+                                        onClick={(e)=>handleFileSelect(e, meAcIt.acceptType)}
+                                        onMouseOver={()=>setMessIconTooltip(index)}
+                                        onMouseOut={()=>setMessIconTooltip(null)}
+                                    >
+                                        <i className={meAcIt.icon}></i>
+                                        <ToolTip 
+                                            content={meAcIt.tooltipContent}
+                                            status={messIconTooltip === index ? true : false } 
+                                            colorClass='--third-color'
+                                        />
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <div className="message-input">
+                            <div className="message-input__wrapper">
+                                <textarea 
+                                    ref={textareaEl}
+                                    name="" 
+                                    value={messInputValue}
+                                    placeholder="Enter your message"
+                                    onChange={handleChangeTextarea}
+                                    onKeyDown={handleSubmitWithKey}
+                                ></textarea>
+                                <span 
+                                    id="emotion-toggle-icon"
+                                    onClick={(e)=>handleEmotionModal(e.target.parentNode)}
+                                >
+                                    <i className="fas fa-grin-stars"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div className="message-icon">
+                            <i className="fas fa-heart"></i>
+                        </div>
+                    </div> : 
+                    <div className="message-right__bottom">
+                        <div className="no-active-notification">
+                        You are not a member of the conversation, you cannot reply to this conversation
+                        </div>
+                    </div>
+                }
+            </div> : 
+            <div className="message-right-no-data">
+                <div className="no-data-title">
+                    No results
+                </div>
+                <div className="no-data-content">
+                    Select a chat or Create new one
                 </div>
             </div>
-        </div>
+        }
+        </>
     );
 }
 

@@ -117,7 +117,7 @@ const messageCtrl = {
         try {
             let features;
             const conv = await Conversations.findById(req.params.id);
-            if(conv){console.log(req.user.id)
+            if(conv){
                 features = new APIfeatures(Messages.find({
                     conversation: conv._id
                 }), req.query).paginating()

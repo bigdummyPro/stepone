@@ -33,6 +33,7 @@ function MessageLeft({handleModal}) {
         dispatch({type: GLOBALTYPES.CHECK_ONLINE_OFFLINE, payload: onlineState})
     },[dispatch, onlineState, messageState.firstLoad, messageState.conversations.length])
     
+    console.log(messageState.conversations)
     return (
         <div className="message-left">
             <div className="message-left__header">
