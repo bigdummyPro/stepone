@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {useParams, useLocation} from 'react-router-dom';
+import MediaShowModal from '../../components/media-show-modal/media-show-modal';
 import { getPost } from '../../redux/actions/postAction';
 import { getUserProfile } from '../../redux/actions/profileAction';
 import ProfileBody from './profile-body';
@@ -92,6 +93,7 @@ function Profile() {
                         ))
                     }
                 </div>
+                <MediaShowModal />
             </div>
         </div>
     );

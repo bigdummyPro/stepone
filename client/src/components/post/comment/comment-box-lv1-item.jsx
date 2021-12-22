@@ -29,7 +29,6 @@ function CommentBoxLv1Item({comment, replyComments, auth, post}) {
         setRepCmsLv2(newRepCmsLv2);
         setShowRepCmsLv2(newRepCmsLv2.slice(0, next));
 
-        setOnReply({activeComment: null, parentCommentId: comment._id, replyStatus: null});
     },[replyComments, comment._id, next])
 
     return (
@@ -69,6 +68,7 @@ function CommentBoxLv1Item({comment, replyComments, auth, post}) {
                         auth={auth}
                         onReply={onReply}
                         post={post}
+                        resetOnReply={()=>setOnReply({activeComment: null, parentCommentId: comment._id, replyStatus: null})}
                     />
                 </div>
             </div>

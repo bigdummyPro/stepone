@@ -158,6 +158,57 @@ const postCtrl = {
             return res.status(500).json({message: err.message})
         }
     },
+    savePost: async (req, res) => {
+        try {
+            const user = await Users.find({_id: req.user.id, savedPosts: req.params.id})
+            if(user.length > 0) return res.status(400).json({message: "You saved this post."})
+
+            const save = await Users.findOneAndUpdate({_id: req.user.id}, {
+                $push: {savedPosts: req.params.id}
+            }, {new: true})
+
+            if(!save) return res.status(400).json({message: 'This user does not exist.'})
+
+            res.json({success: true, message: 'Saved Post!'})
+
+        } catch (err) {
+            return res.status(500).json({success: false, message: err.message})
+        }
+    },
+    unSavePost: async (req, res) => {
+        try {
+            const save = await Users.findOneAndUpdate({_id: req.user.id}, {
+                $pull: {savedPosts: req.params.id}
+            }, {new: true})
+
+            if(!save) return res.status(400).json({success: false, message: 'This user does not exist.'})
+
+            res.json({success: true, message: 'unSaved Post!'})
+
+        } catch (err) {
+            return res.status(500).json({success: false, message: err.message})
+        }
+    },
+    getSavePosts: async (req, res) => {
+        try {
+            const user = await Users.findOne({_id: req.user.id});
+
+            const features = new APIfeatures(Posts.find({
+                _id: {$in: user.savedPosts}
+            }), req.query).paginating()
+
+            const savePosts = await features.query.sort("-createdAt")
+
+            res.json({
+                success: true,
+                savePosts,
+                result: savePosts.length
+            })
+
+        } catch (err) {
+            return res.status(500).json({success: false, message: err.message})
+        }
+    },
 }
 
 module.exports = postCtrl;

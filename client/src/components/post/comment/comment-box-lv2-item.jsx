@@ -26,7 +26,6 @@ function CommentBoxLv2Item({comment, post, auth, replyComments}) {
         setRepCmsLv3(newRepCmLv3);
         setShowRepCmsLv3(newRepCmLv3.slice(0, next));
 
-        setOnReply({activeComment: null, parentCommentId: comment._id, replyStatus: null});
     },[comment._id, replyComments, next])
     return (
         <div className={`comment-box-lv2-item ${repCmsLv3.length === 0 && !onReply.replyStatus ? '--empty-child' : ''}`}>
@@ -73,6 +72,7 @@ function CommentBoxLv2Item({comment, post, auth, replyComments}) {
                         onReply={onReply}
                         post={post}
                         auth={auth}
+                        resetOnReply={()=>setOnReply({activeComment: null, parentCommentId: comment._id, replyStatus: null})}
                     />
                 </div>
             </div>

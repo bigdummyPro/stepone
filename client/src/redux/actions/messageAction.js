@@ -5,20 +5,13 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
     try {
         const res = await getDataAPI(`message/conversations?limit=${page * 9}`)
         
-        let newConversation = [];console.log(res.data)
+        let newConversation = [];
         res.data.conversations.forEach(item => {
             const newRecipients = item.recipients.filter(item => item._id !== auth.user._id);
             newConversation.push({
                 ...item,
                 _id: item.convType === 'group' ? item._id : newRecipients[0]._id,
-                // convType: item.convType,
                 recipients: newRecipients, 
-                // currentSender: item.currentSender,
-                // convName: item.convName,
-                // convAvatar: item.convAvatar,
-                // text: item.text, 
-                // media: item.media,
-                // updatedAt: item.updatedAt
             })
         })
 
@@ -37,7 +30,6 @@ export const getMessages = ({id, page = 1}) => async (dispatch) => {
     try {
         const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 9}`)
         const newData = {...res.data, messages: res.data.messages.reverse()}
-        console.log(newData)
         
         if(res.data.messages.length > 0){
             dispatch({type: GLOBALTYPES.GET_MESSAGES, payload: {...newData, _id: id, page}})

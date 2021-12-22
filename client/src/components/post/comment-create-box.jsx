@@ -9,7 +9,8 @@ function CommentCreateBox({
     boxType,
     onReply,
     post,
-    auth
+    auth, 
+    resetOnReply
 }) {
     const [inputComment, setInputComment] = useState('');
     const [replyValue, setReplyValue] = useState({activeComment: null, parentCommentId: null});
@@ -52,6 +53,7 @@ function CommentCreateBox({
                 tag: replyValue.activeComment && replyValue.activeComment.user,
                 selectedUser: onReply.activeComment ? onReply.activeComment.user : null
             }
+            resetOnReply();
             const res = await dispatch(createComment({post, newComment, auth: authState, socket: socketState}))
 
             if(res.data.success){

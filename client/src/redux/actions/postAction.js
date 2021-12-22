@@ -154,3 +154,33 @@ export const getPost = ({id}) => async (dispatch) => {
         // })
     }
 }
+
+export const savePost = ({post, auth}) => async (dispatch) => {
+    const newUser = {...auth.user, savedPosts: [...auth.user.savedPosts, post._id]}
+    dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
+
+    try {
+        await patchDataAPI(`post/savePost/${post._id}`, null)
+    } catch (err) {
+        // dispatch({
+        //     type: GLOBALTYPES.ALERT,
+        //     payload: {error: err.response.data.msg}
+        // })
+        console.log(err.message)
+    }
+}
+
+export const unSavePost = ({post, auth}) => async (dispatch) => {
+    const newUser = {...auth.user, savedPosts: auth.user.savedPosts.filter(id => id !== post._id) }
+    dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
+
+    try {
+        await patchDataAPI(`post/unSavePost/${post._id}`, null)
+    } catch (err) {
+        // dispatch({
+        //     type: GLOBALTYPES.ALERT,
+        //     payload: {error: err.response.data.msg}
+        // })
+        console.log(err.message)
+    }
+}

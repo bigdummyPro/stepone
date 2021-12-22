@@ -81,14 +81,13 @@ function MessageRight({handleModal, setEditModalInfo}) {
         setEditModalInfo(info);
     }
 
-    useEffect(()=>{console.log('check01')
+    useEffect(()=>{
         const newData = messageState.data.find(item => item._id === id);
-        console.log(newData)
         if(newData) setData(newData);
         else setData([]);
     },[id, messageState.data])
 
-    useEffect(() => {console.log('check02')
+    useEffect(() => {
         const getMessagesData = async () => {
             if(messageState.data.every(item => item._id !== id)){
                 await dispatch(getMessages({id, page: 1}))
@@ -97,7 +96,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
         if(currConversation._id) getMessagesData();
     },[id, dispatch, messageState.data, currConversation])
 
-    useEffect(() => {console.log('check03')
+    useEffect(() => {
         const checkUserByID = async () => {
             const res = await getDataAPI(`user/get-user-by-id/${id}`);
             if(res.data.success) setCurrConversation({
@@ -115,7 +114,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
         }
     },[id, messageState.conversations])
 
-    useEffect(() => {console.log('check04')
+    useEffect(() => {
         if(messageState.userStorage){
             setCurrConversation(messageState.userStorage)
         }
@@ -195,13 +194,19 @@ function MessageRight({handleModal, setEditModalInfo}) {
                 <div className="message-right__center">
                     <ul className="message-list">
                         {
-                            data.messages && data.messages.map((mess, index)=>(
-                                <MessageItem 
-                                    key={index}
-                                    messageType={mess.sender._id === authState.user._id ? 0 : 1}
-                                    message={mess}
-                                />
-                            ))
+                            data.messages && data.messages.map((mess, index, array)=>{
+                                const duration = new Date(mess.createdAt) - new Date(array[index - 1]?.createdAt);
+
+                                const period = Math.floor((duration / (1000 * 60 * 60)) % 24) * 60 + Math.floor((duration / (1000 * 60)) % 60);
+                       
+                                return <MessageItem 
+                                            key={index}
+                                            messageType={mess.sender._id === authState.user._id ? 0 : 1}
+                                            message={mess}
+                                            wrap={mess.sender._id === array[index - 1]?.sender._id && period <= 20}
+                                            period={period}
+                                        />
+                            })
                         }
                     </ul>
                 </div>

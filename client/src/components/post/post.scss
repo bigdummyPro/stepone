@@ -391,6 +391,7 @@
         font-size: 1.1rem;
         color: $txt-color;
         position: relative;
+        user-select: none;
         &:not(:last-child) {
           margin-right: 10px;
           &::after {

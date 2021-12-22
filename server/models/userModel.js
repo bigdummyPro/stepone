@@ -35,7 +35,7 @@ const UserSchema = new Schema({
     friends: [{type: mongoose.Types.ObjectId, ref: 'users'}],
     followers: [{type: mongoose.Types.ObjectId, ref: 'users'}],
     following: [{type: mongoose.Types.ObjectId, ref: 'users'}],
-    savedPost: [{type: mongoose.Types.ObjectId, ref: 'posts'}],
+    savedPosts: [{type: mongoose.Types.ObjectId, ref: 'posts'}],
     refreshToken: {
         type: String,
         default: null

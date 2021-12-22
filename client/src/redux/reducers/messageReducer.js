@@ -141,7 +141,7 @@ const messageReducer = (state = initialState, action) => {
             let newConvWithStatus = [];
 
             state.conversations.forEach(conv => {
-                if(conv.convType === 'personal'){console.log(action.payload)
+                if(conv.convType === 'personal'){
                     if(action.payload.includes(conv.recipients[0]._id)) 
                         newConvWithStatus.push({...conv, online: true})
                     else 

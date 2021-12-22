@@ -21,7 +21,7 @@ function SuggestionUser() {
                     Suggestion For You
                 </span>
                 <span>
-                    <i class="fas fa-sync-alt"></i>
+                    <i className="fas fa-sync-alt"></i>
                 </span>
             </div>
             <ul className="suggestion-user-list">
