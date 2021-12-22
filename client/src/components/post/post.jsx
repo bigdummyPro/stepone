@@ -34,6 +34,8 @@ function Post({post, auth, dispatch, socket}) {
                     images={post.images}
                     videos={post.videos}
                     audios={post.audios}
+                    createdAt={post.createdAt}
+                    user={post.user}
                 />
                 <PostFooter 
                     handleCommentBox={actionInCommentBox}

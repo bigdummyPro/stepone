@@ -6,6 +6,7 @@ import CreateFileModal from '../create-file-modal/create-file-modal';
 import ToolTip from '../tooltip/tooltip';
 import moreRightItems from '../../assets/json-data/more-right-item.json';
 import { createPost } from '../../redux/actions/postAction';
+import LoadingImg from '../../assets/images/loading.gif';
 
 function CreatePostModal(props) {
 
@@ -15,6 +16,7 @@ function CreatePostModal(props) {
     const [moreItemActive, setMoreItemActive] = useState(null);
     const [moreItemTooltip, setMoreIemTooltip] = useState(null);
     const [fileModalType, setFileModalType] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const textareaEl = useRef(null);
 
@@ -67,6 +69,8 @@ function CreatePostModal(props) {
         setFiles(files);
     }
     const handleSubmit = async () => {
+        if(loading) return;
+
         let images = [];
         let videos = [];
         let audios = [];
@@ -76,6 +80,7 @@ function CreatePostModal(props) {
             else if(typeString.includes('video')) videos.push(item.file);
             else if(typeString.includes('audio')) audios.push(item.file);
         })
+        setLoading(true);
         const res = await dispatch(createPost({
             content: postText,
             images,
@@ -85,6 +90,7 @@ function CreatePostModal(props) {
             socket: socketState
         }))
         if(res.data.success){
+            setLoading(false);
             dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: false});
         }
     }
@@ -101,12 +107,14 @@ function CreatePostModal(props) {
     },[emotionChange])
 
     useEffect(()=>{
-        autoResizeHeight();
+        if(textareaEl.current) autoResizeHeight();
     },[postText])
 
     useEffect(()=>{
-        textareaEl.current.selectionStart = cursorPosition + 2
-        textareaEl.current.selectionEnd = cursorPosition + 2
+        if(textareaEl.current){
+            textareaEl.current.selectionStart = cursorPosition + 2;
+            textareaEl.current.selectionEnd = cursorPosition + 2;
+        }
     },[cursorPosition])
 
     useEffect(()=>{
@@ -195,6 +203,12 @@ function CreatePostModal(props) {
                         Done
                     </button>
                 </div>
+                {
+                    loading ?
+                    <div className="create-modal__loading">
+                        <img src={LoadingImg} alt="" />
+                    </div>: null
+                }
             </div>
         </div>
     );

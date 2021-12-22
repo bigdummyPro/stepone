@@ -17,7 +17,12 @@ function SuggestionUser() {
     return (
         <div className="sidebar-right__suggestion-user">
             <div className="suggestion-user-title">
-                Suggestion For You
+                <span>
+                    Suggestion For You
+                </span>
+                <span>
+                    <i class="fas fa-sync-alt"></i>
+                </span>
             </div>
             <ul className="suggestion-user-list">
                 {

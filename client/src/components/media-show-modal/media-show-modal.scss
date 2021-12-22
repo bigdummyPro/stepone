@@ -1,0 +1,185 @@
+@import "../../stylesheets/variable";
+
+.media-show-modal-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 40;
+}
+.media-show-modal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.media-modal-left {
+  width: 72%;
+  background-color: rgba($color: #000000, $alpha: 1);
+  .media-modal-left-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 20px 0;
+    overflow: hidden;
+    .media-modal-slider {
+      width: inherit;
+      height: inherit;
+      display: flex;
+      flex-wrap: nowrap;
+      transition: all 0.3s linear;
+      .media-slider-item {
+        width: inherit;
+        height: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        .media-image-wrap {
+          width: 100%;
+          max-width: 80%;
+          transform-origin: 50% 50%;
+          img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 3px;
+          }
+        }
+      }
+    }
+    .media-modal-tool {
+      width: 100%;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      .media-modal-tool__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 15px;
+        .tool-top-close {
+          span {
+            font-size: 2.2rem;
+            color: $medium-white-color;
+            cursor: pointer;
+            transition: color 0.2s linear;
+            &:hover {
+              color: $main-color;
+            }
+          }
+        }
+        .tool-top-zoom {
+          display: inline-flex;
+          span {
+            display: inline-block;
+            font-size: 2.2rem;
+            color: $medium-white-color;
+            cursor: pointer;
+            transition: color 0.2s linear;
+            &.--non-active {
+              pointer-events: none;
+              user-select: none;
+              opacity: 0.6;
+            }
+            &:not(&.--non-active):hover {
+              color: $main-color;
+            }
+            &.zoom-in-btn {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
+      .media-modal-tool__center {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        padding: 15px 15px;
+        display: flex;
+        width: 100%;
+        span {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 50px;
+          height: 50px;
+          background-color: $medium-white-color;
+          border: 1px solid $line-color;
+          color: $txt-color;
+          border-radius: 50%;
+          font-size: 2rem;
+          cursor: pointer;
+          transition: background-color, color 0.2s linear;
+          &:hover {
+            background-color: $main-light-color;
+            color: $main-color;
+          }
+        }
+        .next-btn {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+}
+.media-modal-right {
+  width: 28%;
+  background-color: $medium-white-color;
+  .media-modal-info {
+    padding: 15px 15px;
+    .media-modal-info__user {
+      display: flex;
+      align-items: center;
+      .user-avatar {
+        display: inline-block;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 1px solid $line-color;
+        margin-right: 5px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+      }
+      .user-content {
+        display: inline-flex;
+        flex-direction: column;
+        a {
+          font-size: 1.3rem;
+          color: $txt-color;
+          font-weight: 600;
+          &:hover {
+            color: $main-color;
+          }
+        }
+        span {
+          font-size: 1.1rem;
+          color: $txt-light-color;
+        }
+      }
+      .post-tool {
+        margin-left: auto;
+        span {
+          font-size: 1.5rem;
+          color: $txt-color;
+          cursor: pointer;
+          &:hover {
+            color: $main-color;
+          }
+        }
+      }
+    }
+    .media-modal-info__content {
+      font-size: 1.4rem;
+      line-height: 2.4rem;
+      color: $txt-color;
+      margin-top: 10px;
+    }
+  }
+}

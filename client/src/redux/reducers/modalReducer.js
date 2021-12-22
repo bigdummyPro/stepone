@@ -5,7 +5,11 @@ const initialState = {
     emotionModalInCreatePost: false,
     emotionModalPosition: {x: 0, y: 0},
     fileModalInCreatePost: false,
-    initFileModalType: null
+    initFileModalType: null,
+    mediaShowModal: {
+        status: false,
+        data: null
+    }
 };
 
 const modalReducer = (state = initialState, action) => {
@@ -21,6 +25,8 @@ const modalReducer = (state = initialState, action) => {
             return {...state, fileModalInCreatePost: payload}
         case GLOBALTYPES.INIT_FILE_MODAL_TYPE:
             return {...state, initFileModalType: payload}
+        case GLOBALTYPES.MEDIA_SHOW_MODAL:
+            return {...state, mediaShowModal: payload}
         default:
             return state;
     }

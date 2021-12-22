@@ -347,16 +347,34 @@
   border-bottom: 1px solid $line-color;
   padding-bottom: 12px;
   .suggestion-user-title {
-    font-size: 1.6rem;
-    color: $txt-color;
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 25px;
+    span {
+      color: $txt-color;
+    }
+    span:first-child {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+    span:last-child {
+      font-size: 1.4rem;
+      cursor: pointer;
+      &:hover {
+        color: $main-color;
+      }
+    }
   }
   .suggestion-user-list {
+    min-height: 180px;
+    max-height: 180px;
     .suggestion-user-item {
       display: flex;
       align-items: center;
-      margin-bottom: 25px;
+      &:not(:last-child) {
+        margin-bottom: 25px;
+      }
       .user-item-avatar {
         flex-shrink: 0;
         width: 40px;
@@ -515,4 +533,12 @@
       }
     }
   }
+}
+.sidebar-right-copyright {
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1rem;
+  color: $txt-color;
+  margin-top: 18px;
+  text-align: right;
 }

@@ -11,6 +11,9 @@ function SidebarRight(props) {
                 <TopMenu />
                 <SuggestionUser />
                 <SavedPost />
+                <div className="sidebar-right-copyright">
+                    © Website is created by Vinh Nguyen
+                </div>
             </div>
         </div>
     );

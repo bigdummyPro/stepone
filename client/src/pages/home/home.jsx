@@ -3,6 +3,7 @@ import './home.scss';
 import Post from '../../components/post/post';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPosts } from '../../redux/actions/postAction';
+import MediaShowModal from '../../components/media-show-modal/media-show-modal';
 
 function Home() {
     const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function Home() {
                         </div>  
                     </div>
                 </div>
+                <MediaShowModal />
             </div>
         </div>
     );
