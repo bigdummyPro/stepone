@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './message-item.scss';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import MessageContentTool from './message-content-tool';
 
 
 function MessageItem({messageType, message, wrap, period}) {
-    
     return (
         <>
             {
@@ -23,6 +22,21 @@ function MessageItem({messageType, message, wrap, period}) {
                                 <div className="text-content">
                                     {message.text}
                                 </div>
+                                {
+                                    message.media.length > 0 ?
+                                    <div className="media-content">
+                                        {
+                                            message.media.map((me, index)=>(
+                                            <div 
+                                            className="media-content-item"
+                                            key={index}
+                                            >
+                                                <img src={me.url} alt="" />
+                                            </div>
+                                            ))
+                                        }
+                                    </div> : null
+                                }
                             </div>
                             <MessageContentTool updatedAt={message.updatedAt}/>
                         </div>
@@ -43,6 +57,21 @@ function MessageItem({messageType, message, wrap, period}) {
                                     <div className="text-content">
                                         {message.text}
                                     </div>
+                                    {
+                                        message.media.length > 0 ?
+                                        <div className="media-content">
+                                            {
+                                                message.media.map((me, index)=>(
+                                                <div 
+                                                className="media-content-item"
+                                                key={index}
+                                                >
+                                                    <img src={me.url} alt="" />
+                                                </div>
+                                                ))
+                                            }
+                                        </div> : null
+                                    }
                                 </div>
                                 <MessageContentTool updatedAt={message.updatedAt}/>
                             </div>
@@ -59,6 +88,21 @@ function MessageItem({messageType, message, wrap, period}) {
                                     <div className="text-content">
                                         {message.text}
                                     </div>
+                                    {
+                                        message.media.length > 0 ?
+                                        <div className="media-content">
+                                            {
+                                                message.media.map((me, index)=>(
+                                                <div 
+                                                className="media-content-item"
+                                                key={index}
+                                                >
+                                                    <img src={me.url} alt="" />
+                                                </div>
+                                                ))
+                                            }
+                                        </div> : null
+                                    }
                                 </div>
                                 <MessageContentTool updatedAt={message.updatedAt}/>
                             </div>

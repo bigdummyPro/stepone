@@ -225,7 +225,7 @@
   .message-left-list {
     display: flex;
     flex-direction: column;
-    padding: 0 8px;
+    padding: 0 10px;
     padding-bottom: 10px;
     max-height: 380px;
     overflow-y: auto;
@@ -400,6 +400,7 @@
     img {
       width: 35px;
       height: 35px;
+      object-fit: cover;
       border-radius: 50%;
       border: 1px solid $txt-light-color;
       background-color: #6e83b7;

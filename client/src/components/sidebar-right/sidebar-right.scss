@@ -3,7 +3,7 @@
 .sidebar-right-container {
   max-width: $sidebar-right-width;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 35px);
   position: fixed;
   top: 0;
   right: 0;
@@ -20,6 +20,7 @@
     border-left: 1px solid $line-color;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 }
 .sidebar-right__top-menu {
@@ -213,7 +214,7 @@
       min-width: 310px;
       display: flex;
       flex-direction: column;
-      padding: 15px 10px 10px;
+      padding: 15px 8px 10px 10px;
       position: absolute;
       top: calc(100% + 10px);
       right: -10px;
@@ -250,7 +251,7 @@
   }
   /* Track */
   &::-webkit-scrollbar-track {
-    background: $main-light-color;
+    background: $medium-white-color;
   }
 
   /* Handle */
@@ -354,11 +355,11 @@
     span {
       color: $txt-color;
     }
-    span:first-child {
+    span.text-title {
       font-size: 1.6rem;
       font-weight: 600;
     }
-    span:last-child {
+    span.icon-title {
       font-size: 1.4rem;
       cursor: pointer;
       &:hover {
@@ -422,6 +423,17 @@
         &:hover {
           filter: brightness(1.2);
         }
+      }
+    }
+    .suggestion-user-item-loading {
+      width: 100%;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 40px;
+        height: 40px;
       }
     }
   }
@@ -566,10 +578,10 @@
   }
 }
 .sidebar-right-copyright {
+  margin-top: auto;
   width: 100%;
   font-size: 1rem;
   line-height: 1rem;
   color: $txt-color;
-  margin-top: 18px;
   text-align: right;
 }

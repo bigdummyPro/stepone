@@ -21,6 +21,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
     const [currConversation, setCurrConversation] = useState({});
     const [data, setData] = useState(null);
     const [media, setMedia] = useState([]);
+    const [messageLoading, setMessageLoading] = useState(false);
 
     const textareaEl = useRef(null);
     const dispatch = useDispatch();
@@ -99,7 +100,13 @@ function MessageRight({handleModal, setEditModalInfo}) {
         await dispatch(createMessage({message, auth: authState, socket: socketState}));
     }
     const handleSubmitWithBtn = async () => {
+        if(messageLoading) return;
+
         if(messInputValue.trim() !== '' || media.length > 0){
+            setMessageLoading(true);
+            setMessInputValue('');
+            setMedia([]);
+
             let newMediaArr = [];
             if(media.length > 0) newMediaArr = await imageUpload(media);
 
@@ -112,14 +119,21 @@ function MessageRight({handleModal, setEditModalInfo}) {
                 media: newMediaArr,
                 updatedAt: new Date().toISOString()
             }
+
             const res = await dispatch(createMessage({message, auth: authState, socket: socketState}));
             if(res.data.success){
-                setMessInputValue('');
+                setMessageLoading(false);
             }
         }
     }
     const handleSubmitWithKey = async (e) => {
+        if(messageLoading) return;
+
         if(e.key === 'Enter' && (messInputValue !== '' || media.length > 0)){
+
+            setMessInputValue('');
+            setMedia([]);
+            setMessageLoading(true);
 
             let newMediaArr = [];
             if(media.length > 0) newMediaArr = await imageUpload(media);
@@ -133,9 +147,11 @@ function MessageRight({handleModal, setEditModalInfo}) {
                 media: newMediaArr,
                 updatedAt: new Date().toISOString()
             }
+
             const res = await dispatch(createMessage({message, auth: authState, socket: socketState}));
+
             if(res.data.success){
-                setMessInputValue('');
+                setMessageLoading(false);
             }
         }
     }
@@ -271,6 +287,14 @@ function MessageRight({handleModal, setEditModalInfo}) {
                                                 period={period}
                                             />
                                 })
+                            }
+                            {
+                                messageLoading ?
+                                <li className="message-item message-item--reverse">
+                                    <div className="message-item-loading">
+                                        <img src={LoadingImg} alt="" />
+                                    </div>
+                                </li> : null
                             }
                         </ul>
                     </div>

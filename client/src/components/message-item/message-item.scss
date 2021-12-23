@@ -41,6 +41,18 @@
         }
       }
     }
+    .message-item-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $main-light-color;
+      border-radius: 12px;
+      padding: 6px;
+      img {
+        width: 30px;
+        height: 30px;
+      }
+    }
   }
 }
 .message-item__avatar {
@@ -84,6 +96,23 @@
       font-size: 1.3rem;
       line-height: 1.8rem;
       color: $txt-color;
+    }
+    .media-content {
+      display: flex;
+      flex-direction: column;
+      margin-top: 8px;
+      .media-content-item {
+        width: 100%;
+        &:not(:last-child) {
+          margin-bottom: 10px;
+        }
+        img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          border-radius: 5px;
+        }
+      }
     }
   }
   .message-content-tool {

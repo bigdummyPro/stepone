@@ -28,7 +28,7 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
 
 export const getMessages = ({id, page = 1}) => async (dispatch) => {
     try {
-        const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 9}`)
+        const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 20}`)
         const newData = {...res.data, messages: res.data.messages.reverse()}
         
         if(res.data.messages.length > 0){
