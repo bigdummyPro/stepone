@@ -377,6 +377,16 @@
   display: flex;
   flex-direction: column;
 }
+.message-right-loading {
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 60px;
+    height: 60px;
+  }
+}
 .message-right__top {
   height: 60px;
   display: flex;
@@ -494,96 +504,155 @@
   }
 }
 .message-right__bottom {
-  min-height: 60px;
   display: flex;
-  align-items: flex-end;
-  padding: 12px 12px;
-  border-top: 1px solid $line-color;
-  .message-action {
+  flex-direction: column;
+  .message-media-content {
+    .media-content-list {
+      width: 100%;
+      padding: 12px 12px;
+      display: flex;
+      overflow-x: auto;
+      border-top: 1px solid $line-color;
+      /* width */
+      &::-webkit-scrollbar {
+        height: 5px;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: $main-color;
+        border-radius: 3px;
+      }
+      .media-content-item {
+        position: relative;
+        width: 55px;
+        height: 55px;
+        flex-shrink: 0;
+        &:not(:last-child) {
+          margin-right: 15px;
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+        span {
+          position: absolute;
+          right: -9px;
+          top: -9px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 18px;
+          height: 18px;
+          font-size: 0.9rem;
+          line-height: 0.9em;
+          color: $txt-color;
+          background-color: $main-light-color;
+          border-radius: 50%;
+          border: 1px solid $line-color;
+          cursor: pointer;
+          &:hover {
+            background-color: $main-color;
+            color: $medium-white-color;
+          }
+        }
+      }
+    }
+  }
+  .message-text-content {
+    min-height: 60px;
     display: flex;
-    gap: 8px;
-    margin-bottom: 3px;
-    .message-action__item {
+    align-items: flex-end;
+    padding: 12px 12px;
+    border-top: 1px solid $line-color;
+    .message-action {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 3px;
+      .message-action__item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        font-size: 1.8rem;
+        color: $main-color;
+        cursor: pointer;
+        transition: all 0.2s linear;
+        &:hover {
+          background-color: $main-light-color;
+        }
+      }
+    }
+    .message-input {
+      margin-left: 15px;
+      flex: 1;
+      background-color: $main-light-color;
+      border-radius: 20px;
       position: relative;
+      .message-input__wrapper {
+        display: flex;
+        padding: 10px 0;
+        textarea {
+          width: 100%;
+          height: 20px;
+          font-size: 1.4rem;
+          line-height: 2rem;
+          color: $txt-color;
+          padding: 0px 35px 0px 15px;
+          border: none;
+          outline: none;
+          background-color: transparent;
+          resize: none;
+          overflow: hidden;
+        }
+        span {
+          position: absolute;
+          right: 10px;
+          bottom: 0;
+          transform: translateY(-50%);
+          font-size: 2rem;
+          color: $main-color;
+          cursor: pointer;
+          &:hover {
+            filter: brightness(1.2);
+          }
+        }
+      }
+    }
+    .message-icon {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 35px;
       height: 35px;
+      padding: 4px;
       border-radius: 50%;
-      font-size: 1.8rem;
+      margin-left: 10px;
+      margin-bottom: 3px;
+      font-size: 2rem;
       color: $main-color;
       cursor: pointer;
       transition: all 0.2s linear;
+      i {
+        margin-top: 3px;
+      }
       &:hover {
         background-color: $main-light-color;
       }
     }
-  }
-  .message-input {
-    margin-left: 15px;
-    flex: 1;
-    background-color: $main-light-color;
-    border-radius: 20px;
-    position: relative;
-    .message-input__wrapper {
-      display: flex;
-      padding: 10px 0;
-      textarea {
-        width: 100%;
-        height: 20px;
-        font-size: 1.4rem;
-        line-height: 2rem;
-        color: $txt-color;
-        padding: 0px 35px 0px 15px;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        resize: none;
-        overflow: hidden;
-      }
-      span {
-        position: absolute;
-        right: 10px;
-        bottom: 0;
-        transform: translateY(-50%);
-        font-size: 2rem;
-        color: $main-color;
-        cursor: pointer;
-        &:hover {
-          filter: brightness(1.2);
-        }
-      }
-    }
-  }
-  .message-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 35px;
-    padding: 4px;
-    border-radius: 50%;
-    margin-left: 10px;
-    margin-bottom: 3px;
-    font-size: 2rem;
-    color: $main-color;
-    cursor: pointer;
-    transition: all 0.2s linear;
-    i {
-      margin-top: 3px;
-    }
-    &:hover {
+    .no-active-notification {
       background-color: $main-light-color;
+      border-radius: 5px;
+      padding: 10px 10px;
+      font-size: 1.3rem;
+      text-align: center;
+      color: $txt-color;
     }
-  }
-  .no-active-notification {
-    background-color: $main-light-color;
-    border-radius: 5px;
-    padding: 10px 10px;
-    font-size: 1.3rem;
-    text-align: center;
-    color: $txt-color;
   }
 }
 .message-right-no-data {

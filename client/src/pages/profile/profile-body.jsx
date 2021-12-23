@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router';
 import ProfileBodyAbout from './profile-body-about';
 import ProfileBodyFollow from './profile-body-follow';
 import ProfileBodyPost from './profile-body-post';
+import ProfileBodySaved from './profile-body-saved';
 
 function ProfileBody({id, profile, detailPost, auth, socket, dispatch, handleEditModal}) {
     const [userData, setUserData] = useState([]);
@@ -43,6 +44,17 @@ function ProfileBody({id, profile, detailPost, auth, socket, dispatch, handleEdi
                             path="/follow" 
                             element={<ProfileBodyFollow followers={item.followers} following={item.following}/>}
                         />
+                        {
+                            auth.user._id === id ?
+                            <Route 
+                                path="/saved"
+                                element={<ProfileBodySaved 
+                                    auth={auth} 
+                                    socket={socket}
+                                    dispatch={dispatch}
+                                />}
+                            /> : null
+                        }
                         <Route path="/image" element={<div>Đang cập nhật</div>}/>
                         <Route path="/video" element={<div>Đang cập nhật</div>}/>
                     </Routes>

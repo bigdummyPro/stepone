@@ -26,7 +26,7 @@ app.use('/api/user', userRouter);
 //define api of notification
 app.use('/api/notification', notificationRouter);
 //define api of post
-app.use('/api/post', postRouter);
+app.use('/api', postRouter);
 //define api of comment
 app.use('/api/comment', commentRouter);
 //define api of message

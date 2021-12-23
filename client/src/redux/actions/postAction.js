@@ -157,10 +157,11 @@ export const getPost = ({id}) => async (dispatch) => {
 
 export const savePost = ({post, auth}) => async (dispatch) => {
     const newUser = {...auth.user, savedPosts: [...auth.user.savedPosts, post._id]}
-    dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
 
     try {
-        await patchDataAPI(`post/savePost/${post._id}`, null)
+        await patchDataAPI(`savePost/${post._id}`, null);
+        
+        dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
     } catch (err) {
         // dispatch({
         //     type: GLOBALTYPES.ALERT,
@@ -171,11 +172,12 @@ export const savePost = ({post, auth}) => async (dispatch) => {
 }
 
 export const unSavePost = ({post, auth}) => async (dispatch) => {
-    const newUser = {...auth.user, savedPosts: auth.user.savedPosts.filter(id => id !== post._id) }
-    dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
 
     try {
-        await patchDataAPI(`post/unSavePost/${post._id}`, null)
+        await patchDataAPI(`unSavePost/${post._id}`, null);
+
+        const newUser = {...auth.user, savedPosts: auth.user.savedPosts.filter(id => id !== post._id) }
+        dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
     } catch (err) {
         // dispatch({
         //     type: GLOBALTYPES.ALERT,

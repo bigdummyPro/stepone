@@ -6,19 +6,19 @@ const postCtrl = require('../controller/postCtrl');
 const verifyToken = require('../middleware/auth');
 
 
-router.route('/')
+router.route('/post')
     .post(verifyToken, postCtrl.createPost)
     .get(verifyToken, postCtrl.getPosts)
     
-router.route('/:id')
+router.route('/post/:id')
     .get(verifyToken, postCtrl.getPost)
     .delete(verifyToken, postCtrl.deletePost)
 
-router.patch('/:id/like', verifyToken, postCtrl.likePost);
+router.patch('/post/:id/like', verifyToken, postCtrl.likePost);
 
-router.patch('/:id/unlike', verifyToken, postCtrl.unLikePost);
+router.patch('/post/:id/unlike', verifyToken, postCtrl.unLikePost);
 
-router.get('/user-posts/:id', verifyToken, postCtrl.getUserPosts);
+router.get('/post/user-posts/:id', verifyToken, postCtrl.getUserPosts);
 
 router.patch('/savePost/:id', verifyToken, postCtrl.savePost)
 

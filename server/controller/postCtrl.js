@@ -192,12 +192,13 @@ const postCtrl = {
     getSavePosts: async (req, res) => {
         try {
             const user = await Users.findOne({_id: req.user.id});
-
+            if(!user.savedPosts) return;
+            
             const features = new APIfeatures(Posts.find({
                 _id: {$in: user.savedPosts}
             }), req.query).paginating()
 
-            const savePosts = await features.query.sort("-createdAt")
+            const savePosts = await features.query.sort('-createdAt').populate("user", "avatar username nickname")
 
             res.json({
                 success: true,

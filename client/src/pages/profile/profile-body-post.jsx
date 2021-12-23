@@ -71,7 +71,7 @@ function ProfileBodyPost({profile, detailPost, auth, socket, dispatch}) {
                 </div>
             </div>
             <div className="profile-body-post-wrapper">
-                <div className="profile-body-post">
+                <div className="profile-post-container">
                     {
                         postData.map((post, index)=>(
                             <Post 

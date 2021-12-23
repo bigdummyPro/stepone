@@ -12,6 +12,10 @@
         "link": "/follow"
     },
     {
+        "content": "Saved", 
+        "link": "/saved"
+    },
+    {
         "content": "Image", 
         "link": "/image"
     },
