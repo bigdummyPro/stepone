@@ -127,9 +127,12 @@ function SocketClient() {
         socketState.on('addMessageToClient', message =>{
             dispatch({type: GLOBALTYPES.CREATE_MESSAGE, payload: {...message, user: authState.user}})
         })
+        // if(!notificationState.sound) {
+        //     notiAudioRef.current.play();
+        // }
 
         return () => socketState.off('addMessageToClient')
-    },[socketState, dispatch])
+    },[socketState, dispatch, notificationState.sound])
 
     useEffect(() => {
         socketState.on('addConvGroupToClient', conversation => {

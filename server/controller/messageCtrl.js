@@ -26,11 +26,12 @@ const messageCtrl = {
 
             let newConversation;
             const conv = await Conversations.findById(_convID);
-            if(conv){console.log([sender, ...recipients])
+            if(conv){
                 newConversation = await Conversations.findOneAndUpdate({
                     _id: conv._id
                 }, {
                     currentSender: sender,
+                    isRead: [sender],
                     text, media
                 }, { new: true, upsert: true })
             }else{
@@ -42,6 +43,7 @@ const messageCtrl = {
                 }, {
                     recipients: [sender, ...recipients],
                     currentSender: sender,
+                    isRead: [sender],
                     text, media
                 }, { new: true, upsert: true })
             }
@@ -94,6 +96,27 @@ const messageCtrl = {
             return res.status(500).json({success: false, message: err.message})
         }
     },
+    isReadUpdate: async (req, res) => {
+        try {
+            const conv = await Conversations.findById(req.params.id);
+            if(conv){
+                await Conversations.findOneAndUpdate({_id: req.params.id}, {
+                    $push: {isRead: req.user.id}
+                }, {new: true});
+            }else{
+                await Conversations.findOneAndUpdate({
+                    $or: [
+                        {recipients: [req.params.id, req.user.id]},
+                        {recipients: [req.user.id, req.params.id]}
+                    ]
+                }, { $push: {isRead: req.user.id}}, {new: true})
+            }
+
+            res.json({success: true, message: 'Update Success!'});
+        } catch (error) {
+            return res.status(500).json({success: false, message: error.message})
+        }
+    },
     getConversations: async (req, res) => {
         try {
             const features = new APIfeatures(Conversations.find({
@@ -101,7 +124,7 @@ const messageCtrl = {
             }), req.query).paginating()
 
             const conversations = await features.query.sort('-updatedAt')
-            .populate('recipients currentSender', 'avatar username nickname')
+            .populate('recipients currentSender isRead', 'avatar username nickname')
 
             res.json({
                 success: true,

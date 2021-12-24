@@ -21,7 +21,6 @@ function SuggestionUser() {
         dispatch(getSuggestedUsers());
     },[dispatch])
 
-    console.log(suggestionState.users)
     return (
         <div className="sidebar-right__suggestion-user">
             <div className="suggestion-user-title">

@@ -24,9 +24,6 @@ function MessageLeft({handleModal}) {
         dispatch(getConversations({auth: authState, page: 1}))
     },[authState, dispatch, messageState.firstLoad])
 
-    useEffect(()=>{
-        
-    },[])
     // Check User Online - Offline
     useEffect(()=>{
         if(messageState.firstLoad)
@@ -76,6 +73,7 @@ function MessageLeft({handleModal}) {
                             conversation={conv}
                             id={id}
                             auth={authState}
+                            dispatch={dispatch}
                         />
                     ))
                 }

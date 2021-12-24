@@ -16,4 +16,6 @@ router.get('/conversations', verifyToken, messageCtrl.getConversations);
 
 router.patch('/conversation/:id', verifyToken, messageCtrl.updateConversation);
 
+router.patch('/conversation/isRead/:id', verifyToken, messageCtrl.isReadUpdate);
+
 module.exports = router;

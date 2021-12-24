@@ -9,6 +9,10 @@ const initialState = {
     mediaShowModal: {
         status: false,
         data: null
+    },
+    mediaDetailModal: {
+        status: false,
+        data: null
     }
 };
 
@@ -27,6 +31,8 @@ const modalReducer = (state = initialState, action) => {
             return {...state, initFileModalType: payload}
         case GLOBALTYPES.MEDIA_SHOW_MODAL:
             return {...state, mediaShowModal: payload}
+        case GLOBALTYPES.MEDIA_DETAIL_MODAL:
+            return {...state, mediaDetailModal: payload}
         default:
             return state;
     }

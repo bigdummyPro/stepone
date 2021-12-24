@@ -103,6 +103,7 @@
       margin-top: 8px;
       .media-content-item {
         width: 100%;
+        cursor: pointer;
         &:not(:last-child) {
           margin-bottom: 10px;
         }

@@ -10,8 +10,6 @@ export const getUserProfile = ({id, auth}) => async (dispatch) => {
         dispatch({type: GLOBALTYPES.LOADING_PROFILE, payload: true})
         const res = await getDataAPI(`user/get-user-by-id/${id}`)
         const res1 = await getDataAPI(`post/user-posts/${id}`)
-        
-        // const posts = await res1;
 
         dispatch({
             type: GLOBALTYPES.SET_USERS_INFO,

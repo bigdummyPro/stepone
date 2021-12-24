@@ -3,6 +3,7 @@ import './message.scss';
 import MessageLeft from './message-left';
 import MessageRight from './message-right';
 import SettingGroupModal from './setting-group-modal';
+import DetailMediaModal from './detail-media-modal';
 
 function Message() {
     const [modalStatus, setModalStatus] = useState(false);
@@ -31,6 +32,9 @@ function Message() {
                                 resetEditModalInfo={() => setEditModalInfo({onEdit: false, info: null})}
                             /> : null
                         }
+                        <DetailMediaModal 
+                        
+                        />
                     </div> 
                 </div>
             </div>

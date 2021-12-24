@@ -1,14 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import GroupAvatarImg from '../../assets/images/group-avatar.png';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { isReadUpdate } from '../../redux/actions/messageAction';
 
-function MessageBox({conversation, id, auth}) {
+function MessageBox({conversation, id, auth, dispatch}) {
+
+    const handleIsRead = () => {
+        if(conversation.isRead.every(item => item._id !== auth.user._id))
+        dispatch(isReadUpdate({conversationID: conversation._id, auth}))
+    }
+    useEffect(()=>{
+        if(conversation._id === id) handleIsRead();
+    },[id, conversation])
+
     return (
         <Link 
-            to={`/message/${conversation._id}`} //--unread
-            className={`message-box ${id === conversation._id ? '--active' : ''}`}
+            to={`/message/${conversation._id}`}
+            className={`message-box ${id === conversation._id ? '--active' : ''} ${conversation.isRead.every(item => item._id !== auth.user._id) ? '--unread' : ''}`}
+            onClick={handleIsRead}
         >
             <div className="message-box__left">
                 <img src={conversation.convType === 'personal' ? (conversation.recipients[0].avatar || UserAvatarImg): (conversation.convAvatar || GroupAvatarImg)} alt="" />

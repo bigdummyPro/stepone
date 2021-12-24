@@ -2,9 +2,19 @@ import React from 'react';
 import './message-item.scss';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import MessageContentTool from './message-content-tool';
+import { useDispatch } from 'react-redux';
+import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 
 
 function MessageItem({messageType, message, wrap, period}) {
+    const dispatch = useDispatch();
+
+    const handleMediaDetail = (media) => {
+        dispatch({type: GLOBALTYPES.MEDIA_DETAIL_MODAL, payload: {
+            status: true,
+            data: media
+        }})
+    }
     return (
         <>
             {
@@ -30,6 +40,7 @@ function MessageItem({messageType, message, wrap, period}) {
                                             <div 
                                             className="media-content-item"
                                             key={index}
+                                            onClick={()=>handleMediaDetail(me)}
                                             >
                                                 <img src={me.url} alt="" />
                                             </div>
@@ -65,6 +76,7 @@ function MessageItem({messageType, message, wrap, period}) {
                                                 <div 
                                                 className="media-content-item"
                                                 key={index}
+                                                onClick={()=>handleMediaDetail(me)}
                                                 >
                                                     <img src={me.url} alt="" />
                                                 </div>
@@ -96,6 +108,7 @@ function MessageItem({messageType, message, wrap, period}) {
                                                 <div 
                                                 className="media-content-item"
                                                 key={index}
+                                                onClick={()=>handleMediaDetail(me)}
                                                 >
                                                     <img src={me.url} alt="" />
                                                 </div>

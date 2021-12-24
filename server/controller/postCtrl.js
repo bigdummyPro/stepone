@@ -123,7 +123,9 @@ const postCtrl = {
         try {
             const features = new APIfeatures(Posts.find({user: req.params.id}), req.query).paginating()
 
-            const posts = await features.query.sort("-createdAt").populate("user likes", "avatar username nickname followers")
+            const posts = await features.query.sort("-createdAt")
+            .populate("user likes", "avatar username nickname followers")
+            
 
             res.json({
                 success: true,
@@ -198,7 +200,15 @@ const postCtrl = {
                 _id: {$in: user.savedPosts}
             }), req.query).paginating()
 
-            const savePosts = await features.query.sort('-createdAt').populate("user", "avatar username nickname")
+            const savePosts = await features.query.sort('-createdAt')
+            .populate("user", "avatar username nickname")
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "user likes",
+                    select: "-password"
+                }
+            })
 
             res.json({
                 success: true,
