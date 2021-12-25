@@ -53,6 +53,7 @@
       padding: 16px 0 16px 16px;
       cursor: pointer;
       transition: color 0.3s linear;
+      position: relative;
       &.--active {
         background-color: $main-light-color;
         border-radius: 20px 0 0 20px;
@@ -62,6 +63,7 @@
         &::after {
           position: absolute;
           content: "";
+          z-index: 2;
           width: 40px;
           height: 40px;
           right: 0;
@@ -88,6 +90,20 @@
       i {
         font-size: 1.8rem;
         margin-right: 10px;
+      }
+      .message-count-badge {
+        width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: $red-color;
+        color: $txt-white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        line-height: 1rem;
+        margin-left: 50px;
       }
     }
   }

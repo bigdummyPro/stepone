@@ -11,6 +11,7 @@ function MessageLeft({handleModal}) {
     const authState = useSelector(state => state.authReducer);
     const messageState = useSelector(state => state.messageReducer);
     const onlineState = useSelector(state => state.onlineReducer);
+    const socketState = useSelector(state => state.socketReducer);
 
     const {id} = useParams();
     const navigate = useNavigate();
@@ -74,6 +75,7 @@ function MessageLeft({handleModal}) {
                             id={id}
                             auth={authState}
                             dispatch={dispatch}
+                            socket={socketState}
                         />
                     ))
                 }

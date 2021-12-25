@@ -5,11 +5,11 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { isReadUpdate } from '../../redux/actions/messageAction';
 
-function MessageBox({conversation, id, auth, dispatch}) {
+function MessageBox({conversation, id, auth, dispatch, socket}) {
 
     const handleIsRead = () => {
         if(conversation.isRead.every(item => item._id !== auth.user._id))
-        dispatch(isReadUpdate({conversationID: conversation._id, auth}))
+        dispatch(isReadUpdate({conversation, auth, socket}))
     }
     useEffect(()=>{
         if(conversation._id === id) handleIsRead();

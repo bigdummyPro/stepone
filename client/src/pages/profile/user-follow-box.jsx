@@ -57,12 +57,14 @@ function UserFollowBox({followData, typeKey}) {
                         </li>
                     }
                     <li className="tool-item">
-                        <span className="tool-item__icon">
-                            <i className="fas fa-comment-alt"></i>
-                        </span>
-                        <span className="tool-item__content">
-                            Message
-                        </span>
+                        <Link to={`/message/${followData._id}`}> 
+                            <span className="tool-item-link__icon">
+                                <i className="fas fa-comment-alt"></i>
+                            </span>
+                            <span className="tool-item-link__content">
+                                Message
+                            </span>
+                        </Link>
                     </li>
                 </ul>
             </div>

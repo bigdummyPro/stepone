@@ -147,6 +147,23 @@ function SocketClient() {
     }, [socketState, dispatch])
 
     useEffect(() => {
+        socketState.on('updateIsReadConvToClient', ({conversation, user}) => {
+
+            if(conversation.convType === 'group'){
+                dispatch({type: GLOBALTYPES.UPDATE_ISREAD_CONVERSATION, payload: {_id: conversation._id, user}})
+            }else if(conversation.convType === 'personal'){
+                dispatch({
+                    type: GLOBALTYPES.UPDATE_ISREAD_CONVERSATION, 
+                    payload: {
+                        _id: user._id, 
+                        user
+                    }
+                })
+            }
+        })
+    }, [socketState, dispatch])
+
+    useEffect(() => {
         socketState.on('preventUserToClient', noActiveData => {
             dispatch({type: GLOBALTYPES.SET_NO_ACTIVE_USER, payload: {_id: noActiveData._convID}})
         })

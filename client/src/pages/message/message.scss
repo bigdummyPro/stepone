@@ -264,7 +264,7 @@
   .message-box__left {
     width: 45px;
     height: 45px;
-    border: 1px solid $line-color;
+    outline: 1px solid $line-color;
     background-color: #6e83b7;
     flex-shrink: 0;
     border-radius: 50%;
@@ -402,7 +402,7 @@
       height: 35px;
       object-fit: cover;
       border-radius: 50%;
-      border: 1px solid $txt-light-color;
+      outline: 1px solid $line-color;
       background-color: #6e83b7;
     }
     span {

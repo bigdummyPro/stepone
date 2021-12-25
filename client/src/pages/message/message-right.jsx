@@ -17,6 +17,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
     const [messInputValue, setMessInputValue] = useState('');
     const [messIconTooltip, setMessIconTooltip] = useState(null);
     const [cursorPosition, setCursorPosition] = useState(null);
+    const [firstLoad, setFirstLoad] = useState(true);
 
     const [currConversation, setCurrConversation] = useState({});
     const [data, setData] = useState(null);
@@ -173,7 +174,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
             }
         }
         if(currConversation._id) getMessagesData();
-    },[id, dispatch, messageState.data, currConversation])
+    },[id, messageState.data, currConversation])
 
     useEffect(() => {
         const checkUserByID = async () => {
@@ -186,9 +187,13 @@ function MessageRight({handleModal, setEditModalInfo}) {
         }
         if(id && messageState.conversations.length > 0){
             const newConv = messageState.conversations.find(conv => conv._id === id);
-            if(newConv) setCurrConversation(newConv);
+            if(newConv) {
+                setCurrConversation(newConv); 
+                setFirstLoad(false);
+            }
             else {
                 checkUserByID();
+                setData({});
             }
         }
     },[id, messageState.conversations])
@@ -226,78 +231,105 @@ function MessageRight({handleModal, setEditModalInfo}) {
         <>
         {   
             data ?
-                messageState.data.length > 0 ?
+                messageState.data.length > 0 || currConversation._id || firstLoad?
                 <div className="message-right">
-                    <div className="message-right__top">
-                        <div className="message-info">
-                            <img src={currConversation && (currConversation.convType === 'personal' ? (currConversation.recipients[0].avatar || UserAvatarImg): (currConversation.convAvatar || GroupAvatarImg)) } alt="" />
+                    {
+                        currConversation._id ?
+                        <div className="message-right__top">
+                            <div className="message-info">
+                                <img src={currConversation && (currConversation.convType === 'personal' ? (currConversation.recipients[0].avatar || UserAvatarImg): (currConversation.convAvatar || GroupAvatarImg)) } alt="" />
 
-                            <span>{currConversation.convType === 'personal' ? currConversation.recipients[0].username : currConversation.convName}</span>
-                        </div>
-                        {
-                            !currConversation.noActiveStatus ?
-                            <ul className="message-tool">
-                                <li className="message-tool__item">
-                                    <span>
-                                        <i className="fas fa-phone-alt"></i>
-                                    </span>
-                                </li>
-                                <li className="message-tool__item">
-                                    <span>
-                                        <i className="fas fa-video"></i>
-                                    </span>
-                                </li>
-                                <li className="message-tool__item">
-                                    <span>
-                                        <i className="fas fa-info-circle"></i>
-                                    </span>
-                                    <ul className="group-info-menu">
-                                        {
-                                            currConversation.convType === 'group' ?
-                                            <li 
-                                                className="group-info-menu__item"
-                                                onClick={()=>handleEditModal(currConversation)}
-                                            >
-                                                <i className="fas fa-user-edit"></i>
-                                                Edit group chat
-                                            </li> : null
-                                        }
-                                        <li className="group-info-menu__item">
+                                <span>{currConversation.convType === 'personal' ? currConversation.recipients[0].username : currConversation.convName}</span>
+                            </div>
+                            {
+                                !currConversation.noActiveStatus ?
+                                <ul className="message-tool">
+                                    <li className="message-tool__item">
+                                        <span>
+                                            <i className="fas fa-phone-alt"></i>
+                                        </span>
+                                    </li>
+                                    <li className="message-tool__item">
+                                        <span>
+                                            <i className="fas fa-video"></i>
+                                        </span>
+                                    </li>
+                                    <li className="message-tool__item">
+                                        <span>
                                             <i className="fas fa-info-circle"></i>
-                                            Information
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul> : null
-                        }
-                    </div>
-                    <div className="message-right__center">
-                        <ul className="message-list">
-                            {
-                                data.messages && data.messages.map((mess, index, array)=>{
-                                    const duration = new Date(mess.createdAt) - new Date(array[index - 1]?.createdAt);
+                                        </span>
+                                        <ul className="group-info-menu">
+                                            {
+                                                currConversation.convType === 'group' ?
+                                                <li 
+                                                    className="group-info-menu__item"
+                                                    onClick={()=>handleEditModal(currConversation)}
+                                                >
+                                                    <i className="fas fa-user-edit"></i>
+                                                    Edit group chat
+                                                </li> : null
+                                            }
+                                            <li className="group-info-menu__item">
+                                                <i className="fas fa-info-circle"></i>
+                                                Information
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul> : null
+                            }
+                        </div> : null
+                    }
+                    {
+                        messageState.data.length > 0 ?
+                        <div className="message-right__center">
+                            <ul className="message-list">
+                                {
+                                    data.messages && data.messages.map((mess, index, array)=>{
+                                        const duration = new Date(mess.createdAt) - new Date(array[index - 1]?.createdAt);
 
-                                    const period = Math.floor((duration / (1000 * 60 * 60)) % 24) * 60 + Math.floor((duration / (1000 * 60)) % 60);
-                        
-                                    return <MessageItem 
-                                                key={index}
-                                                messageType={mess.sender._id === authState.user._id ? 0 : 1}
-                                                message={mess}
-                                                wrap={mess.sender._id === array[index - 1]?.sender._id && period <= 20}
-                                                period={period}
-                                            />
-                                })
-                            }
-                            {
-                                messageLoading ?
-                                <li className="message-item message-item--reverse">
-                                    <div className="message-item-loading">
-                                        <img src={LoadingImg} alt="" />
-                                    </div>
-                                </li> : null
-                            }
-                        </ul>
-                    </div>
+                                        const period = Math.floor((duration / (1000 * 60 * 60)) % 24) * 60 + Math.floor((duration / (1000 * 60)) % 60);
+                            
+                                        return <MessageItem 
+                                                    key={index}
+                                                    messageType={mess.sender._id === authState.user._id ? 0 : 1}
+                                                    message={mess}
+                                                    wrap={mess.sender._id === array[index - 1]?.sender._id && period <= 20}
+                                                    period={period}
+                                                />
+                                    })
+                                }
+                                {
+                                    messageLoading ?
+                                    <li className="message-item message-item--reverse">
+                                        <div className="message-item-loading">
+                                            <img src={LoadingImg} alt="" />
+                                        </div>
+                                    </li> : null
+                                }
+                                {   //&& data.messages && data.messages.slice(-1)[0].sender._id !== authState.user._id 
+                                    currConversation.isRead && currConversation.isRead.filter(item => item._id !== authState.user._id).length > 0 ?
+                                    <li className="message-seen-list">
+                                        {
+                                            currConversation.isRead.map((item, index) => (
+                                                item._id !== authState.user._id ?
+                                                <div 
+                                                    className="message-seen-item"
+                                                    key={index}
+                                                >
+                                                    <img src={item.avatar ||UserAvatarImg} alt="" />
+                                                    <span className="message-seen-item__name">
+                                                        {item.username}
+                                                    </span>
+                                                </div> : null
+                                            ))
+                                        }
+                                    </li>
+                                    : null
+                                }
+                            </ul>
+                        </div> : 
+                        <div className="message-right__center"></div>
+                    }
                     {
                         !currConversation.noActiveStatus ?
                         <div className="message-right__bottom">

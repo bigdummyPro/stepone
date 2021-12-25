@@ -66,8 +66,6 @@ const messageReducer = (state = initialState, action) => {
                             result: data.result + 1
                         } : data
                     ))
-                }else{
-                    newData = [...state.data, {result: 1, messages: [payload], _id: convID}];
                 }
             }
             return {

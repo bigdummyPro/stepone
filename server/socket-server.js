@@ -138,6 +138,14 @@ const socketServer = (socket) => {
             })
         }
     })
+    socket.on('updateIsReadConv', ({conversation, user}) => {
+        const clients = users.filter(user => conversation.recipients.find(item => item._id === user.id));
+        if(clients.length > 0){
+            clients.forEach(client => {
+                socket.to(`${client.socketId}`).emit('updateIsReadConvToClient', {conversation, user})
+            })
+        }
+    })
     socket.on('preventUser', (noActiveData) => {
         const clients = users.filter(user => noActiveData.noActiveUser.find(item => item === user.id));
         if(clients.length > 0){

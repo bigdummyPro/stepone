@@ -2,11 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {useLocation} from 'react-router';
 import sidebarLeftMenu from '../../assets/json-data/sidebar-left-menu.json';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getConversations } from '../../redux/actions/messageAction';
 
 function Menu() {
     const [activeMenuIndex, setActiveMenuIndex] = useState(null);
+    const [messageCount, setMessageCount] = useState(null);
     const location = useLocation();
+
+    const messageState = useSelector(state => state.messageReducer);
+    const authState = useSelector(state => state.authReducer);
+
+    const dispatch = useDispatch();
     
     const {user} = useSelector(state => state.authReducer);
 
@@ -29,6 +36,19 @@ function Menu() {
         setActiveMenuIndex(activeIndex);
     },[location.pathname])
 
+    useEffect(()=>{
+        if(messageState.firstLoad) return;
+        dispatch(getConversations({auth: authState, page: 10}))
+    },[])
+
+    useEffect(()=>{
+        if(messageState.conversations.length <= 0) return;
+
+        const newConv = messageState.conversations.filter(conv => conv.isRead.filter(item => item._id === user._id).length <= 0)
+
+        setMessageCount(newConv.length);
+    },[messageState.conversations])
+
     return (
         <div className="sidebar-left__menu">
             <div className="menu-title">Menu</div>
@@ -42,6 +62,15 @@ function Menu() {
                         >
                             <i className={siLeMe.icon}></i>
                             {siLeMe.content}
+                            {
+                                siLeMe.link === '/message' && messageCount ?
+                                <span className="message-count-badge">
+                                    {
+                                        messageCount < 5 ? 
+                                        messageCount : '5+'
+                                    }
+                                </span> : null
+                            }
                         </Link>
                     ))
                 }

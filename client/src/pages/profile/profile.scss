@@ -458,6 +458,23 @@
         &:hover {
           background-color: $main-light-color;
         }
+        a {
+          display: flex;
+          align-items: center;
+          color: $txt-color;
+          .tool-item-link__icon {
+            font-size: 1.6rem;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+          }
+          .tool-item-link__content {
+            font-size: 1.3rem;
+          }
+        }
         .tool-item__icon {
           font-size: 1.6rem;
           width: 25px;

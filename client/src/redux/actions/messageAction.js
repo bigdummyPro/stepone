@@ -91,17 +91,25 @@ export const updateConversation = ({conversation, auth, socket, noActiveData}) =
     }
 }
 
-export const isReadUpdate = ({conversationID, auth}) => async dispatch => {
+export const isReadUpdate = ({conversation, auth, socket}) => async dispatch => {
+    console.log('vv')
     dispatch({type: GLOBALTYPES.UPDATE_ISREAD_CONVERSATION, payload: {
         user: {
             _id: auth.user._id, 
-            userName: auth.user.username,
+            username: auth.user.username,
             nickname: auth.user.nickname,
             avatar: auth.user.avatar
-        }, _id: conversationID
+        }, _id: conversation._id
     }})
+    socket.emit('updateIsReadConv', {conversation, user: {
+        _id: auth.user._id, 
+        username: auth.user.username,
+        nickname: auth.user.nickname,
+        avatar: auth.user.avatar
+    }});
+
     try {
-        await patchDataAPI(`message/conversation/isRead/${conversationID}`, null)
+        await patchDataAPI(`message/conversation/isRead/${conversation._id}`, null)
     } catch (err) {
         console.log(err.message)
         // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.message}})
