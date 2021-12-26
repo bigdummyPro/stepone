@@ -9,6 +9,7 @@ import {loginUser} from '../../redux/actions/authAction';
 
 function Login() {
     const [loginInfo, setLoginInfo] = useState({email: '', password: ''});
+    const [formAlert, setFormAlert] = useState(null);
     const handleChangeInput = (e) => {
         const {name, value} = e.target;
         setLoginInfo({...loginInfo, [name]: value});
@@ -38,6 +39,11 @@ function Login() {
                 const response = await dispatch(loginUser(data));
                 if(response.data.success){
                     setLoginInfo({email: '', password: ''})
+                }else{
+                    setFormAlert('User or Password is not correct')
+                    setTimeout(()=>{
+                        setFormAlert(null);
+                    },2000)
                 }
             }
         });
@@ -74,6 +80,12 @@ function Login() {
                 </div>
                 <div className="form-bottom">
                     <span>Forgot your password?</span>
+                    {
+                        formAlert ?
+                        <div className="form-bottom-alert">
+                            {formAlert}
+                        </div> : null
+                    }
                     <button 
                         className="btn btn--primary btn--rounded"
                         type="submit"

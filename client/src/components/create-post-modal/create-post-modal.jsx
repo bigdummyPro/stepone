@@ -17,6 +17,7 @@ function CreatePostModal(props) {
     const [moreItemTooltip, setMoreIemTooltip] = useState(null);
     const [fileModalType, setFileModalType] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [modalAlert, setModalAlert] = useState(null);
 
     const textareaEl = useRef(null);
 
@@ -74,12 +75,14 @@ function CreatePostModal(props) {
         let images = [];
         let videos = [];
         let audios = [];
-        files.forEach((item) => {
-            const typeString = item.file.type;
-            if(typeString.includes('image')) images.push(item.file);
-            else if(typeString.includes('video')) videos.push(item.file);
-            else if(typeString.includes('audio')) audios.push(item.file);
-        })
+        if(files.length >= 0){
+            files.forEach((item) => {
+                const typeString = item.file.type;
+                if(typeString.includes('image')) images.push(item.file);
+                else if(typeString.includes('video')) videos.push(item.file);
+                else if(typeString.includes('audio')) audios.push(item.file);
+            })
+        }
         setLoading(true);
         const res = await dispatch(createPost({
             content: postText,
@@ -92,6 +95,12 @@ function CreatePostModal(props) {
         if(res.data.success){
             setLoading(false);
             dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: false});
+        }else{
+            setLoading(false);
+            setModalAlert('Please add your content');
+            setTimeout(()=>{
+                setModalAlert(null);
+            },2000)
         }
     }
     useEffect(()=>{
@@ -144,7 +153,6 @@ function CreatePostModal(props) {
                                 value={postText}
                                 name="" 
                                 placeholder="What do you think?"
-                                // onInput={autoResizeHeight}
                                 onChange={handleChangeInput}
                                 ref={textareaEl}
                             >
@@ -196,6 +204,12 @@ function CreatePostModal(props) {
                     </div>
                 </div>
                 <div className="create-modal__bottom">
+                    {
+                        modalAlert ?
+                        <div className="create-modal-alert">
+                            {modalAlert}
+                        </div> : null
+                    }
                     <button 
                         className="btn btn--primary btn--radius-5px"
                         onClick={handleSubmit}

@@ -2,11 +2,11 @@
     {
         "icon": "fas fa-link",
         "tooltipContent": "Attached Link",
-        "acceptType": ""
+        "acceptType": "image/*"
     },
     {
         "icon": "fas fa-photo-video",
-        "tooltipContent": "Images/Video",
-        "acceptType": "video/*,image/*"
+        "tooltipContent": "Images",
+        "acceptType": "image/*"
     }
 ]

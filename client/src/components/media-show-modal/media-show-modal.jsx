@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import VideoBox from '../video-box/video-box';
 
 function MediaShowModal() {
     const {mediaShowModal} = useSelector(state => state.modalReducer);
@@ -65,6 +66,18 @@ function MediaShowModal() {
                                     style={{transform: `translateX(${-currSlide * 100}%)`}}
                                 >
                                     {
+                                        mediaShowModal.data.videos.map((video, index) => (
+                                            <div 
+                                                className="media-slider-item"
+                                                key={index}
+                                            >
+                                                <VideoBox 
+                                                    video={video}
+                                                    type="medium"
+                                                />
+                                            </div>
+                                        ))}
+                                    {
                                         mediaShowModal.data.images.map((image, index) => (
                                             <div 
                                                 className="media-slider-item"
@@ -78,35 +91,35 @@ function MediaShowModal() {
                                                 </div>
                                             </div>
                                         ))
-
                                     }
                                 </div>
-                                <div className="media-modal-tool">
-                                    <div className="media-modal-tool__top">
-                                        <div 
-                                            className="tool-top-close"
-                                            onClick={handleCloseModal}
-                                        >
-                                            <span>
-                                                <i className="fas fa-times"></i>
-                                            </span>
-                                        </div>
-                                        <div className="tool-top-zoom">
-                                            <span 
-                                                className={`zoom-in-btn ${zoom.size >= 2 ? '--non-active' : ''}`}
-                                                onClick={handleZoomIn}
-                                            >
-                                                <i className="fas fa-search-plus"></i>
-                                            </span>
-                                            <span 
-                                                className={`zoom-out-btn ${zoom.size <= 1 ? '--non-active' : ''}`}
-                                                onClick={handleZoomOut}
-                                            >
-                                                <i className="fas fa-search-minus"></i>
-                                            </span>
-                                        </div>
+                                <div className="media-modal-tool media-modal-tool__top">
+                                    <div 
+                                        className="tool-top-close"
+                                        onClick={handleCloseModal}
+                                    >
+                                        <span>
+                                            <i className="fas fa-times"></i>
+                                        </span>
                                     </div>
-                                    <div className="media-modal-tool__center">
+                                    <div className="tool-top-zoom">
+                                        <span 
+                                            className={`zoom-in-btn ${zoom.size >= 2 ? '--non-active' : ''}`}
+                                            onClick={handleZoomIn}
+                                        >
+                                            <i className="fas fa-search-plus"></i>
+                                        </span>
+                                        <span 
+                                            className={`zoom-out-btn ${zoom.size <= 1 ? '--non-active' : ''}`}
+                                            onClick={handleZoomOut}
+                                        >
+                                            <i className="fas fa-search-minus"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                {
+                                    mediaShowModal.data.images.length > 1 || mediaShowModal.data.videos.length > 1 ?
+                                    <div className="media-modal-tool media-modal-tool__center">
                                         <span 
                                             className="prev-btn"
                                             onClick={handlePrevSlide}
@@ -119,8 +132,8 @@ function MediaShowModal() {
                                         >
                                             <i className="fas fa-chevron-right"></i>
                                         </span>
-                                    </div>
-                                </div>
+                                    </div> : null
+                                }
                             </div>
                         </div>
                         <div className="media-modal-right">

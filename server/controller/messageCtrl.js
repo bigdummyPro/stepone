@@ -67,6 +67,8 @@ const messageCtrl = {
     createConversation: async (req, res) => {
         try {
             const {recipients, convName, convAvatar} = req.body;
+            if(convName === '' || recipients.length <= 0) return;
+
             const newConversation = new Conversations({
                 recipients,
                 convName,
@@ -86,6 +88,7 @@ const messageCtrl = {
     updateConversation: async (req, res) => {
         try {
             const {recipients, convName, convAvatar} = req.body;
+            if(convName === '' || recipients.length <= 0) return;
 
             const newConversation = await Conversations.findOneAndUpdate({_id: req.params.id}, {
                 recipients, convName, convAvatar

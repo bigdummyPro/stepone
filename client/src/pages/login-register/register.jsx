@@ -8,6 +8,7 @@ import {registerUser} from '../../redux/actions/authAction';
 
 function Register() {
     const [registerInfo, setRegisterInfo] = useState({username: '', email: '', password: ''});
+    const [formAlert, setFormAlert] = useState(null);
 
     const handleChangeInput = (e) => {
         const {name, value} = e.target;
@@ -30,7 +31,13 @@ function Register() {
                 const response = await registerUser(data);
                 if(response.data.success){
                     setRegisterInfo({username: '', email: '', password: ''});
+                    setFormAlert({message: 'Register successfully', type: 1})
+                }else{
+                    setFormAlert({message: response.data.message, type: 0});
                 }
+                setTimeout(()=>{
+                    setFormAlert(null)
+                },2000)
             }
         });
     },[])
@@ -70,6 +77,12 @@ function Register() {
                     </div>
                 </div>
                 <div className="form-bottom">
+                    {
+                        formAlert ?
+                        <div className={`form-bottom-alert ${formAlert.type === 0 ?'--fail' : '--success'}`}>
+                            {formAlert.message}
+                        </div> : null
+                    }
                     <button 
                         className="btn btn--primary btn--rounded"
                         type="submit"

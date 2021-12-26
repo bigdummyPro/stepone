@@ -7,14 +7,21 @@ import profileMenu from '../../assets/json-data/profile-menu.json';
 function ProfileMenu() {
     const location = useLocation();
     const {id} = useParams();
-    const [profileMenuList, setProfileMenuList] = useState([]);
+    // const [profileMenuList, setProfileMenuList] = useState([]);
     const authState = useSelector(state => state.authReducer);
 
+    let profileMenuList = [];
+
+    if(authState.user._id !== id){
+        profileMenuList = [...profileMenu].filter(item => item.link !== '/saved');
+    }else{
+        profileMenuList = [...profileMenu]
+    }
     //tìm active index dựa vào chuỗi /profile và chuỗi link của phân tử
-    const menuIndexActive = profileMenu.findIndex(prMe => location.pathname.includes('/profile') && location.pathname.includes(prMe.link));
+    const menuIndexActive = profileMenuList.findIndex(prMe => location.pathname.includes('/profile') && location.pathname.includes(prMe.link));
 
     //tìm vị trí xuất hiện chuỗi link của menu item active trong location path
-    const menuActivePosInLocation = location.pathname.indexOf(profileMenu[menuIndexActive].link);
+    const menuActivePosInLocation = location.pathname.indexOf(profileMenuList[menuIndexActive].link);
 
     //cắt tiền tố của url đến vị trí của chuỗi link
     const urlprefix = location.pathname.slice(0, menuActivePosInLocation);
@@ -29,14 +36,7 @@ function ProfileMenu() {
             menuLineRef.current.style.width = profileMenuActiveEl.offsetWidth + 'px';
         }
     },[location.pathname])
-
-    useEffect(()=>{ 
-        if(authState.user._id !== id){
-            const newProfileMenu = [...profileMenu].filter(item => item.link !== '/saved');
-            setProfileMenuList(newProfileMenu)
-        }else setProfileMenuList([...profileMenu])
-    },[authState.user._id, id])
-    
+ 
     return (
         <div className="profile-menu">
             <ul className="profile-menu__list">

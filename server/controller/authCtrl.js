@@ -25,7 +25,7 @@ const userCtrl = {
         try {
             //check for existing acccount in db
             const user = await Users.findOne({email});
-            if(user) return res.status(400).json({success: false, message: "This user name already exists."})
+            if(user) return res.json({success: false, message: "This user name already exists."})
             
             //check password length
             if(password.length < 6) return res.status(400).json({success: false, message: "Password must be at least 6 characters."})

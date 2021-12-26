@@ -35,7 +35,7 @@ export const loadUser = () => async (dispatch) => {
 }
 //Register
 export const registerUser = async userForm => {
-    try {console.log(userForm)
+    try {
         const response = await axios.post(`${GLOBALTYPES.ApiUrl}/auth/register`, userForm)
         return response
     } catch (error) {

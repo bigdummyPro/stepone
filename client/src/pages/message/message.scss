@@ -969,6 +969,11 @@
 .setting-group-modal__footer {
   text-align: center;
   padding: 10px 12px;
+  .setting-group-modal-alert {
+    font-size: 1.2rem;
+    color: $red-color;
+    margin-bottom: 5px;
+  }
   button {
     text-transform: unset;
     &:hover {

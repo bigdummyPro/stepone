@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './video-box.scss';
 import convertTime from '../../utils/convert-time';
 
-function VideoBox({video}) {
+function VideoBox({video, type}) {
     const [togglePlayStatus, setTogglePlayStatus] = useState(false);
     const [progressBarPercent, setProgressBarPercent] = useState(0);
     const [durationTime, setDurationTime] = useState(0);
@@ -16,7 +16,8 @@ function VideoBox({video}) {
     const handleAudioEnded = () => {
         videoRef.current.play();
     }
-    const handlePlayPause = () => {
+    const handlePlayPause = (e) => {
+        e.stopPropagation();
         !togglePlayStatus ? videoRef.current.play() : videoRef.current.pause();
     }
     const handleInitDuration = () => {
@@ -51,7 +52,7 @@ function VideoBox({video}) {
     },[])
     return (
         <div className="video-box">
-            <div className="video-box__content">
+            <div className={`video-box__content ${type === 'medium' ? '--medium-size' : ''}`}>
                 <video 
                     src={video.url} 
                     autoPlay
@@ -63,7 +64,7 @@ function VideoBox({video}) {
                     onEnded={handleAudioEnded}
                 />
             </div>
-            <div className="video-box__control">
+            <div className={`video-box__control ${type === 'medium' ? '--medium-size' : ''}`}>
                 <div className="video-box-control-container">
                     <div 
                         className="video-control-item toggle-play-control btn-control"
@@ -86,6 +87,7 @@ function VideoBox({video}) {
                             id="progress" 
                             value={progressBarPercent}
                             onChange={handleChangeProgressBar}
+                            onClick={(e)=>e.stopPropagation()}
                         />
                     </div>
                     <div className="video-control-item setting-control btn-control">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { checkImage } from '../../utils/image-upload';
 import LocationSelectBox from './location-select-box';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
+import LoadingImg from '../../assets/images/loading.gif';
 import { updateUserProfile } from '../../redux/actions/profileAction';
 
 const genderArr  = ['Male', 'Female', 'Unset'];
@@ -15,6 +16,7 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
     const [genderValue, setGenderValue] = useState({key: 2, value: 'Unset'});
     const [textValue, setTextValue] = useState(initTextValue);
     const [avatar, setAvatar] = useState('');
+    const [loading, setLoading] = useState(false);
 
 
     const handleLocationValue = (value) => {
@@ -148,6 +150,12 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
                         </div>
                     </form>
                 </div>
+                {
+                    loading ?
+                    <div className="profile-edit-modal__loading">
+                        <img src={LoadingImg} alt="" />
+                    </div> : false
+                }
             </div>
         </div>
     );

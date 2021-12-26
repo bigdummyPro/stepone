@@ -15,9 +15,10 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
     const [searchResult, setSearchResult] = useState([]);
 
     const [memberList, setMemberList] = useState([]);
-    const [groupName, setGroupName] = useState(' ');
+    const [groupName, setGroupName] = useState('');
     const [avatar, setAvatar] = useState();
     const [submitLoading, setSubmitLoading] = useState(false);
+    const [modalAlert, setModalAlert] = useState(null);
 
     const [noActiveUser, setNoActiveUser] = useState([]);
 
@@ -77,8 +78,22 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
         setNoActiveUser([...noActiveUser, id]);
     }
     const handleSubmitAll = async () => {
+        
+        if(!groupName) {
+            setModalAlert('Please add your group name');
+            setTimeout(()=>{
+                setModalAlert(null)
+            },2000)
+            return
+        };
+        if(memberList.length <= 0) {
+            setModalAlert('Please add members of group')
+            setTimeout(()=>{
+                setModalAlert(null)
+            },2000)
+            return
+        };
         setSubmitLoading(true);
-
         let newAvatar = [];
         if(avatar && avatar.type) newAvatar = await imageUpload([avatar]);
         else if(avatar && !avatar.type) newAvatar = [avatar];
@@ -238,6 +253,12 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
                     </div>
                 </div>
                 <div className="setting-group-modal__footer">
+                    {
+                        modalAlert ?
+                        <div className="setting-group-modal-alert">
+                            {modalAlert}
+                        </div> : null
+                    }
                     <button 
                         className="btn btn--primary btn--medium-size btn--radius-5px"
                         onClick={handleSubmitAll}

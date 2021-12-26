@@ -22,8 +22,8 @@ const postCtrl = {
         try {
             const { content, images, videos, audios } = req.body
 
-            if(content === '')
-            return res.status(400).json({msg: "Please add your content."})
+            if(content === '' && images.length <= 0 && videos.length <= 0 && audios.length <= 0)
+            return res.json({success: false, message: "Please add your content."})
 
             const newPost = new Posts({
                 content, images, videos, audios, user: req.user.id

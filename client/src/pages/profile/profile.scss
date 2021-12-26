@@ -581,6 +581,7 @@
     flex-direction: column;
     margin-top: 60px;
     margin-bottom: 80px;
+    position: relative;
   }
 }
 .profile-edit-modal__header {
@@ -731,6 +732,22 @@
         filter: brightness(1.2);
       }
     }
+  }
+}
+.profile-edit-modal__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: $medium-white-color, $alpha: 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
   }
 }
 .location-select-box {

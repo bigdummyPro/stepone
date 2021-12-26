@@ -16,31 +16,27 @@ export const createPost = ({content, images, videos, audios, auth, socket}) => a
 
         const res = await postDataAPI('post', { content, images: image_media, videos: video_media, audios: audio_media })
 
-        dispatch({ 
-            type: GLOBALTYPES.CREATE_POST, 
-            payload: {...res.data.newPost, user: auth.user} 
-        })
-
-        // dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: false} })
-
-        //Notify
-        const message = {
-            id: res.data.newPost._id,
-            text: 'added a new post.',
-            recipients: auth.user.followers.map(item => item._id),
-            url: `/profile/${auth.user._id}/post?id=${res.data.newPost._id}`,
-            content, 
-            image: image_media.length > 0 ? image_media[0].url : ''
+        if(res.data.success) {
+            dispatch({ 
+                type: GLOBALTYPES.CREATE_POST, 
+                payload: {...res.data.newPost, user: auth.user} 
+            })
+    
+            //Notify
+            const message = {
+                id: res.data.newPost._id,
+                text: 'added a new post.',
+                recipients: auth.user.followers.map(item => item._id),
+                url: `/profile/${auth.user._id}/post?id=${res.data.newPost._id}`,
+                content, 
+                image: image_media.length > 0 ? image_media[0].url : ''
+            }
+            dispatch(createNotification({message, auth, socket}))
         }
-        dispatch(createNotification({message, auth, socket}))
 
         return res;
     } catch (err) {
         console.log(err.message)
-        // dispatch({
-        //     type: GLOBALTYPES.ALERT,
-        //     payload: {error: err.response.data.msg}
-        // })
     }
 }
 
@@ -163,10 +159,6 @@ export const savePost = ({post, auth}) => async (dispatch) => {
         
         dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
     } catch (err) {
-        // dispatch({
-        //     type: GLOBALTYPES.ALERT,
-        //     payload: {error: err.response.data.msg}
-        // })
         console.log(err.message)
     }
 }
@@ -179,10 +171,6 @@ export const unSavePost = ({post, auth}) => async (dispatch) => {
         const newUser = {...auth.user, savedPosts: auth.user.savedPosts.filter(id => id !== post._id) }
         dispatch({ type: GLOBALTYPES.SET_AUTH, payload: {...auth, user: newUser}})
     } catch (err) {
-        // dispatch({
-        //     type: GLOBALTYPES.ALERT,
-        //     payload: {error: err.response.data.msg}
-        // })
         console.log(err.message)
     }
 }
