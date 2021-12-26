@@ -234,6 +234,33 @@
     grid-gap: 20px 20px;
     gap: 20px 20px;
   }
+  .profile-post-loading,
+  .profile-post-empty {
+    width: 550px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-post-loading {
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  .profile-post-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    span {
+      font-size: 1.3rem;
+      color: $txt-color;
+    }
+  }
 }
 .profile-body-saved-wrapper {
   width: 100%;

@@ -14,6 +14,7 @@ function Message() {
     }
     return (
         <div className="main-content">
+            <title>Message | Connecto</title>
             <div className="main-container">
                 <div className="main-body">
                     <div className="message">

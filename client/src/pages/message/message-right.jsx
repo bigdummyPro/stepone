@@ -166,7 +166,9 @@ function MessageRight({handleModal, setEditModalInfo}) {
     useEffect(()=>{
         const newData = messageState.data.find(item => item._id === id);
         if(newData) setData(newData);
-        else setData(null);
+        else setData([]);
+            // if(id) setData(null) ;
+            // else setData([]);
     },[id, messageState.data])
 
     useEffect(() => {
@@ -229,11 +231,13 @@ function MessageRight({handleModal, setEditModalInfo}) {
         if(textareaEl.current) autoResizeHeight();
     },[messInputValue])
 
+    console.log(firstLoad)
+    console.log(data)
     return (
         <>
         {   
             data ?
-                messageState.data.length > 0 || currConversation._id || firstLoad?
+                messageState.data.length > 0 || currConversation._id || firstLoad ?
                 <div className="message-right">
                     {
                         currConversation._id ?
@@ -333,6 +337,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
                         <div className="message-right__center"></div>
                     }
                     {
+                        id ?
                         !currConversation.noActiveStatus ?
                         <div className="message-right__bottom">
                             {
@@ -419,7 +424,15 @@ function MessageRight({handleModal, setEditModalInfo}) {
                             <div className="no-active-notification">
                             You are not a member of the conversation, you cannot reply to this conversation
                             </div>
-                        </div>
+                        </div> : null
+                    }
+                    {
+                        !currConversation._id && messageState.data.length <= 0 ?
+                        <div className="message-right-empty">
+                            <span>
+                                Create new chat
+                            </span>
+                        </div> : null
                     }
                 </div> : 
                 <div className="message-right-no-data">

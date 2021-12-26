@@ -13,6 +13,7 @@ function LoginRegiter() {
     }
     return (
         <div className="wrapper login-register-wrapper">
+            <title>Login | Connecto</title>
             <div className={`login-register-container ${formActiveStatus ? '--active' : ''}`}>
                 <Login />
                 <Register />

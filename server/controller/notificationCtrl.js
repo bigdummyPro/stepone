@@ -6,7 +6,7 @@ const notificationCtrl = {
             const { id, recipients, url, text, content, image } = req.body
 
             if(recipients.includes(req.user.id.toString())) return;
-
+            
             const notifications = new Notifications({
                 id, recipients, url, text, content, image, user: req.user.id
             })

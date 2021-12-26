@@ -56,6 +56,13 @@ function Profile() {
 
     return (
         <div className="main-content">
+            <title>
+                {
+                    profileState && profileState.users.find(item => item._id === id) ? 
+                    `${profileState.users.find(item => item._id === id).username} | Connecto` :
+                    'Connecto'
+                }
+            </title>
             <div className="main-container">
                 <div className="main-body">
                     {

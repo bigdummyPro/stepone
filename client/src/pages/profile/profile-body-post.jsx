@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import FilterImg from '../../assets/images/filter.png';
+import LoadingImg from '../../assets/images/loading.gif';
+import NoDataImg from '../../assets/images/no-data.png';
 import Post from '../../components/post/post';
 
 const filterList = ["Newest", "Most commented", "Most liked"];
@@ -10,7 +12,7 @@ function ProfileBodyPost({profile, detailPost, auth, socket, dispatch}) {
 
     const {search} = useLocation();
     const {id} = useParams();
-    const [postData, setPostData] = useState([]);
+    const [postData, setPostData] = useState(null);
 
     const [filterItemActive, setFilterItemActive] = useState(0);
     const [filterMenuStatus, setFilterMenuStatus] = useState(false);
@@ -71,19 +73,31 @@ function ProfileBodyPost({profile, detailPost, auth, socket, dispatch}) {
                 </div>
             </div>
             <div className="profile-body-post-wrapper">
-                <div className="profile-post-container">
-                    {
-                        postData.map((post, index)=>(
-                            <Post 
-                                key={index}
-                                post={post}
-                                auth={auth}
-                                dispatch={dispatch}
-                                socket={socket}
-                            />
-                        )) 
-                    }
-                </div>
+                {
+                    postData ?
+                        postData.length > 0 ?
+                        <div className="profile-post-container">
+                            {
+                                postData.map((post, index)=>(
+                                    <Post 
+                                        key={index}
+                                        post={post}
+                                        auth={auth}
+                                        dispatch={dispatch}
+                                        socket={socket}
+                                    />
+                                )) 
+                            }
+                        </div> :
+                        <div className="profile-post-empty">
+                            <img src={NoDataImg} alt="" />
+                            <span>No posts</span>
+                        </div>
+                    :
+                    <div className="profile-post-loading">
+                        <img src={LoadingImg} alt="" />
+                    </div>
+                }
             </div>
         </div>
     );

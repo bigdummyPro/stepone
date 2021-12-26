@@ -49,6 +49,7 @@ function PostCommentBox({commentFocusStatus, post, auth}) {
                 onReply={{activeComment: null, parentCommentId: null, replyStatus: null}}
                 post={post}
                 auth={auth}
+                resetOnReply={null}
             />
         </div>
     );

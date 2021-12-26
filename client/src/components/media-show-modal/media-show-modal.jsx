@@ -102,20 +102,23 @@ function MediaShowModal() {
                                             <i className="fas fa-times"></i>
                                         </span>
                                     </div>
-                                    <div className="tool-top-zoom">
-                                        <span 
-                                            className={`zoom-in-btn ${zoom.size >= 2 ? '--non-active' : ''}`}
-                                            onClick={handleZoomIn}
-                                        >
-                                            <i className="fas fa-search-plus"></i>
-                                        </span>
-                                        <span 
-                                            className={`zoom-out-btn ${zoom.size <= 1 ? '--non-active' : ''}`}
-                                            onClick={handleZoomOut}
-                                        >
-                                            <i className="fas fa-search-minus"></i>
-                                        </span>
-                                    </div>
+                                    {
+                                         currSlide > mediaShowModal.data.videos.length - 1 ?
+                                        <div className="tool-top-zoom">
+                                            <span 
+                                                className={`zoom-in-btn ${zoom.size >= 2 ? '--non-active' : ''}`}
+                                                onClick={handleZoomIn}
+                                            >
+                                                <i className="fas fa-search-plus"></i>
+                                            </span>
+                                            <span 
+                                                className={`zoom-out-btn ${zoom.size <= 1 ? '--non-active' : ''}`}
+                                                onClick={handleZoomOut}
+                                            >
+                                                <i className="fas fa-search-minus"></i>
+                                            </span>
+                                        </div> : null
+                                    }
                                 </div>
                                 {
                                     mediaShowModal.data.images.length > 1 || mediaShowModal.data.videos.length > 1 ?

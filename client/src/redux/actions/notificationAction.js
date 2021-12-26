@@ -6,7 +6,6 @@ import { GLOBALTYPES } from "../constants/globalTypes"
 export const createNotification = ({message, auth, socket}) => async (dispatch) => {
     try {
         const res = await postDataAPI('notification', message);
-        
         socket.emit('createNotification', {
             ...res.data.notifications,
             user: {
@@ -14,7 +13,6 @@ export const createNotification = ({message, auth, socket}) => async (dispatch) 
                 avatar: auth.user.avatar
             }
         })
-        
     } catch (err) {
         console.log(err.message);
         // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
