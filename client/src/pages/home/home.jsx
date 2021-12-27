@@ -6,6 +6,7 @@ import { getPosts } from '../../redux/actions/postAction';
 import MediaShowModal from '../../components/media-show-modal/media-show-modal';
 import NoDataImg from '../../assets/images/no-data.png';
 import LoadingImg from '../../assets/images/loading.gif';
+import StoriesList from '../../components/stories-list/stories-list';
 
 function Home() {
     const dispatch = useDispatch();
@@ -21,6 +22,9 @@ function Home() {
             <title>Home | Connecto</title>
             <div className="main-container">
                 <div className="main-body">
+                    <div className="home-stories">
+                        <StoriesList />
+                    </div>
                     <div className="home-wrapper">
                         {
                             !postState.loading ?

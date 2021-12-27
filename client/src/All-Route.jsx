@@ -5,7 +5,7 @@ import GeneralSetting from './pages/general-setting/general-setting';
 import Home from './pages/home/home';
 import Message from './pages/message/message';
 import Profile from './pages/profile/profile';
-import SavedPost from './pages/saved-post/saved-post';
+import Stories from './pages/stories-page/stories';
 
 function AllRoute(){
     return (
@@ -19,7 +19,7 @@ function AllRoute(){
             <Route path="/message/:id" element={<Message />}/>
 
             <Route path="/profile/:id/*" element={<Profile />}/>
-            <Route path="/saved-post" element={<SavedPost />}/>
+            <Route path="/stories" element={<Stories />}/>
             <Route path="/general-setting" element={<GeneralSetting />}/>
             <Route path="/*" element={null}/>
         </Routes>

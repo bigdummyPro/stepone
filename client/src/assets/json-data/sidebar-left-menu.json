@@ -15,9 +15,9 @@
         "link": "/profile"
     },
     {
-        "content": "Saved Post", 
-        "icon": "fas fa-save",
-        "link": "/saved-post"
+        "content": "Stories",
+        "icon": "fas fa-address-card",
+        "link": "/stories"
     },
     {
         "content": "Setting", 
