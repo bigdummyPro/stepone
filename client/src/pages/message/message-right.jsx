@@ -167,8 +167,6 @@ function MessageRight({handleModal, setEditModalInfo}) {
         const newData = messageState.data.find(item => item._id === id);
         if(newData) setData(newData);
         else setData([]);
-            // if(id) setData(null) ;
-            // else setData([]);
     },[id, messageState.data])
 
     useEffect(() => {
@@ -183,13 +181,17 @@ function MessageRight({handleModal, setEditModalInfo}) {
     useEffect(() => {
         const checkUserByID = async () => {
             const res = await getDataAPI(`user/get-user-by-id/${id}`);
-            if(res.data.success) setCurrConversation({
-                _id: res.data.user._id, 
-                convType: 'personal',
-                recipients: [{_id: res.data.user._id, username: res.data.user.username, avatar: res.data.user.avatar}]
-            })
+            if(res.data.success) { 
+                setCurrConversation({
+                    _id: res.data.user._id, 
+                    convType: 'personal',
+                    recipients: [{_id: res.data.user._id, username: res.data.user.username, avatar: res.data.user.avatar}]
+                })
+            }else{
+                setFirstLoad(false)
+            }
         }
-        if(id && messageState.conversations.length > 0){
+        if(id){
             const newConv = messageState.conversations.find(conv => conv._id === id);
             if(newConv) {
                 setCurrConversation(newConv); 
@@ -197,8 +199,11 @@ function MessageRight({handleModal, setEditModalInfo}) {
             }
             else {
                 checkUserByID();
-                setData({});
+                setData([]);
             }
+        }
+        if(!id && messageState.conversations.length <= 0){
+            setFirstLoad(false)
         }
     },[id, messageState.conversations])
 
@@ -231,8 +236,6 @@ function MessageRight({handleModal, setEditModalInfo}) {
         if(textareaEl.current) autoResizeHeight();
     },[messInputValue])
 
-    console.log(firstLoad)
-    console.log(data)
     return (
         <>
         {   
@@ -299,7 +302,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
                                                     key={index}
                                                     messageType={mess.sender._id === authState.user._id ? 0 : 1}
                                                     message={mess}
-                                                    wrap={mess.sender._id === array[index - 1]?.sender._id && period <= 20}
+                                                    wrap={mess.sender._id === array[index - 1]?.sender._id && period <= 50}
                                                     period={period}
                                                 />
                                     })
@@ -337,7 +340,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
                         <div className="message-right__center"></div>
                     }
                     {
-                        id ?
+                        currConversation._id ?
                         !currConversation.noActiveStatus ?
                         <div className="message-right__bottom">
                             {
@@ -426,14 +429,14 @@ function MessageRight({handleModal, setEditModalInfo}) {
                             </div>
                         </div> : null
                     }
-                    {
+                    {/* {
                         !currConversation._id && messageState.data.length <= 0 ?
                         <div className="message-right-empty">
                             <span>
                                 Create new chat
                             </span>
                         </div> : null
-                    }
+                    } */}
                 </div> : 
                 <div className="message-right-no-data">
                     <div className="no-data-title">

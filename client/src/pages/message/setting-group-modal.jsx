@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import GroupAvatarImg from '../../assets/images/group-avatar.png';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import EmptyDataImg from '../../assets/images/no-data.png';
 import LoadingImg from '../../assets/images/loading.gif';
@@ -155,8 +156,8 @@ function SettingGroupModal({handleModal, editModalInfo, resetEditModalInfo}) {
                             <div className="group-avatar">
                                 {
                                     avatar && avatar.type ?
-                                    <img src={URL.createObjectURL(avatar) || UserAvatarImg} alt="" /> :
-                                    <img src={avatar || UserAvatarImg} alt="" />
+                                    <img src={URL.createObjectURL(avatar) || GroupAvatarImg} alt="" /> :
+                                    <img src={avatar || GroupAvatarImg} alt="" />
                                 }
                             </div>
                             <div className="avatar-tool">

@@ -1,4 +1,5 @@
 const Users = require('../models/userModel');
+const mongoose = require('mongoose');
 
 const userCtrl = {
     getUser: async (req, res) => {
@@ -12,14 +13,17 @@ const userCtrl = {
         }
     },
     getUserById: async (req, res) => {
-        try {
+        try {console.log(req.params.id)
+            if(!mongoose.Types.ObjectId.isValid(req.params.id))
+            return res.json({success: false})
+
             const user = await Users.findById(req.params.id).select('-password')
             .populate("friends followers following", "-password");
-
-            if(!user) return res.status(400).json({message: "User does not exist."})
+            
+            if(!user) return res.json({message: "User does not exist."})
             res.json({success: true, user})
         } catch (error) {
-            res.status(500).json({success: false, message: "Internal Server Error"});
+            res.status(500).json({success: false, message: error.message});
         }
     },
     searchUser: async (req, res) => {
@@ -87,7 +91,7 @@ const userCtrl = {
             const userObject = await Users.findById(req.user.id).select('-password')
             const newArr = [...userObject.following, userObject._id]
 
-            const num  = req.query.num || 10
+            const num  = req.query.num || 3
 
             const users = await Users.aggregate([
                 { $match: { _id: { $nin: newArr } } }, //$nin: lấy ra các giá trị không có chứa trong mảng

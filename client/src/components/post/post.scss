@@ -121,10 +121,22 @@
 .post-item__body {
   margin-top: 10px;
   .post-body-text {
-    font-size: 1.4rem;
-    line-height: 2.2rem;
-    color: $txt-color;
-    margin-top: 5px;
+    .post-body-text__content {
+      font-size: 1.4rem;
+      line-height: 2.4rem;
+      color: $txt-color;
+      margin-top: 5px;
+    }
+    .post-body-text__more {
+      display: inline-block;
+      font-size: 1.3rem;
+      color: $txt-light-color;
+      cursor: pointer;
+      margin-top: 2px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
   .post-body-img {
     margin-top: 15px;
@@ -141,7 +153,7 @@
   display: flex;
   align-items: center;
   // justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 10px;
   padding-bottom: 6px;
   border-bottom: 1px solid $line-color;
   .post-footer-like {

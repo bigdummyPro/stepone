@@ -21,7 +21,6 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
         })
 
     } catch (err) {
-        // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
         console.log(err);
     }
 }
@@ -35,7 +34,6 @@ export const getMessages = ({id, page = 1}) => async (dispatch) => {
             dispatch({type: GLOBALTYPES.GET_MESSAGES, payload: {...newData, _id: id, page}})
         }
     } catch (err) {
-        // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
         console.log(err);
     }
 }
@@ -54,7 +52,6 @@ export const createMessage = ({message, auth, socket}) => async (dispatch) =>{
 
         return res;
     } catch (err) {
-        // dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
         console.log(err.message)
     }
 }
@@ -92,7 +89,6 @@ export const updateConversation = ({conversation, auth, socket, noActiveData}) =
 }
 
 export const isReadUpdate = ({conversation, auth, socket}) => async dispatch => {
-    console.log('vv')
     dispatch({type: GLOBALTYPES.UPDATE_ISREAD_CONVERSATION, payload: {
         user: {
             _id: auth.user._id, 

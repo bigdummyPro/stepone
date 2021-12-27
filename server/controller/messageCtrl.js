@@ -154,7 +154,7 @@ const messageCtrl = {
                         {recipients: [req.user.id, req.params.id]}
                     ]
                 })
-                if(!convByPersonal._id) return;
+                if(!convByPersonal) return;
 
                 features = new APIfeatures(Messages.find({
                     $or: [

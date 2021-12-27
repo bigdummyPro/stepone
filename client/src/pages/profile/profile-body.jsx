@@ -55,8 +55,8 @@ function ProfileBody({id, profile, detailPost, auth, socket, dispatch, handleEdi
                                 />}
                             /> : null
                         }
-                        <Route path="/image" element={<div>Đang cập nhật</div>}/>
-                        <Route path="/video" element={<div>Đang cập nhật</div>}/>
+                        <Route path="/image" element={<div style={{fontSize: '1.5rem', fontWeight: 600, textAlign: 'center', marginTop: '20px'}}>Updating</div>}/>
+                        <Route path="/video" element={<div style={{fontSize: '1.5rem', fontWeight: 600, textAlign: 'center', marginTop: '20px'}}>Updating</div>}/>
                     </Routes>
                 ))
             }

@@ -27,10 +27,9 @@ const messageReducer = (state = initialState, action) => {
             }else{
                 convID = payload._convID;
             }
-
             if(state.conversations.every(item => item._id !== convID)){
                 newConversations = [{
-                    _id: payload._convID, 
+                    _id: convID, 
                     text: payload.text, 
                     currentSender: payload.sender,
                     isRead: [payload.sender],
@@ -66,6 +65,8 @@ const messageReducer = (state = initialState, action) => {
                             result: data.result + 1
                         } : data
                     ))
+                }else if(state.data.every(item => item._id !== convID)){
+                    newData = [...state.data, {result: 1, messages: [payload], _id: convID}];
                 }
             }
             return {

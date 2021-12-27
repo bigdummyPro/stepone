@@ -69,6 +69,10 @@ function TopMenu() {
         }
     }
 
+    const closeSearchModal = () => {
+        search_modal_ref.current.classList.remove('--active')
+    }
+
     useEffect(()=>{
         if(notificationState.data.length > 0){
             const isReadCount = notificationState.data.filter(item => !item.isRead).length;
@@ -131,7 +135,10 @@ function TopMenu() {
                             {
                                 searchResult.map((seRe, index)=>(
                                     <li className="search-item" key={index}>
-                                        <Link to={`/profile/${seRe._id}/post`}>
+                                        <Link 
+                                            to={`/profile/${seRe._id}/post`}
+                                            onClick={closeSearchModal}
+                                        >
                                             <img src={seRe.avatar || UserAvatarImg} alt="" />
                                             <div className="search-item__info">
                                                 <span>{seRe.username}</span>
