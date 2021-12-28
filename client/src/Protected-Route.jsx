@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import AllRoute from './All-Route';
 import CreatePostModal from './components/create-post-modal/create-post-modal';
+import CreateStoriesModal from './components/create-stories-modal/create-stories-modal';
 import EmotionModal from './components/emotion-modal/emotion-modal';
 import MenuPost from './components/menu-post/menu-post';
 import SidebarLeft from './components/sidebar-left/sidebar-left';
@@ -30,6 +31,7 @@ function ProtectedRoute() {
             <SidebarRight />
             {modalState ? <CreatePostModal /> : null}
             <EmotionModal />
+            <CreateStoriesModal />
           </div>
       );
     else return <Navigate to='/login-register'/>
