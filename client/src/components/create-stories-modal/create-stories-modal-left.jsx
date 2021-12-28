@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import storiesBackgroundList from '../../assets/json-data/stories-background.json';
 
-function CreateStoriesModalLeft(props) {
+function CreateStoriesModalLeft({handleBgInput, handleTextInput}) {
+    const [textInput, setTextInput] = useState('');
+    const [backgroundInputCurr, setBackgroundInputCurr] = useState(0);
+
+    const handleChangeTextarea = (e) => {console.log('tt')
+        if(e.target.value.length <= 320) setTextInput(e.target.value);
+        else {console.log(e.target.value.length)
+            setTextInput(e.target.value.slice(0, 320));
+        }
+    }
+    useEffect(()=>{
+        handleBgInput(storiesBackgroundList[backgroundInputCurr].bigBackgroundImg)
+    },[backgroundInputCurr])
+
+    useEffect(()=>{
+        if(textInput.length < 320) handleTextInput(textInput);
+    },[textInput])
     return (
         <div className="create-stories-modal__left">
             <div className="stories-modal-left-header">
@@ -13,10 +30,19 @@ function CreateStoriesModalLeft(props) {
             </div>
             <div className="stories-modal-left-body">
                 <div className="body-text-input">
-                    <label className="body-text-input__title">
-                        Document
-                    </label>
-                    <textarea placeholder="Input here..."></textarea>
+                    <div className="body-text-input__title">
+                        <span>
+                            Document
+                        </span>
+                        <span>
+                            {textInput ? textInput.length : '0'} / 320
+                        </span>
+                    </div>
+                    <textarea 
+                        placeholder="Input here..."
+                        value={textInput}
+                        onChange={(e)=>handleChangeTextarea(e)}
+                    ></textarea>
                 </div>
                 <div className="body-style-input">
                     <div className="body-style-input__toggle">
@@ -41,33 +67,23 @@ function CreateStoriesModalLeft(props) {
                 <div className="body-background-input">
                     <label>Background</label>
                     <div className="background-input-list">
-                        <div className="background-input-item --active">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                            <span>
-                                <i className="fas fa-check"></i>
-                            </span>
-                        </div>
-                        <div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div><div className="background-input-item">
-                            <img src="https://res.cloudinary.com/dmcosnuap/image/upload/v1640617269/SocialWebsite/Stories-Bg-Img/sm-bg09_zk3qjh.png" alt="" />
-                        </div>
+                        {
+                            storiesBackgroundList.map((stBaLi, index) => (
+                                <div 
+                                    className="background-input-item"
+                                    key={index}
+                                    onClick={()=>setBackgroundInputCurr(index)}
+                                >
+                                    <img src={stBaLi.smallBackgroundImg} alt="" />
+                                    {
+                                        backgroundInputCurr === index ?
+                                        <span>
+                                            <i className="fas fa-check"></i>
+                                        </span> : null
+                                    }
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
             </div>

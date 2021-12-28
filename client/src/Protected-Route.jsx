@@ -12,7 +12,7 @@ import { refreshToken } from './redux/actions/authAction';
 import SocketClient from './socket-client';
 
 function ProtectedRoute() {
-    const modalState = useSelector(state => state.modalReducer.createPostModalStatus);
+    const modalState = useSelector(state => state.modalReducer);
     const authState = useSelector(state => state.authReducer);
 
     const dispatch = useDispatch()
@@ -29,9 +29,14 @@ function ProtectedRoute() {
             <MenuPost />
             <AllRoute />
             <SidebarRight />
-            {modalState ? <CreatePostModal /> : null}
+            { modalState.createPostModalStatus ? 
+              <CreatePostModal /> : null
+            }
             <EmotionModal />
-            <CreateStoriesModal />
+            {
+              modalState.createStoriesModalStatus ?
+              <CreateStoriesModal /> : null
+            }
           </div>
       );
     else return <Navigate to='/login-register'/>

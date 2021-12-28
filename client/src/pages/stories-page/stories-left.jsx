@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import StoriesItem from './stories-item';
 
-function StoriesLeft(props) {
+function StoriesLeft({closeStoriesLeft}) {
+    const dispatch = useDispatch();
+    const handleOpenModal = () => {
+        dispatch({type: GLOBALTYPES.CREATE_STORIES_MODAL_STATUS, payload: true});
+    }
     return (
         <div className="stories-left-wrapper">
             <div className="stories-left">
@@ -9,7 +15,10 @@ function StoriesLeft(props) {
                     <span className="stories-header-title">
                         Stories
                     </span>
-                    <span className="stories-header-toggle">
+                    <span 
+                        className="stories-header-toggle"
+                        onClick={closeStoriesLeft}
+                    >
                         <i className="fas fa-caret-square-left"></i>
                     </span>
                 </div>
@@ -17,7 +26,10 @@ function StoriesLeft(props) {
                     <span className="stories-create-text">
                         Create new
                     </span>
-                    <span className="stories-create-icon">
+                    <span 
+                        className="stories-create-icon"
+                        onClick={handleOpenModal}
+                    >
                         <i className="fas fa-plus"></i>
                     </span>
                 </div>

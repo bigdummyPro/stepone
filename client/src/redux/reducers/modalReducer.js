@@ -2,6 +2,7 @@ import { GLOBALTYPES } from "../constants/globalTypes";
 
 const initialState = {
     createPostModalStatus: false,
+    createStoriesModalStatus: false,
     emotionModalInCreatePost: false,
     emotionModalPosition: {x: 0, y: 0},
     fileModalInCreatePost: false,
@@ -21,6 +22,8 @@ const modalReducer = (state = initialState, action) => {
     switch (type) {
         case GLOBALTYPES.CREATE_POST_MODAL_STATUS:
             return {...state, createPostModalStatus: payload};
+        case GLOBALTYPES.CREATE_STORIES_MODAL_STATUS:
+            return {...state, createStoriesModalStatus: payload};
         case GLOBALTYPES.EMOTION_MODAL_IN_CREATE_POST:
             return {...state, emotionModalInCreatePost: payload};
         case GLOBALTYPES.EMOTION_MODAL_POSITION:

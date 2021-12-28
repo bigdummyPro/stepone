@@ -16,7 +16,7 @@
   width: 100%;
   height: 100%;
   max-width: 80%;
-  max-height: 550px;
+  max-height: 580px;
   display: flex;
   background-color: $medium-white-color;
   border-radius: 10px;
@@ -25,11 +25,12 @@
 .create-stories-modal__left {
   width: 30%;
   height: 100%;
-  padding: 12px 15px 15px 15px;
+  padding: 12px 15px 15px 20px;
 }
 .create-stories-modal__right {
   width: 70%;
   height: 100%;
+  padding: 12px 20px 15px 15px;
 }
 .stories-modal-left-header {
   display: flex;
@@ -62,6 +63,7 @@
   height: calc(100% - (35px + 60px));
   overflow-y: auto;
   padding-bottom: 10px;
+  padding-right: 5px;
   /* width */
   &::-webkit-scrollbar {
     width: 5px;
@@ -77,10 +79,19 @@
     padding: 10px 10px;
     border: 1px solid $line-color;
     border-radius: 10px;
-    label.body-text-input__title {
-      font-size: 1.2rem;
-      color: $txt-light-color;
+    .body-text-input__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 8px;
+      span:first-child {
+        font-size: 1.2rem;
+        color: $txt-light-color;
+      }
+      span:last-child {
+        font-size: 1.1rem;
+        color: $txt-color;
+      }
     }
     textarea {
       border: none;
@@ -91,6 +102,7 @@
       overflow-y: auto;
       background-color: transparent;
       font-size: 1.3rem;
+      line-height: 2.2rem;
       color: $txt-color;
       &::placeholder {
         color: $txt-color;
@@ -127,6 +139,7 @@
         padding: 10px 10px;
         border-radius: 5px;
         cursor: pointer;
+        user-select: none;
         &:hover {
           background-color: $main-light-color;
         }
@@ -147,7 +160,7 @@
     }
     .background-input-list {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(8, 1fr);
       gap: 8px 2px;
       .background-input-item {
         width: 25px;
@@ -155,19 +168,16 @@
         border-radius: 50%;
         cursor: pointer;
         position: relative;
-        &.--active span {
-          display: flex;
-        }
         span {
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          display: none;
+          display: flex;
           align-items: center;
           justify-content: center;
-          background-color: $main-color;
+          // background-color: $main-color;
           color: $medium-white-color;
           border-radius: 50%;
           font-size: 1.3rem;
@@ -195,6 +205,7 @@
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
+    user-select: none;
     &.modal-reset-btn {
       color: $txt-color;
       background-color: $main-light-color;
@@ -202,6 +213,80 @@
     &.modal-done-btn {
       color: $medium-white-color;
       background-color: $main-color;
+    }
+  }
+}
+.stories-modal-right-header {
+  text-align: right;
+  margin-bottom: 15px;
+  span {
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: $txt-color;
+    background-color: $medium-white-color;
+    border-radius: 50%;
+    border: 1px solid $line-color;
+    cursor: pointer;
+    &:hover {
+      background-color: $main-light-color;
+    }
+  }
+}
+.stories-modal-right-body {
+  height: calc(100% - 50px);
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 1px solid $line-color;
+  display: flex;
+  flex-direction: column;
+  .body-preview-title {
+    font-size: 1.3rem;
+    color: $txt-light-color;
+    margin-bottom: 10px;
+  }
+  .body-preview-content {
+    width: 100%;
+    height: 100%;
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($color: #000000, $alpha: 0.9);
+    border-radius: 10px;
+    .body-preview-content__image {
+      width: 250px;
+      height: 100%;
+      border-radius: 10px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+      span {
+        display: inline-block;
+        width: 100%;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+        font-family: $stories-font;
+        font-size: 2rem;
+        line-height: 2.6rem;
+        color: $medium-white-color;
+        word-break: break-word;
+        user-select: none;
+      }
     }
   }
 }

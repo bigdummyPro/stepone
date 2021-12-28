@@ -1,7 +1,7 @@
 import React from 'react';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 
-function StoriesRight(props) {
+function StoriesRight({storiesLeftStatus, openStoriesLeft}) {
     return (
         <div className="stories-right-wrapper">
             <div className="stories-right">
@@ -29,7 +29,7 @@ function StoriesRight(props) {
                             </div>
                             <div className="desciption-tool-item description-tool__more">
                                 <span>
-                                    <i classname="fas fa-ellipsis-h"></i>
+                                    <i className="fas fa-ellipsis-h"></i>
                                 </span>
                             </div>
                         </div>
@@ -52,6 +52,15 @@ function StoriesRight(props) {
                 <span className="stories-right__next">
                     <i className="fas fa-chevron-right"></i>
                 </span>
+                {
+                    !storiesLeftStatus ?
+                    <span 
+                        className="stories-right__open-left"
+                        onClick={openStoriesLeft}
+                    >
+                        <i className="fas fa-caret-square-right"></i>
+                    </span> : null
+                }
             </div>
         </div>
     );
