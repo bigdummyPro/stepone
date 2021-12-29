@@ -26,6 +26,13 @@ function CreateStoriesModalLeft({
             },2000)
         }
     }
+
+    const resetInput = () => {
+        setTextInput('');
+        setBackgroundInputCurr(0);
+        setStyleInputCurr(0);
+        handleTextInput('')
+    }
     useEffect(()=>{
         handleBgInput(storiesBackgroundList[backgroundInputCurr].bigBackgroundImg)
     },[backgroundInputCurr])
@@ -111,7 +118,10 @@ function CreateStoriesModalLeft({
                 </div>
             </div>
             <div className="stories-modal-left-footer">
-                <span className="modal-reset-btn">
+                <span 
+                    className="modal-reset-btn"
+                    onClick={resetInput}
+                >
                     Reset
                 </span>
                 <span className="modal-done-btn">

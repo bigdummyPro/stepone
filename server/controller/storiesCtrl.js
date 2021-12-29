@@ -30,22 +30,54 @@ const storiesCtrl = {
             return res.status(500).json({success: false, message: error.message})
         }
     },
+    getStoriesById: async (req, res) => {
+        try {
+            const stories = await Stories.find({
+                user: req.user.id
+            })
+            .sort('-createdAt')
+            .populate("user, viewIds", "avatar username nickname")
+            .populate("likeIds.user", "avatar username nickname")
+
+            res.json({success: true, stories: stories.slice(0, 10)})
+        } catch (error) {
+            return res.status(500).json({success: false, message: error.message})
+        }
+    },
     getStories: async (req, res) => {
         try {
             const userInDB = Users.findById({_id: req.user.id}, 'following');
             if(!userInDB) return res.status(400).json({success: false, message: 'You have to login first'});
 
-            const features =  new APIfeatures(Stories.find({
-                user: [...userInDB.following, req.user.id]
-            }), req.query).paginating()
+            // const features =  new APIfeatures(Stories.find({
+            //     user: [...userInDB.following, req.user.id]
+            // }), req.query).paginating()
 
-            const stories = await features.query.sort('-createdAt')
+            const stories = await Stories.find({
+                user: [...userInDB.following]
+            })
+            .sort('-createdAt')
             .populate("user, viewIds", "avatar username nickname")
             .populate("likeIds.user", "avatar username nickname")
+
+            let storiesStorage = []
+            const userIds = stories.map(story => story.user);
+            const uniqueUserIds = new Set(userIds); //Hàm set có chức năng lọc các giá trị trùng nhau
+            
+            uniqueUserIds.forEach(userId => {
+                const userStories = stories.map(story => {
+                    if (userId === story.user) return story;
+                });
+                if (storiesStorage.length < 5) {
+                    storiesStorage.push(
+                        userStories.slice(0, 10).filter((n) => n), //filter có tác dụng clone mảng mới
+                    ); 
+                }
+            });
             res.json({
                 success: true,
-                result: posts.length,
-                stories
+                result: storiesStorage.length,
+                stories: storiesStorage
             })
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})

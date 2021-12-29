@@ -9,6 +9,8 @@ router.post('/', verifyToken, storiesCtrl.createStories);
 
 router.get('/', verifyToken, storiesCtrl.getStories);
 
+router.get('/get-stories-by-id', verifyToken, storiesCtrl.getStoriesById);
+
 router.patch('/update-like', verifyToken, storiesCtrl.updateLikes);
 
 router.patch('/update-viewer', verifyToken, storiesCtrl.updateViewer);
