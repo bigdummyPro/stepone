@@ -3,7 +3,11 @@ import { useDispatch } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 
 
-function CreateStoriesModalRight({bgInputActive, textInputActive}) {
+function CreateStoriesModalRight({
+    bgInputActive, 
+    textInputActive,
+    styleInputActive
+}) {
     const dispatch = useDispatch();
     const handleCloseModal = () => {
         dispatch({type: GLOBALTYPES.CREATE_STORIES_MODAL_STATUS, payload: false})
@@ -22,7 +26,7 @@ function CreateStoriesModalRight({bgInputActive, textInputActive}) {
                 <div className="body-preview-content">
                     <div className="body-preview-content__image">
                         <img src={bgInputActive} alt="" />
-                        <span>
+                        <span style={{fontFamily: styleInputActive}}>
                             {textInputActive || 'Start Typing'}
                         </span>
                     </div>

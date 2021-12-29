@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import storiesBackgroundList from '../../assets/json-data/stories-background.json';
+import storiesStyleList from '../../assets/json-data/stories-style.json';
 
-function CreateStoriesModalLeft({handleBgInput, handleTextInput}) {
+function CreateStoriesModalLeft({
+    handleBgInput, 
+    handleTextInput, 
+    handleStyleInput
+}) {
     const [textInput, setTextInput] = useState('');
     const [backgroundInputCurr, setBackgroundInputCurr] = useState(0);
+    const [styleInputCurr, setStyleInputCurr] = useState(0);
+    const [maxLengthStatus, setMaxLengthStatus] = useState(false);
 
-    const handleChangeTextarea = (e) => {console.log('tt')
-        if(e.target.value.length <= 320) setTextInput(e.target.value);
-        else {console.log(e.target.value.length)
+    const handleChangeTextarea = (e) => {
+        if(e.target.value.length <= 320) {
+            setTextInput(e.target.value);
+            handleTextInput(e.target.value)
+        }
+        else if(e.target.value.length > 320){
             setTextInput(e.target.value.slice(0, 320));
+            handleTextInput(e.target.value.slice(0, 320))
+            setMaxLengthStatus(true);
+            setTimeout(()=>{
+                setMaxLengthStatus(false)
+            },2000)
         }
     }
     useEffect(()=>{
@@ -16,8 +31,8 @@ function CreateStoriesModalLeft({handleBgInput, handleTextInput}) {
     },[backgroundInputCurr])
 
     useEffect(()=>{
-        if(textInput.length < 320) handleTextInput(textInput);
-    },[textInput])
+        handleStyleInput(storiesStyleList[styleInputCurr].fontFamily)
+    },[styleInputCurr])
     return (
         <div className="create-stories-modal__left">
             <div className="stories-modal-left-header">
@@ -43,6 +58,15 @@ function CreateStoriesModalLeft({handleBgInput, handleTextInput}) {
                         value={textInput}
                         onChange={(e)=>handleChangeTextarea(e)}
                     ></textarea>
+                    {
+                        maxLengthStatus ?
+                        <span 
+                            className="body-text-input__mess"
+                            style={{fontSize: '1.2rem', color: '#ea4335', marginTop: '5px'}}
+                        >
+                            Maximum length is 320 characters
+                        </span> : null
+                    }
                 </div>
                 <div className="body-style-input">
                     <div className="body-style-input__toggle">
@@ -50,18 +74,17 @@ function CreateStoriesModalLeft({handleBgInput, handleTextInput}) {
                         <span>Font Style</span>
                     </div>
                     <div className="body-style-input__menu">
-                        <div className="style-input-item">
-                            Neat
-                        </div>
-                        <div className="style-input-item">
-                            Normal
-                        </div>
-                        <div className="style-input-item">
-                            Simple
-                        </div>
-                        <div className="style-input-item">
-                            Style
-                        </div>
+                        {
+                            storiesStyleList.map((stStLi, index)=>(
+                                <div 
+                                    className={`style-input-item ${styleInputCurr === index ? '--active' : ''}`}
+                                    key={index}
+                                    onClick={()=>setStyleInputCurr(index)}
+                                >
+                                    {stStLi.type}
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
                 <div className="body-background-input">

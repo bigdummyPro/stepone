@@ -137,9 +137,16 @@
         font-size: 1.3rem;
         color: $txt-color;
         padding: 10px 10px;
-        border-radius: 5px;
+        border-radius: 10px;
         cursor: pointer;
         user-select: none;
+        transition: background-color 0.2s linear;
+        &:not(:last-child) {
+          margin-bottom: 5px;
+        }
+        &.--active {
+          background-color: $main-light-color;
+        }
         &:hover {
           background-color: $main-light-color;
         }
@@ -277,6 +284,7 @@
       span {
         display: inline-block;
         width: 100%;
+        text-align: center;
         padding: 0 20px;
         position: relative;
         z-index: 2;

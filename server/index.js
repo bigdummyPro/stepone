@@ -9,6 +9,7 @@ const notificationRouter = require('./routes/notificationRoute');
 const postRouter = require('./routes/postRoute');
 const commentRouter = require('./routes/commentRoute');
 const messageRouter = require('./routes/messageRoute');
+const storiesRouter = require('./routes/storiesRoute');
 
 
 //connect express
@@ -31,6 +32,8 @@ app.use('/api', postRouter);
 app.use('/api/comment', commentRouter);
 //define api of message
 app.use('/api/message', messageRouter);
+//define api of stories
+app.use('/api/stories', storiesRouter)
 
 
 const PORT = process.env.PORT || 5000;

@@ -74,7 +74,13 @@ export const GLOBALTYPES = {
 
     //Online / Offline
     SET_ONLINE: 'SET_ONLINE',
-    SET_OFFLINE: 'SET_OFFLINE'
+    SET_OFFLINE: 'SET_OFFLINE',
+
+    //Stories
+    CREATE_STORIES: 'CREATE_STORIES',
+    GET_STORIES: 'GET_STORIES',
+    UPDATE_STORIES_LIKE: 'UPDATE_STORIES_LIKE',
+    UPDATE_STORIES_VIEWR: 'UPDATE_STORIES_VIEWR'
 } 
 
 export const EditData = (data, id, post) => {

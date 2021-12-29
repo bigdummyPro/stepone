@@ -1,0 +1,18 @@
+[
+    {
+        "type": "Neat",
+        "fontFamily": "Lalezar, cursive"
+    },
+    {
+        "type": "Normal",
+        "fontFamily": "Oswald, cursive"
+    },
+    {
+        "type": "Simple",
+        "fontFamily": "Roboto, cursive"
+    },
+    {
+        "type": "Style",
+        "fontFamily": "Lobster, cursive"
+    }
+]

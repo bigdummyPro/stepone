@@ -10,7 +10,7 @@ function Stories(props) {
         <title>Stories | Connecto</title>
         <div className="main-container">
             <div className="main-body">
-                <div className="stories-wrapper">
+                <div className="stories-page-wrapper">
                     <div className={`stories ${!storiesLeftStatus ? '--hide-left' : ''}`}>
                         <StoriesLeft 
                             closeStoriesLeft={()=>setStoriesLeftStatus(false)}

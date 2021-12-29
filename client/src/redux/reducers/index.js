@@ -10,6 +10,7 @@ import postReducer from './postReducer';
 import detailPostReducer from './detailPostReducer';
 import messageReducer from './messageReducer';
 import onlineReducer from './onlineReducer';
+import storiesReducer from './storiesReducer';
 
 export default combineReducers({
     modalReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
     postReducer,
     detailPostReducer,
     messageReducer,
-    onlineReducer
+    onlineReducer,
+    storiesReducer
 })
