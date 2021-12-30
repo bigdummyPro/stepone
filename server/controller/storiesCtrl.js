@@ -19,13 +19,15 @@ class APIfeatures {
 const storiesCtrl = {
     createStories: async (req, res) => {
         try {
-            const {content, background} = req.body;
+            const {content, background, fontStyle, user} = req.body;
             if(content === '') return;
             const stories = new Stories({
-                content, background
+                content, background, fontStyle, user
             })
             await stories.save();
-            return res.json({success: true, stories, message: 'Create successfully'})
+            const resStories = await stories.populate("user viewerIds likeIds.user", "avatar username nickname")
+
+            return res.json({success: true, stories: resStories, message: 'Create successfully'})
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})
         }
@@ -35,10 +37,12 @@ const storiesCtrl = {
             const stories = await Stories.find({
                 user: req.user.id
             })
-            .sort('-createdAt')
-            .populate("user, viewIds", "avatar username nickname")
-            .populate("likeIds.user", "avatar username nickname")
-
+            .sort('createdAt')
+            .populate("user viewerIds likeIds.user", "avatar username nickname")
+            // .populate({
+            //     path: 'likeIds.user',
+            //     select: 'avatar username nickname'
+            // })
             res.json({success: true, stories: stories.slice(0, 10)})
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})
@@ -46,9 +50,8 @@ const storiesCtrl = {
     },
     getStories: async (req, res) => {
         try {
-            const userInDB = Users.findById({_id: req.user.id}, 'following');
+            const userInDB = await Users.findById(req.user.id, 'following');
             if(!userInDB) return res.status(400).json({success: false, message: 'You have to login first'});
-
             // const features =  new APIfeatures(Stories.find({
             //     user: [...userInDB.following, req.user.id]
             // }), req.query).paginating()
@@ -56,17 +59,16 @@ const storiesCtrl = {
             const stories = await Stories.find({
                 user: [...userInDB.following]
             })
-            .sort('-createdAt')
-            .populate("user, viewIds", "avatar username nickname")
-            .populate("likeIds.user", "avatar username nickname")
+            .sort('createdAt')
+            .populate("user viewerIds likeIds.user", "avatar username nickname")
 
             let storiesStorage = []
-            const userIds = stories.map(story => story.user);
-            const uniqueUserIds = new Set(userIds); //Hàm set có chức năng lọc các giá trị trùng nhau
+            const users = stories.map(story => story.user);
+            const uniqueUsers = new Set(users); //Hàm set có chức năng lọc các giá trị trùng nhau
             
-            uniqueUserIds.forEach(userId => {
+            uniqueUsers.forEach(user => {
                 const userStories = stories.map(story => {
-                    if (userId === story.user) return story;
+                    if (user._id === story.user._id) return story;
                 });
                 if (storiesStorage.length < 5) {
                     storiesStorage.push(
@@ -85,7 +87,7 @@ const storiesCtrl = {
     },
     updateLikes: async (req, res) => {
         try {
-            const {type} = req.body;
+            const {emotionType} = req.body;
             const stories = await Stories.findOne({_id: req.params.id});
 
             if(!stories) return;
@@ -94,7 +96,7 @@ const storiesCtrl = {
                 const newLikeIds = stories.likeIds.map(like => {
                     if(like.user === req.user.id) return {
                         user: req.user.id,
-                        type
+                        emotionType
                     }
                     else return like
                 })
@@ -108,7 +110,7 @@ const storiesCtrl = {
                     $push: {
                         likeIds: {
                             user: req.user.id,
-                            type,
+                            emotionType,
                         },
                     }
                 }, {new: true})

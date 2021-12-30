@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import StoriesItem from './stories-item';
 import './stories-list.scss';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
+import {getStories, getStoriesById} from '../../redux/actions/storiesAction';
 
 function StoriesList(props) {
     const dispatch = useDispatch();
+    const {authStories, otherStories} = useSelector(state => state.storiesReducer);
+    const {user} = useSelector(state => state.authReducer);
+
     const handleOpenModal = () => {
         dispatch({type: GLOBALTYPES.CREATE_STORIES_MODAL_STATUS, payload: true});
     }
+
+    useEffect(()=>{
+        dispatch(getStories());
+        dispatch(getStoriesById());
+    },[])
     return (
         <div className="stories-wrapper">
             <div className="stories-list-container">
@@ -21,7 +31,7 @@ function StoriesList(props) {
                         >
                             <div className="stories-item-host__avatar">
                                 <div className="host-avatar-img">
-                                    <img src={UserAvatarImg} alt="" />
+                                    <img src={user.avatar ||UserAvatarImg} alt="" />
                                 </div>
                             </div>
                             <div className="stories-item-host__create">
@@ -34,15 +44,28 @@ function StoriesList(props) {
                             </div>
                         </div>
                     </div>
-                    <StoriesItem />
-                    <StoriesItem />
-                    <StoriesItem />
-                    <StoriesItem />
-                    <StoriesItem />
+                    {
+                        authStories.length > 0 && 
+                        <StoriesItem 
+                            story={authStories[0]}
+                            user={user}
+                        />
+                    }
+                    {
+                        otherStories.length > 0 && otherStories.map((story, index) => (
+                            <StoriesItem 
+                                key={index}
+                                story={story[0]}
+                            />
+                        ))
+                    }
                 </div>
-                <span className="stories-see-all">
+                <Link
+                    to={`/stories`} 
+                    className="stories-see-all"
+                >
                     <i className="fas fa-long-arrow-alt-right"></i>
-                </span>
+                </Link>
             </div>
         </div>
     );

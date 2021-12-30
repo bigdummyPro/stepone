@@ -11,8 +11,8 @@ router.get('/', verifyToken, storiesCtrl.getStories);
 
 router.get('/get-stories-by-id', verifyToken, storiesCtrl.getStoriesById);
 
-router.patch('/update-like', verifyToken, storiesCtrl.updateLikes);
+router.patch('/update-like/:id', verifyToken, storiesCtrl.updateLikes);
 
-router.patch('/update-viewer', verifyToken, storiesCtrl.updateViewer);
+router.patch('/update-viewer/:id', verifyToken, storiesCtrl.updateViewer);
 
 module.exports = router;

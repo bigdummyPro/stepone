@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import storiesBackgroundList from '../../assets/json-data/stories-background.json';
 import storiesStyleList from '../../assets/json-data/stories-style.json';
+import { createStories } from '../../redux/actions/storiesAction';
+import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 
 function CreateStoriesModalLeft({
     handleBgInput, 
     handleTextInput, 
-    handleStyleInput
+    handleStyleInput,
+    handleLoading
 }) {
     const [textInput, setTextInput] = useState('');
     const [backgroundInputCurr, setBackgroundInputCurr] = useState(0);
     const [styleInputCurr, setStyleInputCurr] = useState(0);
     const [maxLengthStatus, setMaxLengthStatus] = useState(false);
+    const dispatch = useDispatch();
+
+    const {user} = useSelector(state => state.authReducer);
 
     const handleChangeTextarea = (e) => {
         if(e.target.value.length <= 320) {
@@ -32,6 +39,23 @@ function CreateStoriesModalLeft({
         setBackgroundInputCurr(0);
         setStyleInputCurr(0);
         handleTextInput('')
+    }
+
+    const handleSubmit = async () => {
+        if(textInput !== ''){
+            handleLoading(true);
+            const res = await dispatch(createStories({
+                content: textInput,
+                background: storiesBackgroundList[backgroundInputCurr].bigBackgroundImg,
+                fontStyle: storiesStyleList[styleInputCurr].fontFamily,
+                user
+            }))
+            if(res.data.success){
+                handleLoading(false);
+                resetInput();
+                dispatch({type: GLOBALTYPES.CREATE_STORIES_MODAL_STATUS, payload: false})
+            }
+        }
     }
     useEffect(()=>{
         handleBgInput(storiesBackgroundList[backgroundInputCurr].bigBackgroundImg)
@@ -124,7 +148,10 @@ function CreateStoriesModalLeft({
                 >
                     Reset
                 </span>
-                <span className="modal-done-btn">
+                <span 
+                    className="modal-done-btn"
+                    onClick={handleSubmit}
+                >
                     Done
                 </span>
             </div>

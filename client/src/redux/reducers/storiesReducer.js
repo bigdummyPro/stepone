@@ -13,7 +13,7 @@ const storiesReducer = (state = initialState, action) => {
                 ...state,
                 authStories: [payload, ...state.authStories].slice(0, 10)
             };
-        case GLOBALTYPES.GET_STORIES_BY_ID:
+        case GLOBALTYPES.GET_STORIES_BY_ID:console.log(payload)
             return {
                 ...state,
                 authStories: payload
@@ -33,7 +33,7 @@ const storiesReducer = (state = initialState, action) => {
                 const newLikeIds = story.likeIds.map(like => {
                     if(like.user._id === payload.user._id) return {
                         user: payload.user,
-                        type: payload.type
+                        type: payload.emotionType
                     }
                     else return like
                 })
@@ -50,7 +50,7 @@ const storiesReducer = (state = initialState, action) => {
                         ...item,
                         likeIds: [...item.likeIds, {
                             user: payload.user,
-                            type: payload.type
+                            type: payload.emotionType
                         }]
                     }
                     else return item
@@ -59,6 +59,19 @@ const storiesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 otherStories: newOtherStories
+            }
+        case GLOBALTYPES.UPDATE_STORIES_VIEWER:
+            return {
+                ...state,
+                otherStories: [...state.otherStories].map(item => {
+                    if(item._id === payload.id){
+                        return {
+                            ...item,
+                            viewerIds: [...item.viewerIds, payload.user]
+                        }
+                    }
+                    else return item
+                })
             }
         default:
             return state;

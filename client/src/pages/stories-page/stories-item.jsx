@@ -1,18 +1,19 @@
 import React from 'react';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
+import moment from 'moment';
 
-function StoriesItem(props) {
+function StoriesItem({story}) {
     return (
         <div className="stories-item">
             <div className="stories-item__avatar">
-                <img src={UserAvatarImg} alt="" />
+                <img src={story.user.avatar || UserAvatarImg} alt="" />
             </div>
             <div className="stories-item__info">
                 <span className="stories-info-name">
-                    Nguyễn Hoàng Khánh Ngân
+                    {story.user.username}
                 </span>
                 <span className="stories-info-time">
-                    20 minutes ago
+                    {moment(story.createdAt).fromNow()}
                 </span>
             </div>
         </div>
