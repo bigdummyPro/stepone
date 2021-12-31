@@ -4,17 +4,17 @@ import { getStories, getStoriesById } from '../../redux/actions/storiesAction';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import StoriesItem from './stories-item';
 
-function StoriesLeft({closeStoriesLeft}) {
+function StoriesLeft({
+    closeStoriesLeft, 
+    authStories, 
+    otherStories,
+    handleStoriesCurrIndex
+}) {
     const dispatch = useDispatch();
-    const {authStories, otherStories} = useSelector(state => state.storiesReducer);
 
     const handleOpenModal = () => {
         dispatch({type: GLOBALTYPES.CREATE_STORIES_MODAL_STATUS, payload: true});
     }
-    useEffect(()=>{
-        dispatch(getStories());
-        dispatch(getStoriesById());
-    },[])
     return (
         <div className="stories-left-wrapper">
             <div className="stories-left">
@@ -50,6 +50,9 @@ function StoriesLeft({closeStoriesLeft}) {
                                 authStories.length > 0 &&
                                 <StoriesItem 
                                     story={authStories[0]}
+                                    setStoriesCurrIndex={
+                                        ()=>handleStoriesCurrIndex(0)
+                                    }
                                 />
                             }
                         </div>
@@ -64,6 +67,10 @@ function StoriesLeft({closeStoriesLeft}) {
                                     <StoriesItem 
                                         key={index}
                                         story={story[0]}
+                                        setStoriesCurrIndex={
+                                            ()=>handleStoriesCurrIndex(
+                                            authStories.length > 0 ? index + 1 : index)
+                                        }
                                     />
                                 ))
                             }

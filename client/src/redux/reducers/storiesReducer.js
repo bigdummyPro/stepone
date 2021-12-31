@@ -13,7 +13,7 @@ const storiesReducer = (state = initialState, action) => {
                 ...state,
                 authStories: [payload, ...state.authStories].slice(0, 10)
             };
-        case GLOBALTYPES.GET_STORIES_BY_ID:console.log(payload)
+        case GLOBALTYPES.GET_STORIES_BY_ID:
             return {
                 ...state,
                 authStories: payload

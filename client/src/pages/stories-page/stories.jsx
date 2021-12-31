@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getStories, getStoriesById } from '../../redux/actions/storiesAction';
 import StoriesLeft from './stories-left';
 import StoriesRight from './stories-right';
 import './stories.scss';
 
 function Stories(props) {
     const [storiesLeftStatus, setStoriesLeftStatus] = useState(true);
+    const [currStoriesIndex, setCurrStoriesIndex] = useState(0);
+
+    const dispatch = useDispatch();
+    const {authStories, otherStories} = useSelector(state => state.storiesReducer);
+    useEffect(()=>{
+        dispatch(getStories());
+        dispatch(getStoriesById());
+    },[])
     return (
         <div className="main-content">
         <title>Stories | Connecto</title>
@@ -14,10 +24,17 @@ function Stories(props) {
                     <div className={`stories ${!storiesLeftStatus ? '--hide-left' : ''}`}>
                         <StoriesLeft 
                             closeStoriesLeft={()=>setStoriesLeftStatus(false)}
+                            authStories={authStories}
+                            otherStories={otherStories}
+                            handleStoriesCurrIndex={(index)=>setCurrStoriesIndex(index)}
                         />
                         <StoriesRight 
                             openStoriesLeft={()=>setStoriesLeftStatus(true)}
                             storiesLeftStatus={storiesLeftStatus}
+                            authStories={authStories}
+                            otherStories={otherStories}
+                            currStoriesIndex={currStoriesIndex}
+                            handleStoriesCurrIndex={(index)=>setCurrStoriesIndex(index)}
                         />
                     </div>
                 </div>

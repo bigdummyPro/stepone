@@ -275,11 +275,19 @@
         }
       }
       .stories-right-body__text {
-        font-family: $stories-font;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        padding: 0 20px;
         position: relative;
         z-index: 2;
+        font-family: "Lalezar", cursive;
         font-size: 2rem;
-        color: $medium-white-color;
+        line-height: 2.6rem;
+        color: #fafafa;
+        word-break: break-word;
+        -webkit-user-select: none;
+        user-select: none;
       }
     }
     .stories-right-footer {
