@@ -12,10 +12,7 @@ const storiesSchema = new Schema({
     background: String,
     fontStyle: String,
     likeIds: [likeIdSchema],
-    viewerIds: {
-        type: Array,
-        default: [],
-    }
+    viewerIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }]
 },{
     timestamps: true
 })

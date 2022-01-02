@@ -61,16 +61,19 @@ const storiesReducer = (state = initialState, action) => {
                 otherStories: newOtherStories
             }
         case GLOBALTYPES.UPDATE_STORIES_VIEWER:
+            
             return {
                 ...state,
                 otherStories: [...state.otherStories].map(item => {
-                    if(item._id === payload.id){
-                        return {
-                            ...item,
-                            viewerIds: [...item.viewerIds, payload.user]
+                    return item.map(item2 => {
+                        if(item2._id === payload.id){
+                            return {
+                                ...item2,
+                                viewerIds: [...item2.viewerIds, payload.user]
+                            }
                         }
-                    }
-                    else return item
+                        else return item2
+                    })
                 })
             }
         default:

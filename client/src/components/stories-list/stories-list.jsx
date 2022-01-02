@@ -49,6 +49,7 @@ function StoriesList(props) {
                         <StoriesItem 
                             story={authStories[0]}
                             user={user}
+                            seenStatus={authStories.every(item => item.viewerIds.some(view => view._id === user._id))}
                         />
                     }
                     {
@@ -56,16 +57,21 @@ function StoriesList(props) {
                             <StoriesItem 
                                 key={index}
                                 story={story[0]}
+                                user={user}
+                                seenStatus={story.every(item => item.viewerIds.some(view => view._id === user._id))}
                             />
                         ))
                     }
                 </div>
-                <Link
-                    to={`/stories`} 
-                    className="stories-see-all"
-                >
-                    <i className="fas fa-long-arrow-alt-right"></i>
-                </Link>
+                {
+                    authStories.length <= 0 && otherStories.length <= 0 ? null :
+                    <Link
+                        to={`/stories`} 
+                        className="stories-see-all"
+                    >
+                        <i className="fas fa-long-arrow-alt-right"></i>
+                    </Link>
+                }
             </div>
         </div>
     );

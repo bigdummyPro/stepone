@@ -1,11 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 
-function StoriesItem({story, user}) {
+function StoriesItem({story, user, seenStatus}) {
     return (
-        <div className="stories-item-wrapper">
+        <Link 
+            to={`stories/${story.user._id}`} 
+            className="stories-item-wrapper"
+        >
             <div className="stories-item">
-                <div className="stories-item__avatar">
+                <div className={`stories-item__avatar ${seenStatus ? '--seen' : ''}`}>
                     <img src={story.user.avatar || UserAvatarImg} alt="" />
                 </div>
                 <div className="stories-item__content">
@@ -18,7 +22,7 @@ function StoriesItem({story, user}) {
                     {user && user._id === story.user._id ? 'Your Story' : story.user.username}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

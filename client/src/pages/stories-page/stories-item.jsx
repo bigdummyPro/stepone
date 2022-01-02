@@ -2,13 +2,22 @@ import React from 'react';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import moment from 'moment';
 
-function StoriesItem({story, setStoriesCurrIndex}) {
+function StoriesItem({
+    story, 
+    setStoriesCurrIndex, 
+    activeStatus, 
+    seenStatus
+}) {
+    console.log(seenStatus)
+    console.log(story)
     return (
         <div 
-            className="stories-item" 
+            className={`stories-item ${activeStatus ? '--active' : ''}`} 
             onClick={setStoriesCurrIndex}
         >
-            <div className="stories-item__avatar">
+            <div 
+                className={`stories-item__avatar ${seenStatus ? '--seen' : ''}`}
+            >
                 <img src={story.user.avatar || UserAvatarImg} alt="" />
             </div>
             <div className="stories-item__info">

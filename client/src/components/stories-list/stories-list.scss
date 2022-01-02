@@ -2,17 +2,20 @@
 
 .stories-wrapper {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 .stories-list-container {
   position: relative;
+  width: fit-content;
 }
 .stories-list {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
   gap: 10px;
 }
 .stories-item-wrapper {
-  width: 100%;
+  display: inline-block;
+  width: 100px;
   .stories-item {
     width: 100%;
     height: 160px;
@@ -21,19 +24,25 @@
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
-    &:hover .stories-item__content img {
-      transform: scale(1.2);
+    border-radius: 10px;
+    overflow: hidden;
+    &:hover .stories-item__content {
+      transform: scale(1.1);
     }
     .stories-item__avatar {
       position: absolute;
       top: 13px;
       left: 13px;
       z-index: 2;
-      img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+      &.--seen img {
         outline: 3px solid $medium-white-color;
+      }
+      img {
+        width: 31px;
+        height: 31px;
+        border-radius: 50%;
+        border: 1px solid transparent;
+        outline: 3px solid $main-color;
       }
     }
     .stories-item__content {
@@ -43,9 +52,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid $line-color;
+      // border: 1px solid $line-color;
       overflow: hidden;
       position: relative;
+      transition: transform 0.2s linear;
       img {
         position: absolute;
         top: 0;
@@ -54,7 +64,6 @@
         height: auto;
         border-radius: 6px;
         object-fit: cover;
-        transition: transform 0.2s linear;
       }
       span {
         display: inline-block;
@@ -77,8 +86,8 @@
       left: 10px;
       bottom: 10px;
       z-index: 2;
-      font-size: 1.2rem;
-      line-height: 1.7rem;
+      font-size: 1.1rem;
+      line-height: 1.6rem;
       font-weight: 600;
       color: $medium-white-color;
       display: -webkit-box;
@@ -133,7 +142,7 @@
         font-size: 1.6rem;
         background-color: $main-color;
         border-radius: 50%;
-        outline: 5px solid $medium-white-color;
+        outline: 4px solid $medium-white-color;
         color: $medium-white-color;
         margin-top: -15px;
       }
