@@ -92,9 +92,9 @@ const storiesCtrl = {
 
             if(!stories) return;
             let updated;
-            if(stories.likeIds.some(like => like.user === req.user.id)){
+            if(stories.likeIds.some(like => like.user.toString() === req.user.id)){
                 const newLikeIds = stories.likeIds.map(like => {
-                    if(like.user === req.user.id) return {
+                    if(like.user.toString() === req.user.id) return {
                         user: req.user.id,
                         emotionType
                     }
@@ -110,7 +110,7 @@ const storiesCtrl = {
                     $push: {
                         likeIds: {
                             user: req.user.id,
-                            emotionType,
+                            emotionType
                         },
                     }
                 }, {new: true})

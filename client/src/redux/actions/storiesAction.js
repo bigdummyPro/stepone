@@ -37,11 +37,11 @@ export const getStoriesById = () => async dispatch => {
     }
 }
 export const updateStoriesLike = ({id, user, emotionType}) => async dispatch => {
-    dispatch({type: GLOBALTYPES.UPDATE_STORIES_LIKE, payload: {
-        id, user, emotionType
-    }})
     try {
-        const res = await patchDataAPI(`stories/update-like/${id}`, emotionType);
+        const res = await patchDataAPI(`stories/update-like/${id}`, {emotionType});
+        dispatch({type: GLOBALTYPES.UPDATE_STORIES_LIKE, payload: {
+            id, user, emotionType
+        }})
         return res;
     } catch (error) {
         console.log(error.message)

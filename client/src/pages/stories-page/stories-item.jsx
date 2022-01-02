@@ -8,8 +8,6 @@ function StoriesItem({
     activeStatus, 
     seenStatus
 }) {
-    console.log(seenStatus)
-    console.log(story)
     return (
         <div 
             className={`stories-item ${activeStatus ? '--active' : ''}`} 

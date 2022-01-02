@@ -4,7 +4,8 @@ import UserAvatarImg from '../../assets/images/user-avatar.png';
 import { updateStoriesViewer } from '../../redux/actions/storiesAction';
 import ProgressTimeOut from './progressTimeOut';
 import StoriesRightTool from './stories-right-tool';
-import test from '../../assets/images/emotion-svg/haha.svg';
+import ViewerCount from './viewer-count';
+import EmotionTool from './emotion-tool';
 
 function StoriesRight({
     storiesLeftStatus, 
@@ -20,7 +21,6 @@ function StoriesRight({
     const [currStories, setCurrStories] = useState([]);
     const [currChildStoriesIndex, setCurrChildStoriesIndex] = useState(0);
     const [progressStatus, setProgressStatus] = useState(false);
-    const [firstLoad, setFirstLoad] = useState(true);
 
     const togglePlayStatus = useRef(true);
 
@@ -33,7 +33,6 @@ function StoriesRight({
 
     const handleNextChildStories = (number) => {
         setProgressStatus(!progressStatus)
-        console.log(currStories)
         
         if(storageChildIndex.current + number > currStories.length - 1){
             if(storageParentIndex.current + number < allStories.length){
@@ -74,17 +73,15 @@ function StoriesRight({
             storageChildIndex.current = storageChildIndex.current + number;
         }
     }
-    useEffect(()=>{console.log('bug')     
-        //if(firstLoad){
-            setCurrIndex(currStoriesIndex);
-            const allStories = [...otherStories];
-            allStories.unshift([...authStories]);
-            setAllStories(allStories);
+    useEffect(()=>{console.log('bug')  
+        setCurrIndex(currStoriesIndex);
+        const allStories = [...otherStories];
+        allStories.unshift([...authStories]);
+        setAllStories(allStories);
 
-            if(allStories[0].length > 0){
-                setCurrStories(allStories[currStoriesIndex]);
-            }
-        //}
+        if(allStories[0].length > 0){
+            setCurrStories(allStories[currStoriesIndex]);
+        }
     },[authStories, otherStories, currStoriesIndex])
 
     useEffect(()=>{
@@ -92,7 +89,6 @@ function StoriesRight({
             storageParentIndex.current = currIndex;
             let time = 0;
             storiesTimeOutRef.current = setInterval(()=>{
-                // console.log('time'+ time)
                 if(togglePlayStatus.current){
                     time = time + 1;
                     if(time === 10) {
@@ -116,11 +112,10 @@ function StoriesRight({
 
     //Update viewer stories
     useEffect(()=>{
-        (async () => {console.log('dit')
+        (async () => {
             if(!currStories[currChildStoriesIndex]) return;
-            if(!currStories[currChildStoriesIndex].viewerIds.includes(user._id)){
+            if(currStories[currChildStoriesIndex].viewerIds.every(item => item._id !== user._id)){
                 //&& currStories[currChildStoriesIndex].user._id !== user._id
-                console.log(currStories[currChildStoriesIndex])
                 await dispatch(updateStoriesViewer({
                     id: currStories[currChildStoriesIndex]._id, 
                     user
@@ -165,43 +160,20 @@ function StoriesRight({
                     <div className="stories-right-footer">
                         {
                             currStories[currChildStoriesIndex]?.user._id === user._id ?
-                            <div className="storie-right-footer__viewer-count">
-                                <span>
-                                    <b>
-                                        {currStories && currStories[currChildStoriesIndex]?.viewerIds.filter(item => item._id !== user._id).length}
-                                    </b> Viewers
-                                </span>
-                                <span>
-                                    <b>
-                                        {currStories && currStories[currChildStoriesIndex]?.likeIds.filter(item => item._id !== user._id).length}
-                                    </b> Emotions
-                                </span>
-                            </div> : null
+                            <ViewerCount 
+                                currStories={currStories}
+                                currChildStoriesIndex={currChildStoriesIndex}
+                                user={user}
+                            /> : null
                         }
                         {
                             currStories[currChildStoriesIndex]?.user._id !== user._id ?
-                            <div className="storie-right-footer__emotion-tool">
-                                <div className="emotion-tool-list">
-                                    <div className="emotion-tool-item">
-                                        <img src={test} alt="" />
-                                    </div>
-                                    <div className="emotion-tool-item">
-                                        <img src={test} alt="" />
-                                    </div>
-                                    <div className="emotion-tool-item">
-                                        <img src={test} alt="" />
-                                    </div>
-                                    <div className="emotion-tool-item">
-                                        <img src={test} alt="" />
-                                    </div>
-                                    <div className="emotion-tool-item">
-                                        <img src={test} alt="" />
-                                    </div>
-                                    <div className="emotion-tool-item">
-                                        <img src={test} alt="" />
-                                    </div>
-                                </div>
-                            </div> : null
+                            <EmotionTool 
+                                currStories={currStories}
+                                currChildStoriesIndex={currChildStoriesIndex}
+                                user={user}
+                                dispatch={dispatch}
+                            /> : null
                         }
                     </div>
                 </div>

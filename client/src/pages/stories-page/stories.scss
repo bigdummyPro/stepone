@@ -298,31 +298,32 @@
       z-index: 3;
       bottom: 0;
       left: 0;
-      padding: 0 15px 8px 15px;
+      padding: 0 15px 6px 15px;
       width: 100%;
       .storie-right-footer__viewer-count {
         font-size: 1.3rem;
         color: $medium-white-color;
         font-weight: 600;
-        b {
-          text-decoration: underline;
-          font-size: 1.4rem;
-        }
+        // b {
+        //   text-decoration: underline;
+        //   font-size: 1.4rem;
+        // }
         span:first-child {
           margin-right: 12px;
         }
       }
       .storie-right-footer__emotion-tool {
+        position: relative;
         .emotion-tool-list {
           display: grid;
           grid-template-columns: repeat(6, 1fr);
           padding: 0 20px;
-          margin-bottom: 5px;
           .emotion-tool-item {
             cursor: pointer;
             display: inline-flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             &:hover {
               img {
                 transform: scale(1.3);
@@ -332,6 +333,14 @@
               width: 25px;
               height: 25px;
               transition: 0.2s linear;
+            }
+            .emotion-tool-item__active {
+              display: inline-block;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background-color: $green-color;
+              margin-top: 4px;
             }
           }
         }

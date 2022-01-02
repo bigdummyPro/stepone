@@ -26,34 +26,51 @@ const storiesReducer = (state = initialState, action) => {
         case GLOBALTYPES.UPDATE_STORIES_LIKE:
             const otherStoriesStorage = [...state.otherStories];
 
-            const story = otherStoriesStorage.find(item => item._id === payload.id)
+            let story = {};
+
+            otherStoriesStorage.forEach(item => item.forEach(item2 => {
+                if(item2._id === payload.id){
+                    story = item2;
+                    return;
+                }
+            })) 
+
 
             let newOtherStories = []
+
+            if(!story) return {...state};
+
             if(story.likeIds.some(like => like.user._id === payload.user._id)){
+                //console.log('update')
                 const newLikeIds = story.likeIds.map(like => {
                     if(like.user._id === payload.user._id) return {
                         user: payload.user,
-                        type: payload.emotionType
+                        emotionType: payload.emotionType
                     }
                     else return like
                 })
                 newOtherStories = otherStoriesStorage.map(item => {
-                    if(item._id === payload.id) return {
-                        ...item,
-                        likeIds: newLikeIds
-                    }
-                    else return item
+                    return item.map(item2 => {
+                        if(item2._id === payload.id) return {
+                            ...item2,
+                            likeIds: newLikeIds
+                        }
+                        else return item2
+                    })
                 })
             }else{
-                newOtherStories = otherStoriesStorage.forEach(item => {
-                    if(item._id === payload.id) return {
-                        ...item,
-                        likeIds: [...item.likeIds, {
-                            user: payload.user,
-                            type: payload.emotionType
-                        }]
-                    }
-                    else return item
+                //console.log('create')
+                newOtherStories = otherStoriesStorage.map(item => {
+                    return item.map(item2 => {
+                        if(item2._id === payload.id) return {
+                            ...item2,
+                            likeIds: [...item2.likeIds, {
+                                user: payload.user,
+                                emotionType: payload.emotionType
+                            }]
+                        }
+                        else return item2
+                    })
                 })
             }
             return {
