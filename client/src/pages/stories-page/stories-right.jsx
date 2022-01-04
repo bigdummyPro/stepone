@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
+import StoryImg from '../../assets/images/story.png';
 import { updateStoriesViewer } from '../../redux/actions/storiesAction';
 import ProgressTimeOut from './progressTimeOut';
 import StoriesRightTool from './stories-right-tool';
@@ -20,9 +21,8 @@ function StoriesRight({
     const [allStories, setAllStories] = useState([]);
     const [currStories, setCurrStories] = useState([]);
     const [currChildStoriesIndex, setCurrChildStoriesIndex] = useState(0);
-    const [progressStatus, setProgressStatus] = useState(false);
 
-    const togglePlayStatus = useRef(true);
+    
 
     const storiesTimeOutRef = useRef(null);
     const storageChildIndex = useRef(0);
@@ -31,32 +31,52 @@ function StoriesRight({
     const {user} = useSelector(state => state.authReducer);
     const dispatch = useDispatch();
 
+    const [progressPerc, setProgressPerc] = useState(0);
+    const [endStatus, setEndStatus] = useState(false);
+    const togglePlayStatusRef = useRef(true);
+
     const handleNextChildStories = (number) => {
-        setProgressStatus(!progressStatus)
         
         if(storageChildIndex.current + number > currStories.length - 1){
             if(storageParentIndex.current + number < allStories.length){
+                // console.log('bug'); 
+                // console.log(allStories)
+                // console.log(storageParentIndex); 
+                // console.log(currStoriesIndex);
+
                 storageParentIndex.current = storageParentIndex.current + number;
-                console.log(storageChildIndex.current)
                 handleStoriesCurrIndex(storageParentIndex.current);
+
                 setCurrChildStoriesIndex(0);
                 storageChildIndex.current = 0;
+
+                timeRef.current = 0;
+                setProgressPerc(0);
             }else{
                 console.log('End');
 
-                togglePlayStatus.current = false;
-                setCurrChildStoriesIndex(currStories.length - 1)
+                //togglePlayStatusRef.current = false;
+                setEndStatus(true);
+                handleStoriesCurrIndex(null);
+
+                storageChildIndex.current = 0;
+
                 clearInterval(storiesTimeOutRef.current);
+
+                timeRef.current = 100;
+                setProgressPerc(100);
             }
-        }else{
+        }else{console.log('diyt')
             setCurrChildStoriesIndex(prev => prev + number);
             storageChildIndex.current = storageChildIndex.current + number;
+            
+            timeRef.current = 0;
+            setProgressPerc(0);
         }
-        
     }
 
     const handlePrevChildStories = (number) => {
-        setProgressStatus(!progressStatus)
+
         if(storageChildIndex.current + number < 0){
             if(storageParentIndex.current >= 0){
                 handleStoriesCurrIndex(storageParentIndex.current + number);
@@ -72,8 +92,10 @@ function StoriesRight({
             setCurrChildStoriesIndex(prev => prev + number);
             storageChildIndex.current = storageChildIndex.current + number;
         }
+        timeRef.current = 0;
+        setProgressPerc(0);
     }
-    useEffect(()=>{console.log('bug')  
+    useEffect(()=>{ 
         setCurrIndex(currStoriesIndex);
         const allStories = [...otherStories];
         allStories.unshift([...authStories]);
@@ -84,30 +106,40 @@ function StoriesRight({
         }
     },[authStories, otherStories, currStoriesIndex])
 
+    const timeRef = useRef(0);
+
     useEffect(()=>{
         if(currStories && currStories.length > 0){
+
             storageParentIndex.current = currIndex;
-            let time = 0;
+
             storiesTimeOutRef.current = setInterval(()=>{
-                if(togglePlayStatus.current){
-                    time = time + 1;
-                    if(time === 10) {
-                        time = 0;
+                if(togglePlayStatusRef.current){
+                    timeRef.current = timeRef.current + 1;
+
+                    setProgressPerc(timeRef.current)
+                    if(timeRef.current === 100) {
                         handleNextChildStories(1);
                     }
                 }
-            }, 600)
+            }, 70)
         }
         return ()=>{
             clearInterval(storiesTimeOutRef.current);
         }
-    },[currStories, currIndex, allStories.length, progressStatus])
+    },[currStories, currIndex, allStories.length])
 
     // reset all stories right when click on left menu
     useEffect(()=>{
         if(storiesTimeOutRef.current) clearInterval(storiesTimeOutRef.current);
+        if(!togglePlayStatusRef.current) togglePlayStatusRef.current = true;
+        
+        setEndStatus(false);
+        setProgressPerc(0);
+        timeRef.current = 0;
+
         setCurrChildStoriesIndex(0);
-        setProgressStatus(!progressStatus)
+        storageChildIndex.current = 0;
     },[resetStoriesRight])
 
     //Update viewer stories
@@ -125,86 +157,92 @@ function StoriesRight({
     },[currChildStoriesIndex])
     return (
         <div className="stories-right-wrapper">
-            <div className="stories-right">
-                <div className="stories-right__main">
-                    <ProgressTimeOut 
-                        stories={currStories}
-                        currIndex={currChildStoriesIndex}
-                        status={progressStatus}
-                        togglePlayStatus={togglePlayStatus}
-                    />
-                    <div className="stories-right-description">
-                        <div className="description-user">
-                            <img src={(currStories && currStories.length > 0 ? currStories[currChildStoriesIndex].user.avatar : null) || UserAvatarImg} alt="" />
-                            <span>
-                                {currStories && currStories.length > 0 ? currStories[currChildStoriesIndex].user.username : null}
-                            </span>
-                        </div>
-                        <StoriesRightTool 
-                            togglePlayStatus={togglePlayStatus}
+            {
+                !endStatus ?
+                <div className="stories-right">
+                    <div className="stories-right__main">
+                        <ProgressTimeOut 
+                            stories={currStories}
+                            currIndex={currChildStoriesIndex}
+                            progress={progressPerc}
                         />
+                        <div className="stories-right-description">
+                            <div className="description-user">
+                                <img src={(currStories && currStories.length > 0 ? currStories[currChildStoriesIndex].user.avatar : null) || UserAvatarImg} alt="" />
+                                <span>
+                                    {currStories && currStories.length > 0 ? currStories[currChildStoriesIndex].user.username : null}
+                                </span>
+                            </div>
+                            <StoriesRightTool 
+                                togglePlayStatus={togglePlayStatusRef}
+                            />
+                        </div>
+                        {
+                            currStories && currStories.length > 0 && 
+                            <div className="stories-right-body">
+                                <div className="stories-right-body__img">
+                                    <img src={currStories[currChildStoriesIndex].background} alt="" />
+                                </div>
+                                <span className="stories-right-body__text">
+                                    {
+                                    currStories[currChildStoriesIndex].content 
+                                    }
+                                </span>
+                            </div>
+                        }
+                        <div className="stories-right-footer">
+                            {
+                                currStories[currChildStoriesIndex]?.user._id === user._id ?
+                                <ViewerCount 
+                                    currStories={currStories}
+                                    currChildStoriesIndex={currChildStoriesIndex}
+                                    user={user}
+                                /> : null
+                            }
+                            {
+                                currStories[currChildStoriesIndex]?.user._id !== user._id ?
+                                <EmotionTool 
+                                    currStories={currStories}
+                                    currChildStoriesIndex={currChildStoriesIndex}
+                                    user={user}
+                                    dispatch={dispatch}
+                                /> : null
+                            }
+                        </div>
                     </div>
                     {
-                        currStories && currStories.length > 0 && 
-                        <div className="stories-right-body">
-                            <div className="stories-right-body__img">
-                                <img src={currStories[currChildStoriesIndex].background} alt="" />
-                            </div>
-                            <span className="stories-right-body__text">
-                                {
-                                   currStories[currChildStoriesIndex].content 
-                                }
-                            </span>
-                        </div>
+                        currIndex === 0 && currChildStoriesIndex === 0 ? null :
+                        <span 
+                            className="stories-right__prev"
+                            onClick={()=>handlePrevChildStories(-1)}
+                        >
+                            <i className="fas fa-chevron-left"></i>
+                        </span>
                     }
-                    <div className="stories-right-footer">
-                        {
-                            currStories[currChildStoriesIndex]?.user._id === user._id ?
-                            <ViewerCount 
-                                currStories={currStories}
-                                currChildStoriesIndex={currChildStoriesIndex}
-                                user={user}
-                            /> : null
-                        }
-                        {
-                            currStories[currChildStoriesIndex]?.user._id !== user._id ?
-                            <EmotionTool 
-                                currStories={currStories}
-                                currChildStoriesIndex={currChildStoriesIndex}
-                                user={user}
-                                dispatch={dispatch}
-                            /> : null
-                        }
-                    </div>
+                    {
+                        currIndex === allStories.length - 1 && currChildStoriesIndex === currStories.length - 1 ? null :
+                        <span 
+                            className="stories-right__next"
+                            onClick={()=>handleNextChildStories(1)}
+                        >
+                            <i className="fas fa-chevron-right"></i>
+                        </span>
+                    }
+                    {
+                        !storiesLeftStatus ?
+                        <span 
+                            className="stories-right__open-left"
+                            onClick={openStoriesLeft}
+                        >
+                            <i className="fas fa-caret-square-right"></i>
+                        </span> : null
+                    }
+                </div> : 
+                <div className="stories-right-finish">
+                    <img src={StoryImg} alt="" />
+                    <span>Select stories to display</span>
                 </div>
-                {
-                    currIndex === 0 && currChildStoriesIndex === 0 ? null :
-                    <span 
-                        className="stories-right__prev"
-                        onClick={()=>handlePrevChildStories(-1)}
-                    >
-                        <i className="fas fa-chevron-left"></i>
-                    </span>
-                }
-                {
-                    currIndex === allStories.length - 1 && currChildStoriesIndex === currStories.length - 1 ? null :
-                    <span 
-                        className="stories-right__next"
-                        onClick={()=>handleNextChildStories(1)}
-                    >
-                        <i className="fas fa-chevron-right"></i>
-                    </span>
-                }
-                {
-                    !storiesLeftStatus ?
-                    <span 
-                        className="stories-right__open-left"
-                        onClick={openStoriesLeft}
-                    >
-                        <i className="fas fa-caret-square-right"></i>
-                    </span> : null
-                }
-            </div>
+            }
         </div>
     );
 }

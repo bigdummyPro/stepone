@@ -83,7 +83,7 @@ export const refreshToken = () => async dispatch => {
         localStorage.setItem(GLOBALTYPES.LOCAL_STORAGE_ACCESS_TOKEN_NAME, res.data.tokens.accessToken);
 
         await dispatch(loadUser()); 
-        setTimeout(()=>{console.log('ooo')
+        setTimeout(()=>{
             dispatch(refreshToken());
         }, 50 * 60 * 1000)
     }

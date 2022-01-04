@@ -1,33 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 
-function ProgressTimeOut({stories, currIndex, status, togglePlayStatus}) {
-    const [currValue, setCurrValue] = useState(0);
+function ProgressTimeOut({stories, currIndex, progress}) {
 
-    const storageTimeOutRef = useRef(null);
-    useEffect(()=>{
-        clearInterval(storageTimeOutRef.current);
-        setCurrValue(0);
-
-        storageTimeOutRef.current = setInterval(()=>{
-            let newValue = 0; 
-            if(togglePlayStatus.current){
-                setCurrValue(prevValue => {
-                    newValue = prevValue + 1;
-                    // console.log(newValue)
-                    if(newValue >= 100){
-                        clearInterval(storageTimeOutRef.current);
-                        newValue = 100;
-                    }
-                    return newValue;
-                })
-            }
-        }, 60)
-
-        return () => {
-            clearInterval(storageTimeOutRef.current);
-            setCurrValue(0);
-        }
-    },[togglePlayStatus, status, currIndex])
     return (
         <div className="stories-right-progress-list">
             {
@@ -40,7 +14,7 @@ function ProgressTimeOut({stories, currIndex, status, togglePlayStatus}) {
                             className="progress-bar"
                             style={{width: 
                                 currIndex === index ? 
-                                `${currValue}%` :
+                                `${progress}%` :
                                 index > currIndex ?
                                 `0%` : `100%`
                             }}    

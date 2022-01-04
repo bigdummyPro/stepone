@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function StoriesRightTool({togglePlayStatus}) {
-    const [toggleStatus, setToggleStatus] = useState(togglePlayStatus.current);
+    const [toggleStatus, setToggleStatus] = useState(true);
 
     const handlePlayPause = () => {
         setToggleStatus(!toggleStatus);
         togglePlayStatus.current = !togglePlayStatus.current;
     }
+    useEffect(()=>{
+        setToggleStatus(togglePlayStatus.current)
+    },[togglePlayStatus.current])
     return (
         <div className="description-tool">
             <div 
@@ -14,7 +17,7 @@ function StoriesRightTool({togglePlayStatus}) {
                 onClick={handlePlayPause}
             >
                 {
-                    toggleStatus ?
+                    togglePlayStatus.current ?
                     <span><i className="fas fa-pause"></i></span> : 
                     <span><i className="fas fa-play"></i></span> 
                 }

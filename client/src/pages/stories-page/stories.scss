@@ -298,7 +298,7 @@
       z-index: 3;
       bottom: 0;
       left: 0;
-      padding: 0 15px 6px 15px;
+      padding: 0 15px 8px 15px;
       width: 100%;
       .storie-right-footer__viewer-count {
         font-size: 1.3rem;
@@ -380,5 +380,27 @@
     position: absolute;
     top: 30px;
     left: 25px;
+  }
+}
+.stories-right-finish {
+  width: 100%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($color: $medium-white-color, $alpha: 1);
+  border-radius: 0 10px 10px 0;
+  border-left: 1px solid $line-color;
+  position: relative;
+  img {
+    width: 100px;
+    height: 100px;
+  }
+  span {
+    font-size: 1.4rem;
+    color: $txt-color;
+    margin-top: 10px;
+    font-weight: 600;
   }
 }

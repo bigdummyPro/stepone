@@ -46,7 +46,7 @@ function EmotionTool({currStories, currChildStoriesIndex, user, dispatch}) {
 
         clearTimeout(saveLikeTimeOut);
 
-        saveLikeTimeOut.current = setTimeout(() => {
+        //saveLikeTimeOut.current = setTimeout(() => {
             (
                 async () => {
                     if(emotionType === emotionActive) return;
@@ -57,7 +57,7 @@ function EmotionTool({currStories, currChildStoriesIndex, user, dispatch}) {
                     }))
                 }
             )()
-        }, 10)
+        //}, 10)
 
         setBubbleStatus(true);
         setTimeout(()=>{
@@ -67,11 +67,13 @@ function EmotionTool({currStories, currChildStoriesIndex, user, dispatch}) {
 
     //update when first load && when change emotion
     useEffect(()=>{
+        setEmotionActive(null);
         const authLike = currStories[currChildStoriesIndex]?.likeIds.find(item => item.user._id === user._id);
         if(authLike){
             setEmotionActive(authLike.emotionType)
         }
     },[currStories, currChildStoriesIndex])
+
     return (
         <div className="storie-right-footer__emotion-tool">
             <div className="emotion-tool-list">

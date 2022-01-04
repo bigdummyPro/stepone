@@ -40,7 +40,6 @@ function StoriesLeft({
             const index =  allStories.findIndex(story => story.some(item => item.user._id === id));
 
             setCurrIndex(index);
-            console.log(index)
             handleStoriesCurrIndex(index);
             resetStoriesRight();
         }
