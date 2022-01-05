@@ -5,15 +5,16 @@ import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import CreateFileModal from '../create-file-modal/create-file-modal';
 import ToolTip from '../tooltip/tooltip';
 import moreRightItems from '../../assets/json-data/more-right-item.json';
-import { createPost } from '../../redux/actions/postAction';
+import { createPost, updatePost } from '../../redux/actions/postAction';
 import LoadingImg from '../../assets/images/loading.gif';
 
-function CreatePostModal(props) {
+function CreatePostModal() {
 
     const [postText, setPostText] = useState('');
     const [files, setFiles] = useState([]);
     const [cursorPosition, setCursorPosition] = useState(null);
     const [moreItemActive, setMoreItemActive] = useState(null);
+    const [resetFileListStatus, setResetFileListStatus] = useState(false);
     const [moreItemTooltip, setMoreIemTooltip] = useState(null);
     const [fileModalType, setFileModalType] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -24,7 +25,11 @@ function CreatePostModal(props) {
     const dispatch = useDispatch();
 
     const fileModalStatus = useSelector(state => state.modalReducer.fileModalInCreatePost);
+
+    const createPostModalEdit = useSelector(state => state.modalReducer.createPostModalEdit);
+
     const initFileModalType = useSelector(state => state.modalReducer.initFileModalType);
+
     const authState = useSelector(state => state.authReducer);
     const socketState = useSelector(state => state.socketReducer);
 
@@ -50,6 +55,7 @@ function CreatePostModal(props) {
     }
     const actionInMoreRightItem = (index) => {
         setMoreItemActive(index);
+        setResetFileListStatus(true);
         if(index === 0) {
             setFileModalType(0);
             toggleFileModal(true);
@@ -69,29 +75,47 @@ function CreatePostModal(props) {
     const handleFileList = (files) => {
         setFiles(files);
     }
+    const handleMouseTooltip = (e,value) => {
+        if(moreItemTooltip !== value) setMoreIemTooltip(value)
+    }
     const handleSubmit = async () => {
         if(loading) return;
 
         let images = [];
         let videos = [];
         let audios = [];
+
         if(files.length >= 0){
             files.forEach((item) => {
-                const typeString = item.file.type;
-                if(typeString.includes('image')) images.push(item.file);
-                else if(typeString.includes('video')) videos.push(item.file);
-                else if(typeString.includes('audio')) audios.push(item.file);
+                const typeString = item.url ? item.file_type : item.file.type;
+                const newFile = item.url ? item : item.file;
+
+                if(typeString.includes('image')) images.push(newFile);
+                else if(typeString.includes('video')) videos.push(newFile);
+                else if(typeString.includes('audio')) audios.push(newFile);
             })
         }
         setLoading(true);
-        const res = await dispatch(createPost({
-            content: postText,
-            images,
-            videos,
-            audios,
-            auth: authState,
-            socket: socketState
-        }))
+        let res;
+        if(!createPostModalEdit.status){
+            res = await dispatch(createPost({
+                content: postText,
+                images,
+                videos,
+                audios,
+                auth: authState,
+                socket: socketState
+            }))
+
+        }else{
+            res = await dispatch(updatePost({
+                content: postText,
+                images,
+                videos,
+                audios,
+                id: createPostModalEdit.data._id
+            }))
+        }
         if(res.data.success){
             setLoading(false);
             dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: false});
@@ -130,12 +154,34 @@ function CreatePostModal(props) {
         initFileModalType !== null && setFileModalType(initFileModalType);
     },[initFileModalType])
 
+    useEffect(()=>{
+        if(createPostModalEdit.status){
+            const {data} = createPostModalEdit;
 
+            setPostText(data.content);
+            if(data.images.length > 0 || data.videos.length > 0 || data.audios.length > 0){
+                dispatch({type: GLOBALTYPES.FILE_MODAL_IN_CREATE_POST, payload: true})
+                dispatch({type: GLOBALTYPES.INIT_FILE_MODAL_TYPE, payload: 0});
+                setMoreItemActive(0);
+                setResetFileListStatus(false);
+            }
+            return () => {
+                dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_EDIT, payload: {
+                    status: false,
+                    data: null
+                }})
+            }
+        }
+    },[createPostModalEdit, dispatch])
     return (
         <div className="create-modal-wrapper">
             <div className="create-modal">
                 <div className="create-modal__top">
-                    <span className="modal-top-title">Create Post</span>
+                    <span className="modal-top-title">
+                        {
+                            createPostModalEdit.status ? 'Update Post' : 'Create Post'
+                        }
+                    </span>
                     <span 
                         className="modal-top-close"
                         onClick={closeModal}
@@ -171,6 +217,12 @@ function CreatePostModal(props) {
                                         onClose={()=>toggleFileModal(false)}
                                         fileModalType={fileModalType}
                                         handleFileList={(files)=>handleFileList(files)}
+                                        editFiles={createPostModalEdit.status ? [
+                                            ...createPostModalEdit.data.images,
+                                            ...createPostModalEdit.data.videos,
+                                            ...createPostModalEdit.data.audios,
+                                        ] : null}
+                                        resetFileListStatus={resetFileListStatus}
                                     />
                                 </div> : null
                         }
@@ -186,8 +238,8 @@ function CreatePostModal(props) {
                                         key={index}
                                         className={`more-right-item ${moRiIt.classColor} ${moreItemActive === index ? '--active' : ''}`}
                                         onClick={()=>actionInMoreRightItem(index)}
-                                        onMouseOver={()=>setMoreIemTooltip(index)}
-                                        onMouseOut={()=>setMoreIemTooltip(null)}
+                                        onMouseOver={()=>handleMouseTooltip(index)}
+                                        onMouseOut={()=>handleMouseTooltip(null)}
                                     >
                                         <span>
                                             <i className={moRiIt.icon}></i>

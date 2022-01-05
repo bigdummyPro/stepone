@@ -27,28 +27,36 @@ function CreateFileModal(props) {
     }
     const removeFile = (file) => {
         const storageList = [...fileList];
-        storageList.splice(storageList.findIndex(stLi => stLi.preview === file), 1);
+        if(file.url){
+            storageList.splice(storageList.findIndex(stLi => stLi.url === file.url), 1);
+        }else{
+            storageList.splice(storageList.findIndex(stLi => stLi.preview === file.preview), 1);
+            URL.revokeObjectURL(file);
+        }
         setFileList(storageList);
-        URL.revokeObjectURL(file);
     }
     const checkFileType = (file) => {
-        if(file.type === 'video/mp4'){
+        const fileType = file.url ? file.file_type : file.file.type;
+
+        if(fileType === 'video/mp4'){
             return 0
         }
-        else if(file.type === 'image/jpeg' || file.type === 'image/png'){
+        else if(fileType === 'image/jpeg' || fileType === 'image/png'){
             return 1
         }
-        else if(file.type === 'audio/mpeg'){
+        else if(fileType === 'audio/mpeg'){
             return 2
         }
         else return null
     }
     const previewItemRender = (fiLi, index)=> {
-        const {file} = fiLi;
-        const checkFileTypeNum = checkFileType(file);
+
+        const checkEdit = fiLi.url ? true : false;
+
+        const checkFileTypeNum = checkFileType(fiLi);
         if(checkFileTypeNum === 0){
             return <div className="preview-item" key={index}>
-                        <video src={fiLi.preview}></video>
+                        <video src={!checkEdit ? fiLi.preview : fiLi.url}></video>
                         <span 
                             className="preview-item__remove"
                             onClick={()=>removeFile(fiLi)}
@@ -62,7 +70,7 @@ function CreateFileModal(props) {
         }
         else if(checkFileTypeNum === 1){
             return <div className="preview-item" key={index}>
-                        <img src={fiLi.preview} alt="" />
+                        <img src={!checkEdit ? fiLi.preview : fiLi.url} alt="" />
                         <span 
                             className="preview-item__remove"
                             onClick={()=>removeFile(fiLi)}
@@ -76,10 +84,10 @@ function CreateFileModal(props) {
                         <img src={MP3Img} alt="" />
                         <div className="audio-description">
                             <span className="audio-description__name">
-                                {file.name}
+                                {!checkEdit ? fiLi.file.name : fiLi.file_name}
                             </span>
                             <span className="audio-description__size">
-                                {convertSize(file.size)}
+                                {convertSize(!checkEdit ? fiLi.file.size : fiLi.file_size)}
                             </span>
                         </div>
                         <span 
@@ -96,8 +104,13 @@ function CreateFileModal(props) {
     },[fileList, props]);
 
     useEffect(()=>{
-        setFileList([]);//remove files when fileModalType changed 
-    },[props.fileModalType])
+        if(props.resetFileListStatus) setFileList([]);//remove files when fileModalType changed 
+    },[props.resetFileListStatus])
+
+    useEffect(()=>{
+        if(props.editFiles) setFileList(props.editFiles);
+    },[])
+
     return (
         <div className="create-file-modal">
             <div 

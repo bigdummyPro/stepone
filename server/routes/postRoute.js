@@ -11,6 +11,7 @@ router.route('/post')
     .get(verifyToken, postCtrl.getPosts)
     
 router.route('/post/:id')
+    .patch(verifyToken, postCtrl.updatePost)
     .get(verifyToken, postCtrl.getPost)
     .delete(verifyToken, postCtrl.deletePost)
 

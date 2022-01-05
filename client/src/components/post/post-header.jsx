@@ -4,6 +4,7 @@ import clickOutsideRef from '../../utils/dropdown-event';
 import UserAvatarImg from './../../assets/images/user-avatar.png';
 import moment from 'moment';
 import {deletePost} from '../../redux/actions/postAction';
+import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 
 function PostHeader({user, createdAt, post, auth, dispatch, socket}) {
 
@@ -13,6 +14,13 @@ function PostHeader({user, createdAt, post, auth, dispatch, socket}) {
     const handleDeletePost = () => {
         dropdown_content_el.current.classList.remove('--active');
         dispatch(deletePost({post, auth, socket}));
+    }
+    const handleEditPost = () => {
+        dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_EDIT, payload: {
+            status: true,
+            data: post
+        }})
+        dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_STATUS, payload: true})
     }
     useEffect(()=>{
         clickOutsideRef(dropdown_content_el, dropdown_toggle_el, null);
@@ -39,7 +47,10 @@ function PostHeader({user, createdAt, post, auth, dispatch, socket}) {
                             <i className="fas fa-ellipsis-h"></i>
                         </span>
                         <div className="post-header-tool__list" ref={dropdown_content_el}>
-                            <div className="post-tool-item">
+                            <div 
+                                className="post-tool-item"
+                                onClick={handleEditPost}
+                            >
                                 <span><i className="fas fa-marker"></i></span>
                                 <span>Update post</span>
                             </div>

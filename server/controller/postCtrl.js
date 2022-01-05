@@ -70,6 +70,31 @@ const postCtrl = {
             return res.status(500).json({success: false, message: err.message})
         }
     },
+    updatePost: async (req, res) => {
+        try {
+            const { content, images, videos, audios } = req.body
+
+            const post = await Posts.findOneAndUpdate({_id: req.params.id}, {
+                content, images, videos, audios
+            }, {new: true})
+            .populate("user likes", "avatar username nickname")
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "user likes",
+                    select: "-password"
+                }
+            })
+
+            res.json({
+                success: true,
+                message: "Updated Post!",
+                newPost: post
+            })
+        } catch (error) {
+            return res.status(500).json({success: false, message: error.message})
+        }
+    },
     likePost: async (req, res) => {
         try {
             const post = await Posts.find({_id: req.params.id, likes: req.user.id})

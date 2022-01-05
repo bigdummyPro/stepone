@@ -159,9 +159,9 @@
           font-size: 2.2rem;
           border-radius: 50%;
           transition: background-color 0.2s linear;
-          &:hover {
-            background-color: $main-light-color;
-          }
+        }
+        &:hover span {
+          background-color: $main-light-color;
         }
         &.--active span {
           background-color: $main-light-color;

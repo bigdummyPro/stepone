@@ -39,6 +39,39 @@ export const createPost = ({content, images, videos, audios, auth, socket}) => a
         console.log(err.message)
     }
 }
+export const updatePost = ({content, images, videos, audios, id}) => async dispatch => {
+
+    const newImages = images.filter(img => !img.url);
+    const oldImages = images.filter(img => img.url);
+    const newVideos = videos.filter(video => !video.url);
+    const oldVideos = videos.filter(video => video.url);
+    const newAudios = audios.filter(audio => !audio.url);
+    const oldAudios = audios.filter(audio => audio.url);
+
+    let image_media = [];
+    let video_media = [];
+    let audio_media = [];
+
+    try {
+        if(newImages.length > 0) image_media = await imageUpload(newImages)
+        if(newVideos.length > 0) video_media = await imageUpload(newVideos)
+        if(newAudios.length > 0) audio_media = await imageUpload(newAudios)
+
+        const res = await patchDataAPI(`post/${id}`, {
+            content,
+            images: [...oldImages, ...image_media],
+            videos: [...oldVideos, ...video_media],
+            audios: [...oldAudios, ...audio_media],
+        });
+
+        if(res.data.success){
+            dispatch({type: GLOBALTYPES.UPDATE_POST, payload: res.data.newPost})
+        }
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 export const getPosts = () => async (dispatch) => {
     try {
