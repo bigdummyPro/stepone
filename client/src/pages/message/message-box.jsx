@@ -43,7 +43,7 @@ function MessageBox({conversation, id, auth, dispatch, socket}) {
                             {
                                 conversation.currentSender && conversation.currentSender._id === auth.user._id ? 'You: ' : null
                             }
-                            {conversation.text ? conversation.text : ''}
+                            {conversation.text ? conversation.text : (conversation.media.length > 0 ? 'Files' : '')}
                         </span>
                         <span className="message-time">
                             {moment(conversation.updatedAt).fromNow()}

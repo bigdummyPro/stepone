@@ -331,6 +331,7 @@
     flex-direction: column;
     align-items: flex-start;
     margin-left: 5px;
+    position: relative;
     .comment-box-body__content {
       display: flex;
       flex-direction: column;
@@ -338,7 +339,6 @@
       padding: 8px 12px;
       border-radius: 18px;
       background-color: $main-light-color;
-      position: relative;
       .comment-content-name {
         font-size: 1.3rem;
         line-height: 1.8rem;
@@ -395,6 +395,76 @@
           }
         }
       }
+      .comment-content-edit {
+        position: absolute;
+        right: -10px;
+        top: 2px;
+        z-index: 2;
+        transform: translate(calc(100% - 2px), 0);
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility, opacity 0.2s linear;
+        &.--active {
+          visibility: visible;
+          opacity: 1;
+        }
+        .comment-edit-icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          font-size: 1.4rem;
+          color: $txt-color;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: background-color 0.2s linear;
+          &:hover {
+            background-color: $main-light-color;
+          }
+        }
+        .comment-edit-menu {
+          position: absolute;
+          top: 2px;
+          left: calc(100% + 10px);
+          background-color: $medium-white-color;
+          box-shadow: 0 2px 10px 2px rgba($color: #000000, $alpha: 0.04);
+          border-radius: 10px;
+          padding: 8px 8px;
+          visibility: hidden;
+          opacity: 0;
+          transition: visibility, opacity 0.2s linear;
+          &.--active {
+            visibility: visible;
+            opacity: 1;
+          }
+          .comment-edit-item {
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+            color: $txt-color;
+            cursor: pointer;
+            &:hover {
+              background-color: $main-light-color;
+            }
+          }
+        }
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        right: -50px;
+        top: 0;
+        width: 50px;
+        height: 100%;
+        background-color: transparent;
+      }
+      // &:hover .comment-content-edit {
+      //   visibility: visible;
+      //   opacity: 1;
+      // }
     }
     .comment-box-body__tool {
       margin-top: 4px;

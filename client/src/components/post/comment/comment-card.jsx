@@ -9,8 +9,19 @@ import { likeComment, unLikeComment } from '../../../redux/actions/commentAction
 
 function CommentCard({levelKey, handleReply, comment, post}) {
     const [isLike, setIsLike] = useState(false);
+    const [editMenuStatus, setEditMenuStatus] = useState(false);
+    const [editIconStatus, setEditIconStatus] = useState(false);
+
     const authState = useSelector(state => state.authReducer);
     const dispatch = useDispatch();
+
+    const handleMouseEnter = (e) => {
+        if(!editIconStatus) setEditIconStatus(true);
+    }
+    const handleMouseLeave = (e) => {
+        if(editIconStatus) setEditIconStatus(false);
+        if(editMenuStatus) setEditMenuStatus(false);
+    }
 
     const handleLike = async() => {
         setIsLike(true);
@@ -41,7 +52,11 @@ function CommentCard({levelKey, handleReply, comment, post}) {
                 <img src={comment.user.avatar || UserAvatarImg} alt="" />
             </Link>
             <div className="comment-box-body">
-                <div className="comment-box-body__content">
+                <div 
+                    className="comment-box-body__content"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                >
                     <Link 
                         to={`/profile/${comment.user._id}/post`} className="comment-content-name"
                     >
@@ -67,6 +82,22 @@ function CommentCard({levelKey, handleReply, comment, post}) {
                                 <span>{comment.likes.length}</span>
                             </span> : null
                     }
+                    <div className={`comment-content-edit ${editIconStatus ? '--active' : ''}`}>
+                        <span 
+                            className="comment-edit-icon"
+                            onClick={()=>setEditMenuStatus(!editMenuStatus)}
+                        >
+                            <i class="fas fa-ellipsis-h"></i>
+                        </span>
+                        <ul className={`comment-edit-menu ${editMenuStatus ? '--active' : ''}`}>
+                            <li className="comment-edit-item">
+                                Update
+                            </li>
+                            <li className="comment-edit-item">
+                                Delete
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div className="comment-box-body__tool">
                     {

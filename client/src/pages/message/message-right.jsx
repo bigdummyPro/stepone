@@ -43,7 +43,13 @@ function MessageRight({handleModal, setEditModalInfo}) {
     const autoResizeHeight = () => {
         if(textareaEl.current.value !== ''){
             textareaEl.current.style.height = '20px';
-            textareaEl.current.style.height = textareaEl.current.scrollHeight + 'px';
+            if(textareaEl.current.scrollHeight > 150){
+                textareaEl.current.style.height = '150px';
+                textareaEl.current.style.overflowY = 'auto';
+            }else{
+                textareaEl.current.style.height = textareaEl.current.scrollHeight + 'px';
+                textareaEl.current.style.overflowY = 'hidden';
+            }
         }else{
             textareaEl.current.style.height = '20px'
         }
@@ -66,12 +72,11 @@ function MessageRight({handleModal, setEditModalInfo}) {
     const handleChangeMedia = (files) => {
         let err = ""
         let newMedia = [];
-        
         files.forEach(file => {
             if(!file) return err = "File does not exist."
-
+            console.log(file)
             // if(file.type === 'video/mp4') return err = "Video is not excepted."
-            if(file.type !== 'image/png' || file.type !== 'image/jpg' || file.type !== 'image/gif') return err = "File format is not excepted"
+            if(file.type !== 'image/png' && file.type !== 'image/jpeg' && file.type !== 'image/gif') return err = "File format is not excepted"
 
             if(file.size > 1024 * 1024 * 5){
                 return err = "The image largest is 5mb."
@@ -166,7 +171,6 @@ function MessageRight({handleModal, setEditModalInfo}) {
         handleModal(true);
         setEditModalInfo(info);
     }
-
     useEffect(()=>{
         const newData = messageState.data.find(item => item._id === id);
         if(newData) setData(newData);
@@ -429,7 +433,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
                                     </div>
                                 </div>
                                 {
-                                    messInputValue === '' ?
+                                    messInputValue === '' && media.length <= 0 ?
                                     <div 
                                         className="message-icon"
                                         onClick={handleSendEmotion}
