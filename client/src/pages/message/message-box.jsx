@@ -1,15 +1,20 @@
 import React, {useEffect} from 'react';
+import { useNavigate } from 'react-router';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
 import GroupAvatarImg from '../../assets/images/group-avatar.png';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { isReadUpdate } from '../../redux/actions/messageAction';
+import { deleteConversation, isReadUpdate } from '../../redux/actions/messageAction';
 
 function MessageBox({conversation, id, auth, dispatch, socket}) {
-
+    const navigate = useNavigate();
     const handleIsRead = () => {
         if(conversation.isRead.every(item => item._id !== auth.user._id))
         dispatch(isReadUpdate({conversation, auth, socket}))
+    }
+    const handleDeleteConv = async () => {
+        const res = await dispatch(deleteConversation({convID: id}));
+        if(res.data.success) navigate(`/message`)
     }
     useEffect(()=>{
         if(conversation._id === id) handleIsRead();
@@ -51,6 +56,14 @@ function MessageBox({conversation, id, auth, dispatch, socket}) {
                     <span className="message-tool__icon">
                         <i className="fas fa-ellipsis-h"></i>
                     </span>
+                    <ul className="message-tool__menu">
+                        <li 
+                            className="message-tool-item"
+                            onClick={handleDeleteConv}
+                        >
+                            Delete Chat
+                        </li>
+                    </ul>
                 </div>
             </div>
             <span className="message-box-status-dot"></span>

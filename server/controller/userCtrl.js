@@ -8,12 +8,11 @@ const userCtrl = {
             if(!user) return res.json({success: false, message: "Account does not exist"})
             res.json({success: true, user})
         } catch (error) {
-            console.log(error);
             res.status(500).json({success: false, message: "Internal Server Error"});
         }
     },
     getUserById: async (req, res) => {
-        try {console.log(req.params.id)
+        try {
             if(!mongoose.Types.ObjectId.isValid(req.params.id))
             return res.json({success: false})
 

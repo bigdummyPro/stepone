@@ -1,4 +1,4 @@
-import {getDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetch-data-api';
+import {deleteDataAPI, getDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetch-data-api';
 import { GLOBALTYPES } from '../constants/globalTypes';
 
 export const getConversations = ({auth, page = 1}) => async (dispatch) => {
@@ -28,11 +28,12 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
 export const getMessages = ({id, page = 1}) => async (dispatch) => {
     try {
         const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 20}`)
-        const newData = {...res.data, messages: res.data.messages.reverse()}
         
-        if(res.data.messages.length > 0){
+        if(res.data.messages?.length > 0){
+            const newData = {...res.data, messages: res.data.messages.reverse()}
             dispatch({type: GLOBALTYPES.GET_MESSAGES, payload: {...newData, _id: id, page}})
         }
+        return res;
     } catch (err) {
         console.log(err);
     }
@@ -53,6 +54,17 @@ export const createMessage = ({message, auth, socket}) => async (dispatch) =>{
         return res;
     } catch (err) {
         console.log(err.message)
+    }
+}
+
+export const deleteMessage = ({convID, messID}) => async dispatch => {
+    dispatch({type: GLOBALTYPES.DELETE_MESSAGE, payload: {
+        messID, convID
+    }})
+    try {
+        await deleteDataAPI(`message/${messID}`);
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -82,6 +94,16 @@ export const updateConversation = ({conversation, auth, socket, noActiveData}) =
 
             if(noActiveData.noActiveUser) socket.emit('preventUser', noActiveData)
         }
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export const deleteConversation = ({convID}) => async dispatch => {
+    dispatch({type: GLOBALTYPES.DELETE_CONVERSATION, payload: convID})
+    try {
+        const res = await deleteDataAPI(`message/conversation/${convID}`);
         return res;
     } catch (error) {
         console.log(error.message)

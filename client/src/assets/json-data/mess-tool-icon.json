@@ -2,16 +2,19 @@
     {
         "classColor": "",
         "icon": "fas fa-trash",
-        "tooltipContent": "Delete"
+        "tooltipContent": "Delete",
+        "toolType": "delete"
     },
     {
         "classColor": "",
         "icon": "fas fa-reply",
-        "tooltipContent": "Reply"
+        "tooltipContent": "Reply",
+        "toolType": "reply"
     },
     {
         "classColor": "",
         "icon": "fas fa-check-square",
-        "tooltipContent": "Select"
+        "tooltipContent": "Select",
+        "toolType": "select"
     }
 ]

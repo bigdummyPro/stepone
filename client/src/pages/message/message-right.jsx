@@ -25,6 +25,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
     const [messageLoading, setMessageLoading] = useState(false);
 
     const textareaEl = useRef(null);
+    const messListRef = useRef(null);
     const dispatch = useDispatch();
 
     const {id} = useParams();
@@ -101,6 +102,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
             updatedAt: new Date().toISOString()
         }
         await dispatch(createMessage({message, auth: authState, socket: socketState}));
+        messListRef.current.scrollIntoView({behavior: 'smooth', block: 'end'})
     }
     const handleSubmitWithBtn = async () => {
         if(messageLoading) return;
@@ -126,6 +128,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
             const res = await dispatch(createMessage({message, auth: authState, socket: socketState}));
             if(res.data.success){
                 setMessageLoading(false);
+                messListRef.current.scrollIntoView({behavior: 'smooth', block: 'end'})
             }
         }
     }
@@ -155,6 +158,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
 
             if(res.data.success){
                 setMessageLoading(false);
+                messListRef.current.scrollIntoView({behavior: 'smooth', block: 'end'})
             }
         }
     }
@@ -169,14 +173,30 @@ function MessageRight({handleModal, setEditModalInfo}) {
         else setData([]);
     },[id, messageState.data])
 
+    const [waitingStatus, setWaitingStatus] = useState(false);
     useEffect(() => {
         const getMessagesData = async () => {
+            if(waitingStatus) return;
+            if(!id) return;
+
             if(messageState.data.every(item => item._id !== id)){
-                await dispatch(getMessages({id, page: 1}))
+                console.log('tt')
+                setWaitingStatus(true);
+
+                const res = await dispatch(getMessages({id, page: 1}));
+
+                if(res.data.success){
+                    setWaitingStatus(false);
+                }
+
+                if(messListRef.current)
+                setTimeout(()=>{
+                    messListRef.current.scrollIntoView({behavior: 'smooth', block: 'end'})
+                }, 50)
             }
         }
         if(currConversation._id) getMessagesData();
-    },[id, messageState.data, currConversation])
+    },[id, messageState.data, currConversation, waitingStatus])
 
     useEffect(() => {
         const checkUserByID = async () => {
@@ -198,7 +218,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
                 setFirstLoad(false);
             }
             else {
-                checkUserByID();
+                if(id !== currConversation._id) checkUserByID();
                 setData([]);
             }
         }
@@ -236,6 +256,8 @@ function MessageRight({handleModal, setEditModalInfo}) {
         if(textareaEl.current) autoResizeHeight();
     },[messInputValue])
 
+    // console.log(currConversation)
+    // console.log(id)
     return (
         <>
         {   
@@ -291,7 +313,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
                     {
                         messageState.data.length > 0 ?
                         <div className="message-right__center">
-                            <ul className="message-list">
+                            <ul className="message-list" ref={messListRef}>
                                 {
                                     data.messages && data.messages.map((mess, index, array)=>{
                                         const duration = new Date(mess.createdAt) - new Date(array[index - 1]?.createdAt);
@@ -304,6 +326,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
                                                     message={mess}
                                                     wrap={mess.sender._id === array[index - 1]?.sender._id && period <= 50}
                                                     period={period}
+                                                    user={authState.user}
                                                 />
                                     })
                                 }

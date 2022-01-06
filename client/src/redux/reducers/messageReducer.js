@@ -1,4 +1,4 @@
-const { GLOBALTYPES } = require("../constants/globalTypes");
+const { GLOBALTYPES, DeleteData } = require("../constants/globalTypes");
 
 const initialState = {
     userStorage: {},
@@ -73,7 +73,15 @@ const messageReducer = (state = initialState, action) => {
                 ...state,
                 conversations: newConversations,
                 data: newData
-            };
+            }
+        case GLOBALTYPES.DELETE_MESSAGE:
+            return {
+                ...state,
+                data: state.data.map(item => 
+                    item._id === payload.convID ? 
+                    {...item, messages: DeleteData(item.messages, payload.messID)} : item
+                )
+            }
         case GLOBALTYPES.GET_CONVERSATIONS:
             return {
                 ...state,
@@ -83,7 +91,8 @@ const messageReducer = (state = initialState, action) => {
         case GLOBALTYPES.GET_MESSAGES:
             return {
                 ...state,
-                data: [...state.data, payload]
+                data: state.data.every(item => item._id !== payload._id) ? 
+                [...state.data, payload] : state.data
             }
         case GLOBALTYPES.CREATE_CONVERSATION:
             return {
@@ -126,6 +135,12 @@ const messageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 conversations: newUpdateIsReadConv
+            }
+        case GLOBALTYPES.DELETE_CONVERSATION:
+            return {
+                ...state,
+                conversations: DeleteData(state.conversations, payload),
+                data: DeleteData(state.data, payload)
             }
         case GLOBALTYPES.SET_NO_ACTIVE_USER:
             return {

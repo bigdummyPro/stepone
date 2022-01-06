@@ -228,6 +228,7 @@
     padding: 0 10px;
     padding-bottom: 10px;
     max-height: 380px;
+    flex: 1;
     overflow-y: auto;
     /* width */
     &::-webkit-scrollbar {
@@ -332,12 +333,43 @@
       visibility: hidden;
       opacity: 0;
       transition: all 0.2s linear;
+      position: relative;
+      &:hover .message-tool__menu {
+        visibility: visible;
+        opacity: 1;
+      }
       .message-tool__icon {
         font-size: 1.4rem;
         color: $txt-light-color;
         cursor: pointer;
         &:hover {
           color: $main-color;
+        }
+      }
+      .message-tool__menu {
+        position: absolute;
+        top: calc(100% + 2px);
+        right: -1px;
+        z-index: 31;
+        background-color: $medium-white-color;
+        box-shadow: 0 3px 15px 2px rgb(0 0 0 / 8%);
+        padding: 8px 8px;
+        border-radius: 10px;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s linear;
+        .message-tool-item {
+          display: flex;
+          align-items: center;
+          font-size: 1.3rem;
+          color: $txt-color;
+          padding: 6px 8px;
+          white-space: nowrap;
+          transition: background-color 0.2s linear;
+          border-radius: 10px;
+          &:hover {
+            background-color: $main-light-color;
+          }
         }
       }
     }
@@ -488,10 +520,10 @@
 }
 .message-right__center {
   flex: 1;
-  padding: 15px 10px 15px 8px;
+  padding: 0px 10px 0px 8px;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column-reverse;
+  // display: flex;
+  // flex-direction: column-reverse;
   /* width */
   &::-webkit-scrollbar {
     width: 5px;
@@ -513,7 +545,9 @@
   //   display: unset;
   // }
   .message-list {
+    padding: 15px 0;
     width: 100%;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 
 
-function MessageItem({messageType, message, wrap, period}) {
+function MessageItem({messageType, message, wrap, period, user}) {
     const dispatch = useDispatch();
 
     const handleMediaDetail = (media) => {
@@ -49,7 +49,11 @@ function MessageItem({messageType, message, wrap, period}) {
                                     </div> : null
                                 }
                             </div>
-                            <MessageContentTool updatedAt={message.updatedAt}/>
+                            <MessageContentTool 
+                                message={message}
+                                dispatch={dispatch}
+                                user={user}
+                            />
                         </div>
                     </div>
                 </li> :
@@ -85,7 +89,11 @@ function MessageItem({messageType, message, wrap, period}) {
                                         </div> : null
                                     }
                                 </div>
-                                <MessageContentTool updatedAt={message.updatedAt}/>
+                                <MessageContentTool 
+                                    message={message}
+                                    dispatch={dispatch}
+                                    user={user}
+                                />
                             </div>
                         </div> :
                         <div className="message-item-wrapper">
@@ -117,7 +125,11 @@ function MessageItem({messageType, message, wrap, period}) {
                                         </div> : null
                                     }
                                 </div>
-                                <MessageContentTool updatedAt={message.updatedAt}/>
+                                <MessageContentTool 
+                                    message={message}
+                                    dispatch={dispatch}
+                                    user={user}
+                                />
                             </div>
                         </div>
                     }

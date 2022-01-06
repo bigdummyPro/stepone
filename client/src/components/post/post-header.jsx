@@ -12,8 +12,10 @@ function PostHeader({user, createdAt, post, auth, dispatch, socket}) {
     const dropdown_toggle_el = useRef(null);
 
     const handleDeletePost = () => {
-        dropdown_content_el.current.classList.remove('--active');
-        dispatch(deletePost({post, auth, socket}));
+        if(window.confirm('Do you want to delete?')) {
+            dropdown_content_el.current.classList.remove('--active');
+            dispatch(deletePost({post, auth, socket}));
+        }
     }
     const handleEditPost = () => {
         dispatch({type: GLOBALTYPES.CREATE_POST_MODAL_EDIT, payload: {

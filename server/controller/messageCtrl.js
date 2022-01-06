@@ -1,3 +1,4 @@
+const { findOneAndDelete } = require('../models/conversationModel');
 const Conversations = require('../models/conversationModel');
 const Messages = require('../models/messageModel');
 
@@ -47,7 +48,6 @@ const messageCtrl = {
                     text, media
                 }, { new: true, upsert: true })
             }
-
             const newMessage = new Messages({
                 conversation: newConversation._id,
                 sender,
@@ -62,6 +62,18 @@ const messageCtrl = {
 
         } catch (err) {
             return res.status(500).json({success: false, message: err.message})
+        }
+    },
+    deleteMessage: async (req, res) => {
+        try {
+            await Messages.findOneAndDelete({_id: req.params.id});
+
+            res.json({
+                success: true,
+                message: 'Create Successfully'
+            })
+        } catch (error) {
+            return res.status(500).json({success: false, message: error.message})
         }
     },
     createConversation: async (req, res) => {
@@ -96,6 +108,30 @@ const messageCtrl = {
 
             res.json({success: true, newConversation, message: 'Update Success!'});
         } catch (error) {
+            return res.status(500).json({success: false, message: err.message})
+        }
+    },
+    deleteConversation: async (req, res) => {
+        try {
+            const conv = await Conversations.findById(req.params.id);
+            let resConv;
+            if(conv){
+                resConv = await Conversations.findOneAndDelete({
+                    _id: conv._id
+                })
+            }else{
+                resConv = await Conversations.findOneAndDelete({
+                    $or: [
+                        {recipients: [req.params.id, req.user.id]},
+                        {recipients: [req.user.id, req.params.id]}
+                    ]
+                })
+            }
+            await Messages.deleteMany({conversation: resConv._id});
+
+            res.json({success: true, message: 'Delete Successfully!'})
+
+        } catch (err) {
             return res.status(500).json({success: false, message: err.message})
         }
     },
@@ -141,6 +177,11 @@ const messageCtrl = {
     },
     getMessages: async (req, res) => {
         try {
+            if(!req.params.id) return res.json({
+                success: false,
+                messages: null
+            });
+
             let features;
             const conv = await Conversations.findById(req.params.id);
             if(conv){
@@ -154,7 +195,10 @@ const messageCtrl = {
                         {recipients: [req.user.id, req.params.id]}
                     ]
                 })
-                if(!convByPersonal) return;
+                if(!convByPersonal) return res.json({
+                    success: false,
+                    messages: null
+                });
 
                 features = new APIfeatures(Messages.find({
                     $or: [
@@ -165,7 +209,6 @@ const messageCtrl = {
             }
 
             const messages = await features.query.sort('-createdAt').populate('recipients sender', 'avatar username nickname')
-
             res.json({
                 success: true,
                 messages,

@@ -17,7 +17,9 @@ function MessageLeft({handleModal}) {
     const navigate = useNavigate();
     
     useEffect(()=>{
-        if(!id && messageState.conversations.length > 0) navigate(`/message/${messageState.conversations[0]._id}`)
+        if(!id && messageState.conversations.length > 0) {
+            navigate(`/message/${messageState.conversations[0]._id}`) 
+        }
     },[id, messageState.conversations, navigate])
 
     useEffect(()=>{

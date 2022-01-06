@@ -4,6 +4,7 @@ import MessageLeft from './message-left';
 import MessageRight from './message-right';
 import SettingGroupModal from './setting-group-modal';
 import DetailMediaModal from './detail-media-modal';
+import { useParams } from 'react-router';
 
 function Message() {
     const [modalStatus, setModalStatus] = useState(false);
