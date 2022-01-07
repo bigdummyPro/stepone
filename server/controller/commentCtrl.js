@@ -32,11 +32,11 @@ const commentCtrl = {
     },
     updateComment: async (req, res) => {
         try {
-            const { content } = req.body
+            const { content, tag } = req.body
             
             await Comments.findOneAndUpdate({
                 _id: req.params.id, user: req.user.id
-            }, {content})
+            }, {content, tag})
 
             res.json({success: true, message: 'Update Successfully!'})
 

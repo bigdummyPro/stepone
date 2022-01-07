@@ -603,7 +603,8 @@
 .comment-box-create {
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
   margin-top: 10px;
   .comment-box-create__avatar {
     width: 40px;
@@ -715,6 +716,20 @@
       padding: 6px 0;
       .input-tool {
         bottom: 5px;
+      }
+    }
+  }
+  .comment-box-update__cancel {
+    text-align: right;
+    margin-top: 2px;
+    span {
+      font-size: 1rem;
+      font-weight: 600;
+      color: $txt-light-color;
+      margin-right: 15px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
       }
     }
   }

@@ -6,11 +6,13 @@ import moment from 'moment'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteComment, likeComment, unLikeComment } from '../../../redux/actions/commentAction';
+import CommentCreateBox from '../comment-create-box';
 
 function CommentCard({levelKey, handleReply, comment, post}) {
     const [isLike, setIsLike] = useState(false);
     const [editMenuStatus, setEditMenuStatus] = useState(false);
     const [editIconStatus, setEditIconStatus] = useState(false);
+    const [updateStatus, setUpdateStatus] = useState(false);
 
     const authState = useSelector(state => state.authReducer);
     const socketState = useSelector(state => state.socketReducer);
@@ -42,6 +44,7 @@ function CommentCard({levelKey, handleReply, comment, post}) {
             setIsLike(true);
         }
     },[authState.user._id, comment.likes])
+
     return (
         <div 
             className={`comment-box-item--style comment-box-item__lv${levelKey}`}
@@ -56,87 +59,105 @@ function CommentCard({levelKey, handleReply, comment, post}) {
             >
                 <img src={comment.user.avatar || UserAvatarImg} alt="" />
             </Link>
-            <div className="comment-box-body">
-                <div 
-                    className="comment-box-body__content"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                >
-                    <Link 
-                        to={`/profile/${comment.user._id}/post`} className="comment-content-name"
+            {
+                !updateStatus ?
+                <div className="comment-box-body">
+                    <div 
+                        className="comment-box-body__content"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        {comment.user.username}
-                    </Link>
-                    <span className="comment-content-text">
+                        <Link 
+                            to={`/profile/${comment.user._id}/post`} className="comment-content-name"
+                        >
+                            {comment.user.username}
+                        </Link>
+                        <span className="comment-content-text">
+                            {
+                                comment.tag ?
+                                    <Link
+                                        to={`/profile/${comment.tag._id}/post`} 
+                                    >
+                                        @{comment.tag.username}
+                                    </Link> : null
+                            }
+                            {comment.content}
+                        </span>
                         {
-                            comment.tag ?
-                                <Link
-                                    to={`/profile/${comment.tag._id}/post`} 
-                                >
-                                    @{comment.tag.username}
-                                </Link> : null
+                            comment.likes.length > 0 ?
+                                <span className="comment-content-like-count">
+                                    <span>
+                                        <img src={LikeImg} alt="" />
+                                    </span>
+                                    <span>{comment.likes.length}</span>
+                                </span> : null
                         }
-                        {comment.content}
-                    </span>
-                    {
-                        comment.likes.length > 0 ?
-                            <span className="comment-content-like-count">
-                                <span>
-                                    <img src={LikeImg} alt="" />
-                                </span>
-                                <span>{comment.likes.length}</span>
-                            </span> : null
-                    }
-                    {
-                        comment.user._id === authState.user._id ?
-                        <div className={`comment-content-edit ${editIconStatus ? '--active' : ''}`}>
-                            <span 
-                                className="comment-edit-icon"
-                                onClick={()=>setEditMenuStatus(!editMenuStatus)}
-                            >
-                                <i className="fas fa-ellipsis-h"></i>
-                            </span>
-                            <ul className={`comment-edit-menu ${editMenuStatus ? '--active' : ''}`}>
-                                <li className="comment-edit-item">
-                                    Update
-                                </li>
-                                <li 
-                                    className="comment-edit-item"
-                                    onClick={handleDeleteComment}
+                        {
+                            comment.user._id === authState.user._id ?
+                            <div className={`comment-content-edit ${editIconStatus ? '--active' : ''}`}>
+                                <span 
+                                    className="comment-edit-icon"
+                                    onClick={()=>setEditMenuStatus(!editMenuStatus)}
                                 >
-                                    Delete
-                                </li>
-                            </ul>
-                        </div> : null
-                    }
-                </div>
-                <div className="comment-box-body__tool">
-                    {
-                        isLike ?
-                            <span 
-                                className="comment-tool comment-tool-like --active"
-                                onClick={handleUnLike}
-                            >
-                                Like
-                            </span> :
-                            <span 
-                                className="comment-tool comment-tool-like"
-                                onClick={handleLike}
-                            >
-                                Like
-                            </span>
-                    }
-                    <span 
-                        className="comment-tool comment-tool-reply"
-                        onClick={()=>handleReply(comment)}
-                    >
-                        Reply
-                    </span>
-                    <span className="comment-tool comment-tool-time">
-                        {moment(comment.createdAt).fromNow()}
-                    </span>
-                </div>
-            </div>
+                                    <i className="fas fa-ellipsis-h"></i>
+                                </span>
+                                <ul className={`comment-edit-menu ${editMenuStatus ? '--active' : ''}`}>
+                                    <li 
+                                        className="comment-edit-item"
+                                        onClick={()=>setUpdateStatus(true)}
+                                    >
+                                        Update
+                                    </li>
+                                    <li 
+                                        className="comment-edit-item"
+                                        onClick={handleDeleteComment}
+                                    >
+                                        Delete
+                                    </li>
+                                </ul>
+                            </div> : null
+                        }
+                    </div>
+                    <div className="comment-box-body__tool">
+                        {
+                            isLike ?
+                                <span 
+                                    className="comment-tool comment-tool-like --active"
+                                    onClick={handleUnLike}
+                                >
+                                    Like
+                                </span> :
+                                <span 
+                                    className="comment-tool comment-tool-like"
+                                    onClick={handleLike}
+                                >
+                                    Like
+                                </span>
+                        }
+                        <span 
+                            className="comment-tool comment-tool-reply"
+                            onClick={()=>handleReply(comment)}
+                        >
+                            Reply
+                        </span>
+                        <span className="comment-tool comment-tool-time">
+                            {moment(comment.createdAt).fromNow()}
+                        </span>
+                    </div>
+                </div> :
+                <CommentCreateBox 
+                    boxType="small"
+                    auth={authState}
+                    post={post}
+                    comment={comment}
+                    handleCancelUpdate={()=>{
+                        setUpdateStatus(false)
+                        setEditIconStatus(false)
+                        setEditMenuStatus(false)   
+                    }}
+                    updateStatus={updateStatus}
+                />
+            }
         </div>
     );
 }

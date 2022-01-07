@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import UserAvatarImg from '../../assets/images/user-avatar.png';
-import { createComment } from '../../redux/actions/commentAction';
+import { createComment, updateComment } from '../../redux/actions/commentAction';
 
 function CommentCreateBox({
     commentFocusStatus, 
@@ -10,7 +10,10 @@ function CommentCreateBox({
     onReply,
     post,
     auth, 
-    resetOnReply
+    resetOnReply,
+    updateStatus,
+    handleCancelUpdate,
+    comment
 }) {
     const [inputComment, setInputComment] = useState('');
     const [replyValue, setReplyValue] = useState({activeComment: null, parentCommentId: null});
@@ -44,19 +47,29 @@ function CommentCreateBox({
     }
     const handleSubmitWithKey = async (e) => {
         if(e.key === 'Enter' && inputComment !== ''){
-            const newComment = {
-                content: inputComment,
-                likes: [],
-                user: authState.user,
-                createdAt: new Date().toISOString(),
-                reply: replyValue.parentCommentId && replyValue.parentCommentId,
-                tag: replyValue.activeComment && replyValue.activeComment.user,
-                selectedUser: onReply.activeComment ? onReply.activeComment.user : null
+            if(!updateStatus){
+                const newComment = {
+                    content: inputComment,
+                    likes: [],
+                    user: authState.user,
+                    createdAt: new Date().toISOString(),
+                    reply: replyValue.parentCommentId && replyValue.parentCommentId,
+                    tag: replyValue.activeComment && replyValue.activeComment.user,
+                    selectedUser: onReply.activeComment ? onReply.activeComment.user : null
+                }
+                setInputComment('');
+                resetOnReply && resetOnReply();
+                await dispatch(createComment({post, newComment, auth: authState, socket: socketState}))
+            }else{
+                const newComment = {
+                    ...comment,
+                    content: inputComment,
+                    tag: replyValue.activeComment && replyValue.activeComment.user
+                }
+                setInputComment('');
+                handleCancelUpdate();
+                await dispatch(updateComment({post, comment: newComment}))
             }
-            setInputComment('');
-            resetOnReply && resetOnReply();
-            await dispatch(createComment({post, newComment, auth: authState, socket: socketState}))
-
         }
     }
 
@@ -74,8 +87,19 @@ function CommentCreateBox({
     },[replyValue])
 
     useEffect(()=>{
-        setReplyValue(onReply);
+        if(!updateStatus){
+            setReplyValue(onReply);
+        }else{
+            setReplyValue({
+                activeComment: comment.tag ? {user: comment.tag} : null, 
+                parentCommentId: null
+            })
+        }
     },[onReply])
+
+    useEffect(()=>{
+        if(updateStatus) setInputComment(comment.content)
+    },[updateStatus])
 
     useEffect(()=>{
         if(commentFocusStatus !== null){
@@ -107,10 +131,19 @@ function CommentCreateBox({
     },[cursorPosition])
 
     return (
-        <div className={`comment-box-create ${boxType === 'small' ? 'comment-box-create--small' : ''}`}>
-            <div className="comment-box-create__avatar">
-                <img src={auth.user.avatar || UserAvatarImg} alt="" />
-            </div>
+        <div 
+            className={`comment-box-create ${boxType === 'small' ? 'comment-box-create--small' : ''}`}
+            style={{
+                flexDirection: `${updateStatus ? 'column' : 'row'}`, 
+                marginLeft: `${updateStatus ? '5px' : 'unset'}`
+            }}
+        >
+            {
+                !updateStatus &&
+                <div className="comment-box-create__avatar">
+                    <img src={auth.user.avatar || UserAvatarImg} alt="" />
+                </div>
+            }
             <div className="comment-box-create__input">
                 {
                     replyValue && replyValue.activeComment ?
@@ -143,6 +176,14 @@ function CommentCreateBox({
                     </li>
                 </ul>
             </div>
+            {
+                updateStatus &&
+                <div className="comment-box-update__cancel">
+                    <span onClick={handleCancelUpdate}>
+                        Cancel
+                    </span>
+                </div>
+            }
         </div>
     );
 }

@@ -50,15 +50,14 @@ export const createComment = ({post, newComment, auth, socket}) => async (dispat
     }
 }
 
-export const updateComment = ({comment, post, content, auth}) => async (dispatch) => {
-    const newComments = EditData(post.comments, comment._id, {...comment, content})
+export const updateComment = ({comment, post}) => async (dispatch) => {
+    const newComments = EditData(post.comments, comment._id, comment)
     const newPost = {...post, comments: newComments}
     
     dispatch({ type: GLOBALTYPES.UPDATE_POST, payload: newPost })
     try {
-        patchDataAPI(`comment/${comment._id}`, { content }, auth.token)
+        patchDataAPI(`comment/${comment._id}`, { content: comment.content, tag: comment.tag })
     } catch (err) {
-        // dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg} })
         console.log(err.message)
     }
 }
@@ -66,10 +65,8 @@ export const updateComment = ({comment, post, content, auth}) => async (dispatch
 export const deleteComment = ({post, comment, socket}) => async (dispatch) => {
 
     const deleteArrFirst = [...post.comments.filter(cm => cm._id === comment._id || cm.reply === comment._id)];
-    //console.log(deleteArrFirst)
 
     const deleteArrSecond = [...post.comments.filter(cm => deleteArrFirst.find(item => item._id === cm._id || item._id === cm.reply))];
-    //console.log(deleteArrSecond)
 
     const newPost = {
         ...post,
