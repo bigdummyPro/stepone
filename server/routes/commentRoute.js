@@ -14,4 +14,6 @@ router.patch('/:id/like', verifyToken, commentCtrl.likeComment);
 
 router.patch('/:id/unlike', verifyToken, commentCtrl.unLikeComment);
 
+router.delete('/:id', verifyToken, commentCtrl.deleteComment);
+
 module.exports = router;

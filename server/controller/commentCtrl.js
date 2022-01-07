@@ -72,26 +72,26 @@ const commentCtrl = {
             return res.status(500).json({success: false, message: err.message})
         }
     },
-    // deleteComment: async (req, res) => {
-    //     try {
-    //         const comment = await Comments.findOneAndDelete({
-    //             _id: req.params.id,
-    //             $or: [
-    //                 {user: req.user._id},
-    //                 {postUserId: req.user._id}
-    //             ]
-    //         })
+    deleteComment: async (req, res) => {
+        try {
+            const comment = await Comments.findOneAndDelete({
+                _id: req.params.id,
+                $or: [
+                    {user: req.user.id},
+                    {postUserId: req.user.id}
+                ]
+            })
 
-    //         await Posts.findOneAndUpdate({_id: comment.postId}, {
-    //             $pull: {comments: req.params.id}
-    //         })
+            await Posts.findOneAndUpdate({_id: comment.postId}, {
+                $pull: {comments: req.params.id}
+            })
 
-    //         res.json({msg: 'Deleted Comment!'})
+            res.json({success: true, message: 'Deleted Comment!'})
 
-    //     } catch (err) {
-    //         return res.status(500).json({msg: err.message})
-    //     }
-    // },
+        } catch (error) {
+            return res.status(500).json({success: false, message: error.message})
+        }
+    }
 }
 
 

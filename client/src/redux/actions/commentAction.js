@@ -1,6 +1,6 @@
 import {DeleteData, EditData, GLOBALTYPES} from '../constants/globalTypes';
-import { patchDataAPI, postDataAPI } from '../../utils/fetch-data-api';
-import {createNotification} from '../actions/notificationAction';
+import { deleteDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetch-data-api';
+import {createNotification, removeNotification} from '../actions/notificationAction';
 
 export const createComment = ({post, newComment, auth, socket}) => async (dispatch) => {
     const newPost = {...post, comments: [...post.comments, newComment]}
@@ -60,6 +60,52 @@ export const updateComment = ({comment, post, content, auth}) => async (dispatch
     } catch (err) {
         // dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg} })
         console.log(err.message)
+    }
+}
+
+export const deleteComment = ({post, comment, socket}) => async (dispatch) => {
+
+    const deleteArrFirst = [...post.comments.filter(cm => cm._id === comment._id || cm.reply === comment._id)];
+    //console.log(deleteArrFirst)
+
+    const deleteArrSecond = [...post.comments.filter(cm => deleteArrFirst.find(item => item._id === cm._id || item._id === cm.reply))];
+    //console.log(deleteArrSecond)
+
+    const newPost = {
+        ...post,
+        comments: post.comments.filter(cm => !deleteArrSecond.find(deArSe => deArSe._id === cm._id))
+    }
+    dispatch({type: GLOBALTYPES.UPDATE_POST, payload: newPost})
+    socket.emit('deleteComment', newPost)
+
+    try {
+        deleteArrSecond.forEach(item => {
+            deleteDataAPI(`comment/${item._id}`);
+            
+            // let newRecipients = [];
+            // let newText = '';
+
+            // if(!item.tag && !item.reply){
+            //     newRecipients = [post.user._id];
+            //     newText = 'has commented on your post.';
+            // }else if(item.tag && item.reply){
+            //     newRecipients = [item.tag._id];
+            //     newText = 'mentioned you in a item.';
+            // }else if(!item.tag && item.reply && item.selectedUser){
+            //     newRecipients = [item.selectedUser._id];
+            //     newText = 'reply you in a comment';
+            // }
+            // const message = {
+            //     id: item._id,
+            //     text: newText,
+            //     recipients: newRecipients,
+            //     url: `/profile/${post.user._id}/post?id=${post._id}`
+            // }
+
+            // dispatch(removeNotification({message, socket}))
+        })
+    } catch (error) {
+        console.log(error.message)
     }
 }
 

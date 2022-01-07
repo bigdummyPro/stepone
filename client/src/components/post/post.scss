@@ -331,7 +331,6 @@
     flex-direction: column;
     align-items: flex-start;
     margin-left: 5px;
-    position: relative;
     .comment-box-body__content {
       display: flex;
       flex-direction: column;
@@ -339,6 +338,7 @@
       padding: 8px 12px;
       border-radius: 18px;
       background-color: $main-light-color;
+      position: relative;
       .comment-content-name {
         font-size: 1.3rem;
         line-height: 1.8rem;
