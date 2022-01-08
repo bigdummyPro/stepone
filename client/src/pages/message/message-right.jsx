@@ -187,16 +187,14 @@ function MessageRight({handleModal, setEditModalInfo}) {
         else setData([]);
     },[id, messageState.data])
 
-    const vv = useRef();
-     // Load More
-     useEffect(() => {
+    // Load More
+    const messListHeightBefore = useRef();
+    useEffect(() => {
         if(!messEndRef.current) return;
         const observer = new IntersectionObserver(entries => {
             if(entries[0].isIntersecting){
-                console.log('visible')
-                console.log(messEndRef.current.parentNode.offsetHeight)
                 setIsLoadMore(p => p + 1)
-                vv.current = messEndRef.current.parentNode.scrollHeight
+                messListHeightBefore.current = messListRef.current.scrollHeight;
             }
         },{
             threshold: 0.1
@@ -205,14 +203,23 @@ function MessageRight({handleModal, setEditModalInfo}) {
         observer.observe(messEndRef.current)
     },[setIsLoadMore, messEndRef.current])
 
+    const isFirstLoadMore = useRef(true);
     useEffect(() => {
+        const getLoadMoreMess = async () => {
+            const res = await dispatch(loadMoreMessages({id, page: page + 1}));
+            if(res.data.success){
+                setTimeout(()=>{
+                    messListRef.current.parentNode.scrollTo(0, messListRef.current.scrollHeight - messListHeightBefore.current)
+                }, 50)
+            }
+        }
         if(isLoadMore > 1){
             if(result >= page * 10){
-                dispatch(loadMoreMessages({id, page: page + 1}))
+                if(!isFirstLoadMore.current) {
+                    getLoadMoreMess();
+                }
                 setIsLoadMore(1)
-                console.log(vv.current)
-                console.log(messEndRef.current.parentNode)
-                messEndRef.current.parentNode.parentNode.scrollTo(0, vv.current)
+                if(isFirstLoadMore.current) isFirstLoadMore.current = false;
             }
         }
         // eslint-disable-next-line
@@ -228,7 +235,7 @@ function MessageRight({handleModal, setEditModalInfo}) {
             if(messageState.data.every(item => item._id !== id)){
                 setWaitingStatus(true);
 
-                const res = await dispatch(getMessages({id, page: 0}));
+                const res = await dispatch(getMessages({id, page: 1}));
 
                 if(res.data.success){
                     setWaitingStatus(false);

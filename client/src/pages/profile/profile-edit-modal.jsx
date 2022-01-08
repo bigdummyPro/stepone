@@ -28,8 +28,10 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(loading) return;
         const {ward, district, province} = locationValue;
         const locationString = `${ward ? ward : ''}${district ? `${ward ? ', ' : ''}` + district : ''}${province ? `${district ? ', ' : ''}` + province : ''}`;
+        setLoading(true);
         const res = await dispatch(updateUserProfile({
             userData: {...textValue, gender: genderValue.value, address: locationString ? locationString : profile.address},
             userAvatar: avatar,
@@ -37,6 +39,7 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
         }))
         if(res.data.success){
             handleEditModal(false);
+            setLoading(false);
         }
     }
     const handleChangeAvatar = (e) => {
@@ -50,6 +53,7 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
         setTextValue({username: profile.username, nickname: profile.nickname, mobile: profile.mobile});
         setGenderValue({key: profile.gender === 'Unset' ? 2 : (profile.gender === 'Male' ? 0 : 1), value: profile.gender});
     },[profile])
+
     useEffect(()=>{
         return () => avatar && URL.revokeObjectURL(avatar);
     },[])

@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './home.scss';
 import MediaShowModal from '../../components/media-show-modal/media-show-modal';
 import StoriesList from '../../components/stories-list/stories-list';
 import HomePost from './home-posts';
+import autoScrollTop from '../../utils/auto-scroll-top';
 
 function Home() {
+    useEffect(()=>{
+        autoScrollTop();
+    },[])
     return (
         <div className="main-content">
             <title>Home | Connecto</title>

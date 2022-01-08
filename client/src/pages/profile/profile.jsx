@@ -4,6 +4,7 @@ import {useParams, useLocation} from 'react-router-dom';
 import MediaShowModal from '../../components/media-show-modal/media-show-modal';
 import { getPost } from '../../redux/actions/postAction';
 import { getUserProfile } from '../../redux/actions/profileAction';
+import autoScrollTop from '../../utils/auto-scroll-top';
 import ProfileBody from './profile-body';
 import ProfileEditModal from './profile-edit-modal';
 import ProfileInfo from './profile-info';
@@ -54,6 +55,9 @@ function Profile() {
         }
     },[id, authState.user, profileState.users])
 
+    useEffect(()=>{
+        autoScrollTop();
+    },[])
     return (
         <div className="main-content">
             <title>
