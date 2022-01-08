@@ -1,4 +1,4 @@
-const { GLOBALTYPES, DeleteData } = require("../constants/globalTypes");
+const { GLOBALTYPES, DeleteData, EditData } = require("../constants/globalTypes");
 
 const initialState = {
     userStorage: {},
@@ -93,6 +93,11 @@ const messageReducer = (state = initialState, action) => {
                 ...state,
                 data: state.data.every(item => item._id !== payload._id) ? 
                 [...state.data, payload] : state.data
+            }
+        case GLOBALTYPES.UPDATE_MESSAGE:
+            return {
+                ...state,
+                data: EditData(state.data, payload._id, payload)
             }
         case GLOBALTYPES.CREATE_CONVERSATION:
             return {

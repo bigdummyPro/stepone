@@ -4,7 +4,7 @@ const initialState = {
     loading: false,
     posts: [],
     result: 0,
-    page: 2
+    page: 0
 }
 
 const postReducer = (state = initialState, action) => {

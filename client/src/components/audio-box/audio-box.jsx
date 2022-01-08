@@ -2,21 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import './audio-box.scss';
 import DiskImg from '../../assets/images/cd.png';
 import Mp3Img from '../../assets/images/mp3.png';
-
-import au01 from '../../assets/audio/ChungTaSauNay.mp3';
-import au02 from '../../assets/audio/DiuDangEmDen.mp3';
-import au03 from '../../assets/audio/LoSayByeLaBye.mp3';
-import au04 from '../../assets/audio/PhaiChangEmDaYeu.mp3';
-import au05 from '../../assets/audio/SaiGonDauLongQua.mp3';
 import convertTime from '../../utils/convert-time';
 
-// const audioList = [
-//     {name: 'Chúng ta của sau này', link: au01},
-//     {name: 'Dịu dàng em đến', link: au02},
-//     {name: 'Lỡ say bye là bye', link: au03},
-//     {name: 'Phải chăng em đã yêu', link: au04},
-//     {name: 'Sài Gòn đau lòng quá', link: au05}
-// ]
 function AudioBox({audioList}) {
     const [audio, setAudio] = useState(null);
     const [audioCurrIndex, setAudioCurrIndex] = useState(0);

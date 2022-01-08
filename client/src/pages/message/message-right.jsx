@@ -9,7 +9,7 @@ import ToolTip from '../../components/tooltip/tooltip';
 import { GLOBALTYPES } from '../../redux/constants/globalTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { createMessage, getMessages } from '../../redux/actions/messageAction';
+import { createMessage, getMessages, loadMoreMessages } from '../../redux/actions/messageAction';
 import { getDataAPI } from '../../utils/fetch-data-api';
 import {imageUpload} from '../../utils/image-upload';
 
@@ -24,8 +24,14 @@ function MessageRight({handleModal, setEditModalInfo}) {
     const [media, setMedia] = useState([]);
     const [messageLoading, setMessageLoading] = useState(false);
 
+    const [isLoadMore, setIsLoadMore] = useState(1);
+    const [result, setResult] = useState(0);
+    const [page, setPage] = useState(0);
+
     const textareaEl = useRef(null);
     const messListRef = useRef(null);
+    const messEndRef = useRef();
+
     const dispatch = useDispatch();
 
     const {id} = useParams();
@@ -173,21 +179,56 @@ function MessageRight({handleModal, setEditModalInfo}) {
     }
     useEffect(()=>{
         const newData = messageState.data.find(item => item._id === id);
-        if(newData) setData(newData);
+        if(newData) {
+            setData(newData);
+            setResult(newData.result);
+            setPage(newData.page);
+        }
         else setData([]);
     },[id, messageState.data])
 
+    const vv = useRef();
+     // Load More
+     useEffect(() => {
+        if(!messEndRef.current) return;
+        const observer = new IntersectionObserver(entries => {
+            if(entries[0].isIntersecting){
+                console.log('visible')
+                console.log(messEndRef.current.parentNode.offsetHeight)
+                setIsLoadMore(p => p + 1)
+                vv.current = messEndRef.current.parentNode.scrollHeight
+            }
+        },{
+            threshold: 0.1
+        })
+
+        observer.observe(messEndRef.current)
+    },[setIsLoadMore, messEndRef.current])
+
+    useEffect(() => {
+        if(isLoadMore > 1){
+            if(result >= page * 10){
+                dispatch(loadMoreMessages({id, page: page + 1}))
+                setIsLoadMore(1)
+                console.log(vv.current)
+                console.log(messEndRef.current.parentNode)
+                messEndRef.current.parentNode.parentNode.scrollTo(0, vv.current)
+            }
+        }
+        // eslint-disable-next-line
+    },[isLoadMore])
+
     const [waitingStatus, setWaitingStatus] = useState(false);
+
     useEffect(() => {
         const getMessagesData = async () => {
             if(waitingStatus) return;
             if(!id) return;
 
             if(messageState.data.every(item => item._id !== id)){
-                console.log('tt')
                 setWaitingStatus(true);
 
-                const res = await dispatch(getMessages({id, page: 1}));
+                const res = await dispatch(getMessages({id, page: 0}));
 
                 if(res.data.success){
                     setWaitingStatus(false);
@@ -260,8 +301,6 @@ function MessageRight({handleModal, setEditModalInfo}) {
         if(textareaEl.current) autoResizeHeight();
     },[messInputValue])
 
-    // console.log(currConversation)
-    // console.log(id)
     return (
         <>
         {   
@@ -318,6 +357,10 @@ function MessageRight({handleModal, setEditModalInfo}) {
                         messageState.data.length > 0 ?
                         <div className="message-right__center">
                             <ul className="message-list" ref={messListRef}>
+                                <li 
+                                    className="message-load-more"
+                                    ref={messEndRef}
+                                >Load more</li>
                                 {
                                     data.messages && data.messages.map((mess, index, array)=>{
                                         const duration = new Date(mess.createdAt) - new Date(array[index - 1]?.createdAt);
@@ -456,14 +499,6 @@ function MessageRight({handleModal, setEditModalInfo}) {
                             </div>
                         </div> : null
                     }
-                    {/* {
-                        !currConversation._id && messageState.data.length <= 0 ?
-                        <div className="message-right-empty">
-                            <span>
-                                Create new chat
-                            </span>
-                        </div> : null
-                    } */}
                 </div> : 
                 <div className="message-right-no-data">
                     <div className="no-data-title">

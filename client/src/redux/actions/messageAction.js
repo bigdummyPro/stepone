@@ -25,9 +25,9 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
     }
 }
 
-export const getMessages = ({id, page = 1}) => async (dispatch) => {
+export const getMessages = ({id, page = 0}) => async (dispatch) => {
     try {
-        const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 20}`)
+        const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 10}`)
         
         if(res.data.messages?.length > 0){
             const newData = {...res.data, messages: res.data.messages.reverse()}
@@ -35,7 +35,21 @@ export const getMessages = ({id, page = 1}) => async (dispatch) => {
         }
         return res;
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
+    }
+}
+
+export const loadMoreMessages = ({id, page = 0}) => async dispatch => {
+    try {
+        const res = await getDataAPI(`message/get-mess-by-conversation/${id}?limit=${page * 10}`)
+        
+        if(res.data.messages?.length > 0){
+            const newData = {...res.data, messages: res.data.messages.reverse()}
+            dispatch({type: GLOBALTYPES.UPDATE_MESSAGE, payload: {...newData, _id: id, page}})
+        }
+        return res;
+    } catch (error) {
+        console.log(error.message)
     }
 }
 

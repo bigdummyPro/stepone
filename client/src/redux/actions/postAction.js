@@ -80,18 +80,27 @@ export const getPosts = () => async (dispatch) => {
         
         dispatch({
             type: GLOBALTYPES.GET_POSTS,
-            payload: {...res.data, page: 2}
+            payload: {...res.data, page: 1}
         })
 
         dispatch({ type: GLOBALTYPES.LOADING_POST, payload: false })
     } catch (err) {
         console.log(err.message);
-        // dispatch({
-        //     type: GLOBALTYPES.ALERT,
-        //     payload: {error: err.response.data.msg}
-        // })
     }
 }
+
+export const loadMorePosts = ({page = 1}) => async dispatch => {
+    try {
+        const res = await getDataAPI(`post?limit=${page * 2}`);
+
+        dispatch({type: GLOBALTYPES.GET_POSTS, payload: {...res.data, page}})
+
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 export const likePost = ({post, auth, socket}) => async (dispatch) => {
     const newPost = {...post, likes: [...post.likes, auth.user]}
     dispatch({ type: GLOBALTYPES.UPDATE_POST, payload: newPost})
@@ -115,10 +124,6 @@ export const likePost = ({post, auth, socket}) => async (dispatch) => {
 
     } catch (err) {
         console.log(err.message)
-        // dispatch({
-        //     type: GLOBALTYPES.ALERT,
-        //     payload: {error: err.response.data.msg}
-        // })
     }
 }
 
@@ -142,10 +147,6 @@ export const unLikePost = ({post, auth, socket}) => async (dispatch) => {
 
     } catch (err) {
         console.log(err.message)
-        // dispatch({
-        //     type: GLOBALTYPES.ALERT,
-        //     payload: {error: err.response.data.msg}
-        // })
     }
 }
 export const deletePost = ({post, auth, socket}) => async (dispatch) => {
