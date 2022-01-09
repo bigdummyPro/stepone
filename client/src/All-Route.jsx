@@ -8,7 +8,6 @@ import Profile from './pages/profile/profile';
 import Stories from './pages/stories-page/stories';
 
 function AllRoute(){
-    console.log('test')
     return (
         <Routes>
             <Route path="/" element={<Home />}/>

@@ -39,6 +39,8 @@
           width: 100%;
           max-width: 80%;
           transform-origin: 50% 50%;
+          position: absolute;
+          cursor: grab;
           img {
             width: 100%;
             height: auto;

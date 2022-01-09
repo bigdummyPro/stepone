@@ -4,7 +4,6 @@ import { getPosts, loadMorePosts } from '../../redux/actions/postAction';
 import NoDataImg from '../../assets/images/no-data.png';
 import LoadingImg from '../../assets/images/loading.gif';
 import Post from '../../components/post/post';
-import { Fragment } from 'react';
 
 function HomePost(props) {
     const dispatch = useDispatch();
