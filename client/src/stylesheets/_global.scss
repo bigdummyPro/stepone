@@ -27,6 +27,37 @@ body {
   //   background: #555;
   // }
 }
+.not-supported {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  .not-supported__modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 500px;
+    background-color: $main-light-color;
+    border-radius: 10px;
+    padding: 30px;
+    border: 5px solid $main-color;
+    p {
+      font-size: 1.8rem;
+      line-height: 2.4rem;
+      color: $txt-color;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    span {
+      font-size: 1.6rem;
+      color: $txt-color;
+    }
+  }
+}
 .wrapper {
   width: 1370px;
   overflow: scroll;

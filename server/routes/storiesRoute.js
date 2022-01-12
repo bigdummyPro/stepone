@@ -15,4 +15,6 @@ router.patch('/update-like/:id', verifyToken, storiesCtrl.updateLikes);
 
 router.patch('/update-viewer/:id', verifyToken, storiesCtrl.updateViewer);
 
+router.delete('/:id', verifyToken, storiesCtrl.deleteStories);
+
 module.exports = router;

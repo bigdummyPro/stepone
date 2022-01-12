@@ -101,6 +101,7 @@
     .stories-body-group {
       .stories-group-title {
         font-size: 1.2rem;
+        font-weight: 600;
         color: $txt-color;
         margin-bottom: 10px;
         white-space: nowrap;
@@ -124,6 +125,11 @@
         &::-webkit-scrollbar-thumb {
           background: $main-color;
           border-radius: 3px;
+        }
+        .stories-item-empty {
+          text-align: center;
+          font-size: 1.3rem;
+          color: $txt-color;
         }
         .stories-item {
           display: flex;
@@ -251,6 +257,46 @@
           span {
             font-size: 1.5rem;
             color: $medium-white-color;
+          }
+        }
+        .description-tool__more {
+          position: relative;
+          .tool-more-menu {
+            position: absolute;
+            top: calc(100% + 2px);
+            right: 0;
+            min-width: 70px;
+            background-color: $medium-white-color;
+            box-shadow: $light-box-shadow;
+            border-radius: 8px 0 8px 8px;
+            padding: 6px 6px;
+            visibility: hidden;
+            opacity: 0;
+            &.--active {
+              visibility: visible;
+              opacity: 1;
+            }
+            // &::before {
+            //   content: "";
+            //   position: absolute;
+            //   top: -14px;
+            //   right: 0;
+            //   border-style: solid;
+            //   border-width: 8px;
+            //   border-color: transparent transparent $medium-white-color
+            //     transparent;
+            // }
+            .tool-more-item {
+              padding: 6px 6px;
+              font-size: 1.3rem;
+              text-align: center;
+              line-height: 1.6rem;
+              color: $txt-color;
+              border-radius: 8px;
+              &:hover {
+                background-color: $main-light-color;
+              }
+            }
           }
         }
       }

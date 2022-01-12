@@ -39,10 +39,6 @@ const storiesCtrl = {
             })
             .sort('createdAt')
             .populate("user viewerIds likeIds.user", "avatar username nickname")
-            // .populate({
-            //     path: 'likeIds.user',
-            //     select: 'avatar username nickname'
-            // })
             res.json({success: true, stories: stories.slice(0, 10)})
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})
@@ -136,6 +132,18 @@ const storiesCtrl = {
             if(!updated) return res.status(400).json({message: 'This story does not exist.'})
 
             res.json({success: true, message: 'Updated story!'})
+        } catch (error) {
+            return res.status(500).json({success: false, message: error.message})
+        }
+    },
+    deleteStories: async (req, res) => {
+        try {
+            await Stories.findOneAndDelete({_id: req.params.id, user: req.user.id})
+
+            res.json({
+                success: true,
+                message: 'Delete successfully'
+            })
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})
         }

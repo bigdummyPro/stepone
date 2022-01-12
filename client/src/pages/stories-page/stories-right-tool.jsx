@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import { deleteStories } from '../../redux/actions/storiesAction';
 
-function StoriesRightTool({togglePlayStatus}) {
+function StoriesRightTool({
+    togglePlayStatus, 
+    dispatch, 
+    isAuth, 
+    storiesID,
+    handleDeleteStatus
+}) {
     const [toggleStatus, setToggleStatus] = useState(true);
+    const [deleteMenuStatus, setDeleteMenuStatus] = useState(false);
 
     const handlePlayPause = () => {
         setToggleStatus(!toggleStatus);
         togglePlayStatus.current = !togglePlayStatus.current;
+    }
+    const handleDelete = async () => {
+        handleDeleteStatus();
+        await dispatch(deleteStories({id: storiesID}));
+        setDeleteMenuStatus(false);
     }
     useEffect(()=>{
         setToggleStatus(togglePlayStatus.current)
@@ -23,9 +36,26 @@ function StoriesRightTool({togglePlayStatus}) {
                 }
             </div>
             <div className="desciption-tool-item description-tool__more">
-                <span>
+                <span 
+                    className="tool-more-icon"
+                    onClick={()=>setDeleteMenuStatus(!deleteMenuStatus)}
+                >
                     <i className="fas fa-ellipsis-h"></i>
                 </span>
+                <ul className={`tool-more-menu ${deleteMenuStatus ? '--active' : ''}`}>
+                    {
+                        isAuth ?
+                        <li 
+                            className="tool-more-item"
+                            onClick={handleDelete}    
+                        >
+                            Delete
+                        </li> :
+                        <li className="tool-more-item">
+                            Report
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
     );

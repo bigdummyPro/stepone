@@ -79,7 +79,7 @@ function StoriesLeft({
                         </div>
                         <div className="stories-group-list">
                             {
-                                authStories.length > 0 &&
+                                authStories.length > 0 ?
                                 <StoriesItem 
                                     story={authStories[0]}
                                     setStoriesCurrIndex={
@@ -87,7 +87,10 @@ function StoriesLeft({
                                     }
                                     activeStatus={currIndex === 0}
                                     seenStatus={authStories.every(item => item.viewerIds.some(view => view._id === user._id))}
-                                />
+                                /> :
+                                <div className="stories-item-empty">
+                                    Your stories are empty
+                                </div>
                             }
                         </div>
                     </div>
@@ -97,7 +100,7 @@ function StoriesLeft({
                         </div>
                         <div className="stories-group-list">
                             {
-                                otherStories.length > 0 && otherStories.map((story, index)=>(
+                                otherStories.length > 0 ? otherStories.map((story, index)=>(
                                     <StoriesItem 
                                         key={index}
                                         story={story[0]}
@@ -108,7 +111,10 @@ function StoriesLeft({
                                         }
                                         seenStatus={story.every(item => item.viewerIds.some(view => view._id === user._id))}
                                     />
-                                ))
+                                )) :
+                                <div className="stories-item-empty">
+                                    All stories are empty
+                                </div>
                             }
                         </div>
                     </div>

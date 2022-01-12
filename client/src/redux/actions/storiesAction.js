@@ -1,4 +1,4 @@
-import { getDataAPI, patchDataAPI, postDataAPI } from "../../utils/fetch-data-api"
+import { deleteDataAPI, getDataAPI, patchDataAPI, postDataAPI } from "../../utils/fetch-data-api"
 import { GLOBALTYPES } from "../constants/globalTypes"
 
 
@@ -54,6 +54,16 @@ export const updateStoriesViewer = ({id, user}) => async dispatch => {
     }})
     try {
         const res = await patchDataAPI(`stories/update-viewer/${id}`, null);
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export const deleteStories = ({id}) => async dispatch => {console.log('yy')
+    dispatch({type: GLOBALTYPES.DELETE_STORIES, payload: id})
+    try {
+        const res = await deleteDataAPI(`stories/${id}`);
         return res;
     } catch (error) {
         console.log(error.message)

@@ -1,4 +1,4 @@
-import { GLOBALTYPES } from "../constants/globalTypes";
+import { DeleteData, GLOBALTYPES } from "../constants/globalTypes";
 
 const initialState = {
     authStories: [],
@@ -41,7 +41,6 @@ const storiesReducer = (state = initialState, action) => {
             if(!story) return {...state};
 
             if(story.likeIds.some(like => like.user._id === payload.user._id)){
-                //console.log('update')
                 const newLikeIds = story.likeIds.map(like => {
                     if(like.user._id === payload.user._id) return {
                         user: payload.user,
@@ -59,7 +58,6 @@ const storiesReducer = (state = initialState, action) => {
                     })
                 })
             }else{
-                //console.log('create')
                 newOtherStories = otherStoriesStorage.map(item => {
                     return item.map(item2 => {
                         if(item2._id === payload.id) return {
@@ -92,6 +90,11 @@ const storiesReducer = (state = initialState, action) => {
                         else return item2
                     })
                 })
+            }
+        case GLOBALTYPES.DELETE_STORIES:
+            return {
+                ...state,
+                authStories: DeleteData(state.authStories, payload)
             }
         default:
             return state;

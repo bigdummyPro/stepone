@@ -21,7 +21,7 @@ function StoriesRight({
     const [allStories, setAllStories] = useState([]);
     const [currStories, setCurrStories] = useState([]);
     const [currChildStoriesIndex, setCurrChildStoriesIndex] = useState(0);
-
+    const [deleteStatus, setDeleteStatus] = useState(false);
     
 
     const storiesTimeOutRef = useRef(null);
@@ -35,14 +35,9 @@ function StoriesRight({
     const [endStatus, setEndStatus] = useState(false);
     const togglePlayStatusRef = useRef(true);
 
-    const handleNextChildStories = (number) => {
-        
-        if(storageChildIndex.current + number > currStories.length - 1){
+    const handleNextChildStories = (number, currStoriesDelete) => {
+        if(storageChildIndex.current + number > (currStoriesDelete ? currStoriesDelete : currStories).length - 1){
             if(storageParentIndex.current + number < allStories.length){
-                // console.log('bug'); 
-                // console.log(allStories)
-                // console.log(storageParentIndex); 
-                // console.log(currStoriesIndex);
 
                 storageParentIndex.current = storageParentIndex.current + number;
                 handleStoriesCurrIndex(storageParentIndex.current);
@@ -53,9 +48,6 @@ function StoriesRight({
                 timeRef.current = 0;
                 setProgressPerc(0);
             }else{
-                console.log('End');
-
-                //togglePlayStatusRef.current = false;
                 setEndStatus(true);
                 handleStoriesCurrIndex(null);
 
@@ -66,13 +58,14 @@ function StoriesRight({
                 timeRef.current = 100;
                 setProgressPerc(100);
             }
-        }else{console.log('diyt')
+        }else{
             setCurrChildStoriesIndex(prev => prev + number);
             storageChildIndex.current = storageChildIndex.current + number;
             
             timeRef.current = 0;
             setProgressPerc(0);
         }
+        setDeleteStatus(false);
     }
 
     const handlePrevChildStories = (number) => {
@@ -96,13 +89,18 @@ function StoriesRight({
         setProgressPerc(0);
     }
     useEffect(()=>{ 
-        setCurrIndex(currStoriesIndex);
-        const allStories = [...otherStories];
-        allStories.unshift([...authStories]);
-        setAllStories(allStories);
+        const allStoriesStorage = [...otherStories];
 
-        if(allStories[0].length > 0){
-            setCurrStories(allStories[currStoriesIndex]);
+        if([...authStories].length > 0) 
+        allStoriesStorage.unshift([...authStories]);
+
+        if(allStoriesStorage[0]?.length > 0){
+            setCurrStories(allStoriesStorage[currStoriesIndex]);
+            setCurrIndex(currStoriesIndex);
+            setAllStories(allStoriesStorage);
+        }
+        if(deleteStatus && (storageChildIndex.current > 0 || currStories.length <= 0)) {
+            handleNextChildStories(1, allStoriesStorage[currStoriesIndex]);
         }
     },[authStories, otherStories, currStoriesIndex])
 
@@ -175,6 +173,14 @@ function StoriesRight({
                             </div>
                             <StoriesRightTool 
                                 togglePlayStatus={togglePlayStatusRef}
+                                dispatch={dispatch}
+                                isAuth={currStories && currStories.length > 0 ?(currStories[currChildStoriesIndex].user._id === user._id) : null}
+                                storiesID={currStories && currStories.length > 0 && currStories[currChildStoriesIndex]._id}
+                                handleDeleteStatus={()=>{
+                                    setDeleteStatus(true)
+                                    timeRef.current = 0;
+                                    setProgressPerc(0);
+                                }}
                             />
                         </div>
                         {
