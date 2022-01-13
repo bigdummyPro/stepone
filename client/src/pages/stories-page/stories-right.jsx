@@ -27,6 +27,7 @@ function StoriesRight({
     const storiesTimeOutRef = useRef(null);
     const storageChildIndex = useRef(0);
     const storageParentIndex = useRef(0);
+    const deleteStatusStorage = useRef(false);
 
     const {user} = useSelector(state => state.authReducer);
     const dispatch = useDispatch();
@@ -98,6 +99,12 @@ function StoriesRight({
             setCurrStories(allStoriesStorage[currStoriesIndex]);
             setCurrIndex(currStoriesIndex);
             setAllStories(allStoriesStorage);
+        }else{
+            setDeleteStatus(false)
+            setCurrStories([]);
+            timeRef.current = 0;
+            setProgressPerc(0);
+            setEndStatus(true);
         }
         if(deleteStatus && (storageChildIndex.current > 0 || currStories.length <= 0)) {
             handleNextChildStories(1, allStoriesStorage[currStoriesIndex]);
@@ -107,9 +114,11 @@ function StoriesRight({
     const timeRef = useRef(0);
 
     useEffect(()=>{
+        console.log(currStories)
         if(currStories && currStories.length > 0){
 
             storageParentIndex.current = currIndex;
+            setEndStatus(false);
 
             storiesTimeOutRef.current = setInterval(()=>{
                 if(togglePlayStatusRef.current){
@@ -125,8 +134,7 @@ function StoriesRight({
         return ()=>{
             clearInterval(storiesTimeOutRef.current);
         }
-    },[currStories, currIndex, allStories.length])
-
+    },[currStories, currStoriesIndex, currIndex, allStories.length])
     // reset all stories right when click on left menu
     useEffect(()=>{
         if(storiesTimeOutRef.current) clearInterval(storiesTimeOutRef.current);
@@ -142,8 +150,10 @@ function StoriesRight({
 
     //Update viewer stories
     useEffect(()=>{
-        (async () => {
-            if(!currStories[currChildStoriesIndex]) return;
+    (async () => {
+            if(!currStories || !currStories[currChildStoriesIndex]) return;
+            // console.log(currStories[currChildStoriesIndex].viewerIds)
+            console.log('viewed')
             if(currStories[currChildStoriesIndex].viewerIds.every(item => item._id !== user._id)){
                 //&& currStories[currChildStoriesIndex].user._id !== user._id
                 await dispatch(updateStoriesViewer({
@@ -152,11 +162,11 @@ function StoriesRight({
                 }))
             }
         })();
-    },[currChildStoriesIndex])
+    },[currChildStoriesIndex, currStories])
     return (
         <div className="stories-right-wrapper">
             {
-                !endStatus ?
+                !endStatus && currStories?.length > 0 ?
                 <div className="stories-right">
                     <div className="stories-right__main">
                         <ProgressTimeOut 
@@ -178,6 +188,7 @@ function StoriesRight({
                                 storiesID={currStories && currStories.length > 0 && currStories[currChildStoriesIndex]._id}
                                 handleDeleteStatus={()=>{
                                     setDeleteStatus(true)
+                                    deleteStatusStorage.current = true
                                     timeRef.current = 0;
                                     setProgressPerc(0);
                                 }}

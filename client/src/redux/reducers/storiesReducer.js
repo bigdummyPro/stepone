@@ -79,6 +79,15 @@ const storiesReducer = (state = initialState, action) => {
             
             return {
                 ...state,
+                authStories: [...state.authStories].map(item => {
+                        if(item._id === payload.id){
+                            return {
+                                ...item,
+                                viewerIds: [...item.viewerIds, payload.user]
+                            }
+                        }
+                        else return item
+                }),
                 otherStories: [...state.otherStories].map(item => {
                     return item.map(item2 => {
                         if(item2._id === payload.id){

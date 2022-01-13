@@ -17,12 +17,13 @@ function StoriesRightTool({
     }
     const handleDelete = async () => {
         handleDeleteStatus();
-        await dispatch(deleteStories({id: storiesID}));
         setDeleteMenuStatus(false);
+        await dispatch(deleteStories({id: storiesID}));
     }
     useEffect(()=>{
         setToggleStatus(togglePlayStatus.current)
-    },[togglePlayStatus.current])
+    },[togglePlayStatus])
+
     return (
         <div className="description-tool">
             <div 

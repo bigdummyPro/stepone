@@ -36,7 +36,7 @@ function StoriesLeft({
         const allStories = [...otherStories];
         allStories.unshift([...authStories]);
 
-        if(id && allStories[0].length > 0) {console.log(allStories)
+        if(id && allStories[0].length > 0) {
             const index =  allStories.findIndex(story => story.some(item => item.user._id === id));
 
             setCurrIndex(index);
@@ -44,7 +44,8 @@ function StoriesLeft({
             resetStoriesRight();
         }
         if(!id && allStories[0].length > 0){
-            navigate(`${allStories[0][0].user._id}`)
+            handleStoriesCurrIndex(0);
+            navigate(`${allStories[0][0].user._id}`);
         }
     },[id])
     return (

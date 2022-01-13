@@ -60,7 +60,7 @@ export const updateStoriesViewer = ({id, user}) => async dispatch => {
     }
 }
 
-export const deleteStories = ({id}) => async dispatch => {console.log('yy')
+export const deleteStories = ({id}) => async dispatch => {
     dispatch({type: GLOBALTYPES.DELETE_STORIES, payload: id})
     try {
         const res = await deleteDataAPI(`stories/${id}`);
