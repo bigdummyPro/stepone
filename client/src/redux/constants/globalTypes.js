@@ -1,7 +1,8 @@
 export const GLOBALTYPES = {
     //Api config
-    ApiUrl: process.env.NODE_ENV !== 'production' ? 'https://cryptic-ocean-65017.herokuapp.com/api' : 'http://localhost:5000/api',
-    API_URL:  process.env.NODE_ENV !== 'production' ? 'https://cryptic-ocean-65017.herokuapp.com' : 'http://localhost:5000',
+    ApiUrl: process.env.NODE_ENV !== 'production' ? 'http://localhost:5000/api' : 'https://cryptic-ocean-65017.herokuapp.com/api',
+    API_URL:  process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : 'https://cryptic-ocean-65017.herokuapp.com',
+
     LOCATION_API_URL: 'https://vapi.vnappmob.com/api',
     //Localstorage config
     LOCAL_STORAGE_ACCESS_TOKEN_NAME: 'social-website-access-token',
