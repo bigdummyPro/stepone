@@ -65,6 +65,14 @@ function Login() {
                         </li>
                     </ul>
                     <span>or use your accounts</span>
+                    <div className="form-top__account">
+                        <div>
+                            <span>Email:</span> <span>connector@gmail.com</span>
+                        </div>
+                        <div>
+                            <span>Password:</span> <span>123456</span>
+                        </div>
+                    </div>
                 </div>
                 <div className="form-center">
                     <div className="form-center__group">

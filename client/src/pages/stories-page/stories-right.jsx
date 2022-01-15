@@ -114,7 +114,6 @@ function StoriesRight({
     const timeRef = useRef(0);
 
     useEffect(()=>{
-        console.log(currStories)
         if(currStories && currStories.length > 0){
 
             storageParentIndex.current = currIndex;
@@ -152,8 +151,6 @@ function StoriesRight({
     useEffect(()=>{
     (async () => {
             if(!currStories || !currStories[currChildStoriesIndex]) return;
-            // console.log(currStories[currChildStoriesIndex].viewerIds)
-            console.log('viewed')
             if(currStories[currChildStoriesIndex].viewerIds.every(item => item._id !== user._id)){
                 //&& currStories[currChildStoriesIndex].user._id !== user._id
                 await dispatch(updateStoriesViewer({

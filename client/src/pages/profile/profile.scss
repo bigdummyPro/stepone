@@ -702,6 +702,17 @@
           }
         }
       }
+      .edit-body-group__title {
+        display: flex;
+        justify-content: space-between;
+        label {
+          font-size: 1.1rem;
+        }
+        span {
+          font-size: 0.9rem;
+          color: $txt-light-color;
+        }
+      }
       label {
         font-size: 1.1rem;
         margin-bottom: 5px;

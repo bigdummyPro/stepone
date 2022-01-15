@@ -35,6 +35,7 @@
     height: 100%;
     padding: 0 50px;
     .form-top {
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -64,10 +65,29 @@
         font-size: 1.4rem;
         color: initial;
       }
+      .form-top__account {
+        width: 100%;
+        margin-top: 15px;
+        // padding: 15px 15px 0px 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        div {
+          span {
+            font-family: $second-font;
+            font-size: 1.1rem;
+            color: $txt-color;
+            line-height: 1.4rem;
+            &:first-child {
+              font-weight: 600;
+            }
+          }
+        }
+      }
     }
     .form-center {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 15px;
       .form-center__group {
         position: relative;
         width: inherit;

@@ -24,7 +24,7 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
     }
     const handleChangeInput = (e) => {
         const {name, value, type} = e.target;
-        setTextValue({...textValue, [name]: type === 'number' && value !== '' && value !== '0' ? Math.abs(value) : value})
+        setTextValue({...textValue, [name]: type === 'number' && value !== '' && value !== '0' ? Math.abs(value.slice(0, 30)) : value.slice(0, 30)})
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -85,7 +85,12 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
                             </div>
                         </div>
                         <div className="edit-body-group">
-                            <label htmlFor="">Username:</label>
+                            <div className="edit-body-group__title">
+                                <label htmlFor="">Username:</label>
+                                <span>
+                                    {`${textValue.username.length} / 30`}
+                                </span>
+                            </div>
                             <input 
                                 type="text" 
                                 name="username"
@@ -94,7 +99,12 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
                             />
                         </div>
                         <div className="edit-body-group">
-                            <label htmlFor="">Nickname:</label>
+                            <div className="edit-body-group__title">
+                                <label htmlFor="">Nickname:</label>
+                                <span>
+                                    {`${textValue.nickname.length} / 30`}
+                                </span>
+                            </div>
                             <input 
                                 type="text" 
                                 name="nickname"
