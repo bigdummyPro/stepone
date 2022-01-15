@@ -36,7 +36,8 @@ function SuggestionUser() {
             </div>
             <ul className="suggestion-user-list">
                 {
-                    suggestionState.users.length > 0 ?
+                    !loading ?
+                    suggestionState.users.length > 0 &&
                     suggestionState.users.map((user, index)=>(
                         <li className="suggestion-user-item" key={index}>
                             <div className="user-item-avatar">

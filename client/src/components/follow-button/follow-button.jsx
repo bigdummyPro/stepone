@@ -26,6 +26,9 @@ function FollowButton({size, user}) {
         if(authState.user.following.find(item => item._id === user._id)){
             setFollowStatus(true);
         }
+        else{
+            setFollowStatus(false);
+        }
     },[authState.user.following, user._id])
 
     return (

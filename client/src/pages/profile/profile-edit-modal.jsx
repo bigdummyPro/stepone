@@ -88,7 +88,7 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
                             <div className="edit-body-group__title">
                                 <label htmlFor="">Username:</label>
                                 <span>
-                                    {`${textValue.username.length} / 30`}
+                                    {`${textValue.username?.length || '0'} / 30`}
                                 </span>
                             </div>
                             <input 
@@ -102,7 +102,7 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
                             <div className="edit-body-group__title">
                                 <label htmlFor="">Nickname:</label>
                                 <span>
-                                    {`${textValue.nickname.length} / 30`}
+                                    {`${textValue.nickname?.length || '0'} / 30`}
                                 </span>
                             </div>
                             <input 

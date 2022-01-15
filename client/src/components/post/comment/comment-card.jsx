@@ -43,7 +43,7 @@ function CommentCard({levelKey, handleReply, comment, post}) {
         if(comment.likes.find(like => like._id === authState.user._id)){
             setIsLike(true);
         }
-    },[authState.user._id, comment.likes])
+    },[authState.user._id, comment])
 
     return (
         <div 
