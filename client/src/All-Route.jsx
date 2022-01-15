@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import PageRender from './customRouter/PageRender';
+// import PageRender from './customRouter/PageRender';
 import GeneralSetting from './pages/general-setting/general-setting';
 import Home from './pages/home/home';
 import Message from './pages/message/message';

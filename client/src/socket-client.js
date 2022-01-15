@@ -36,7 +36,6 @@ function SocketClient() {
     const socketState = useSelector(state => state.socketReducer);
     const notificationState = useSelector(state => state.notificationReducer);
     const onlineState = useSelector(state => state.onlineReducer);
-    const messageState = useSelector(state => state.messageReducer);
     
     // joinUser
     useEffect(() => {
