@@ -1,6 +1,6 @@
 {
   "name": "v-network",
-  "version": "1.0.0",
+  "version": "14.15.4",
   "description": "",
   "main": "server.js",
   "scripts": {
