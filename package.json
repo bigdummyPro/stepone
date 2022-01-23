@@ -14,7 +14,7 @@
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
     "engines": {
-    "node": "14.x"
+    "node": "10.19.0"
   },
   "keywords": [],
   "author": "",
