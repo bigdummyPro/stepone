@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "argon2": "^0.28.3",
     "@capacitor/android": "3.2.5",
     "@capacitor/app": "1.0.5",
     "@capacitor/core": "3.2.5",
