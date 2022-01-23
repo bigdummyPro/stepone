@@ -55,5 +55,5 @@
       "last 1 safari version"
     ]
   },
-    "proxy": "https://steponeministries.herokuapp.com:5000"
+    "proxy": "https://steponeministries.herokuapp.com:443"
 }
