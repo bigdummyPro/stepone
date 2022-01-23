@@ -3,6 +3,9 @@
   "proxy": "https://steponeministries.herokuapp.com:5000",
   "version": "14.15.4",
   "private": true,
+    "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@capacitor/android": "3.2.5",
     "@capacitor/app": "1.0.5",
