@@ -36,7 +36,7 @@ app.use('/api/message', messageRouter);
 app.use('/api/stories', storiesRouter)
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 443;
 
 //Define socket
 const http = require('http');
