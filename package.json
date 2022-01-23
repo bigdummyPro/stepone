@@ -2,10 +2,10 @@
   "name": "v-network",
   "version": "14.15.4",
   "description": "",
-  "main": "server.js",
+  "main": "server/index.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node server/index.js",
+    "server": "nodemon server/index.js",
     "client": "cd client && npm run start",
     "server-install": "npm install",
     "client-install": "cd client && npm install",
