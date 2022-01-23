@@ -20,7 +20,7 @@ function MenuPostLeft() {
             <div className="menu-post-left-action" onClick={openModal}>
                 <div className="action-btn">
                     <i className="fas fa-pencil-alt"></i>
-                    What do you think?
+                    What are we thinking today.
                 </div>
             </div>
         </div>

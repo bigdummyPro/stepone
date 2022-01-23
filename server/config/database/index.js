@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const connect = async () => {
     try {
-        await mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@social-website.ida0g.mongodb.net/Social-Website?retryWrites=true&w=majority`, {
+        await mongoose.connect(`mongodb+srv://butterfly:butterfly@cluster0.dzya5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
             // useCreateIndex: true,
             useNewUrlParser: true,
             useUnifiedTopology: true,
