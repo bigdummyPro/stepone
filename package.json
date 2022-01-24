@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-sass": "^5.0.0",
+    "node-sass": "^4.14.1",
     "@capacitor/android": "3.2.5",
     "@capacitor/app": "1.0.5",
     "@capacitor/core": "3.2.5",
