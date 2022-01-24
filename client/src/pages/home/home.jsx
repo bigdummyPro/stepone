@@ -11,7 +11,7 @@ function Home() {
     },[])
     return (
         <div className="main-content">
-            <title>Home | Connecto</title>
+            <title>Home | Stepone</title>
             <div className="main-container">
                 <div className="main-body">
                     <div className="home-stories">
