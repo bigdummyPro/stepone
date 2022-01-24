@@ -1,7 +1,7 @@
 export const GLOBALTYPES = {
     //Api config
     ApiUrl: process.env.NODE_ENV !== 'production' ? 'http://localhost:5000/api' : 'https://steponeministries.herokuapp.com/api',
-    API_URL:  process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : 'https://steponeministries.herokuapp.com/api',
+    API_URL:  process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : 'https://steponeministries.herokuapp.com',
 
     LOCATION_API_URL: 'https://vapi.vnappmob.com/api',
     //Localstorage config
