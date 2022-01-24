@@ -18,7 +18,7 @@ function Stories() {
     },[])
     return (
         <div className="main-content">
-        <title>Stories | Connecto</title>
+        <title>Stories | Stepone</title>
         <div className="main-container">
             <div className="main-body">
                 <div className="stories-page-wrapper">
