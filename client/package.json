@@ -9,8 +9,6 @@
     "@capacitor/core": "3.2.5",
     "@capacitor/haptics": "1.1.2",
     "@capacitor/ios": "3.2.5",
-    "sass-loader": "^7.2.0",
-    "node-sass": "^5.0.0"
     "@capacitor/keyboard": "1.1.2",
     "@capacitor/status-bar": "1.0.5",
     "@testing-library/jest-dom": "^5.11.9",
@@ -31,7 +29,8 @@
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^3.1.2",
     "web-vitals": "^0.2.4",
-    "sass": "^1.43.4"
+    "sass-loader": "^7.2.0",
+    "node-sass": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
