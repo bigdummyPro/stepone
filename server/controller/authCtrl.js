@@ -1,7 +1,7 @@
 const Users = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
-
+const bcrypt = require('bcrypt')
 
 const createToken = (payload) => {
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '60m'});
@@ -31,7 +31,7 @@ const userCtrl = {
             if(password.length < 6) return res.status(400).json({success: false, message: "Password must be at least 6 characters."})
 
             //all good
-            const hashedPassword = await argon2.hash(password);
+            const hashedPassword = await bcrypt.hash(password);
             const newUser = new Users({username, password: hashedPassword, email, role: 'user'});
             await newUser.save();
             
