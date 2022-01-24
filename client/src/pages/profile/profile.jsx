@@ -63,8 +63,8 @@ function Profile() {
             <title>
                 {
                     profileState && profileState.users.find(item => item._id === id) ? 
-                    `${profileState.users.find(item => item._id === id).username} | Connecto` :
-                    'Connecto'
+                    `${profileState.users.find(item => item._id === id).username} | Stepone` :
+                    'Stepone'
                 }
             </title>
             <div className="main-container">
