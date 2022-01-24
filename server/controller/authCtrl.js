@@ -51,7 +51,7 @@ const userCtrl = {
             const user = await Users.findOne({email});
             if(!user) return res.json({success: false, message: "Email or Password are incorrect"})
             //check for existing password
-            const passwordValid = await bcrypt.compare(password, user.password);
+            const passwordValid = await bcrypt.compare(user.password, password);
             if(!passwordValid) return res.json({success: false, message: "Email or Password are incorrect"}) //nếu có res.status(400) thì khi có lỗi, chương trình sẽ không cho phép các câu lệnh phía dưới lời gọi API này hoạt động.
 
             //all good
