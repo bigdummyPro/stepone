@@ -1,6 +1,6 @@
 {
   "name": "v-network",
-  "version": "14.15.4",
+  "version": "1.0.0",
   "description": "",
   "main": "server/index.js",
   "scripts": {
@@ -13,14 +13,10 @@
     "dev": "concurrently \"npm run server\" \"npm run client\" ",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
-    "engines": {
-    "node": "10.19.0"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "argon2": "^0.28.3",
     "@capacitor/android": "3.2.5",
     "@capacitor/app": "1.0.5",
     "@capacitor/core": "3.2.5",
