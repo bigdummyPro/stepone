@@ -36,7 +36,7 @@ function App() {
     const socket = io(
       process.env.NODE_ENV !== 'production'
       ? 'http://localhost:5000'
-      : 'https://connecto-social-server.herokuapp.com'
+      : 'https://steponeministries.herokuapp.com'
     ); //http://localhost:5000: prefix bắt buộc cho socketio với server có port 5000
     dispatch({type: GLOBALTYPES.SET_SOCKET, payload: socket});
 
