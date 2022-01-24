@@ -1,6 +1,7 @@
 const Users = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt')
+const argon2 = require('argon2');
+
 
 const createToken = (payload) => {
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '60m'});
@@ -30,7 +31,7 @@ const userCtrl = {
             if(password.length < 6) return res.status(400).json({success: false, message: "Password must be at least 6 characters."})
 
             //all good
-            const hashedPassword = await bcrypt.hash(password);
+            const hashedPassword = await argon2.hash(password);
             const newUser = new Users({username, password: hashedPassword, email, role: 'user'});
             await newUser.save();
             
@@ -51,7 +52,7 @@ const userCtrl = {
             const user = await Users.findOne({email});
             if(!user) return res.json({success: false, message: "Email or Password are incorrect"})
             //check for existing password
-            const passwordValid = await bcrypt.compare(user.password, password);
+            const passwordValid = await argon2.verify(user.password, password);
             if(!passwordValid) return res.json({success: false, message: "Email or Password are incorrect"}) //nếu có res.status(400) thì khi có lỗi, chương trình sẽ không cho phép các câu lệnh phía dưới lời gọi API này hoạt động.
 
             //all good
