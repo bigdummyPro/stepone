@@ -139,18 +139,6 @@ function ProfileEditModal({handleEditModal, profile, auth, dispatch}) {
                             </div>
                         </div>
                         <div className="edit-body-group">
-                            <label htmlFor="">Address:</label>
-                            <div className="edit-body-group-select">
-                                <span className="current-address">
-                                    Current address: 
-                                    <p>{profile.address ? profile.address : 'Not update'}</p>
-                                </span>
-                                <LocationSelectBox 
-                                    receiveLocationValue={(value)=>handleLocationValue(value)}
-                                />
-                            </div>
-                        </div>
-                        <div className="edit-body-group">
                             <label htmlFor="">Phone Number:</label>
                             <input 
                                 type="number" 
