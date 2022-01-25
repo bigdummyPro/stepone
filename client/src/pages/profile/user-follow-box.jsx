@@ -30,7 +30,7 @@ function UserFollowBox({followData, typeKey}) {
                 <Link to={`/profile/${followData._id}/post`}>
                     {followData.username}
                 </Link>
-                <span>{followData.nickname || 'Chưa cập nhật'}</span>
+                <span>{followData.nickname || ''}</span>
             </div>
             <div className="user-follow-item__tool">
                 <div className="tool-icon" ref={toolIconRef}>
